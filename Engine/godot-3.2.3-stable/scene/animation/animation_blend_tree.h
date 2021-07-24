@@ -1,39 +1,10 @@
-/*************************************************************************/
-/*  animation_blend_tree.h                                               */
-/*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
-/*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
-/*                                                                       */
-/* Permission is hereby granted, free of charge, to any person obtaining */
-/* a copy of this software and associated documentation files (the       */
-/* "Software"), to deal in the Software without restriction, including   */
-/* without limitation the rights to use, copy, modify, merge, publish,   */
-/* distribute, sublicense, and/or sell copies of the Software, and to    */
-/* permit persons to whom the Software is furnished to do so, subject to */
-/* the following conditions:                                             */
-/*                                                                       */
-/* The above copyright notice and this permission notice shall be        */
-/* included in all copies or substantial portions of the Software.       */
-/*                                                                       */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
-/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
-/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
-/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
-/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
-/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
-/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
-/*************************************************************************/
-
 #ifndef ANIMATION_BLEND_TREE_H
 #define ANIMATION_BLEND_TREE_H
 
 #include "scene/animation/animation_tree.h"
 
-class AnimationNodeAnimation : public AnimationRootNode {
+class AnimationNodeAnimation : public AnimationRootNode
+{
 
 	GDCLASS(AnimationNodeAnimation, AnimationRootNode);
 
@@ -62,11 +33,13 @@ public:
 	AnimationNodeAnimation();
 };
 
-class AnimationNodeOneShot : public AnimationNode {
+class AnimationNodeOneShot : public AnimationNode
+{
 	GDCLASS(AnimationNodeOneShot, AnimationNode);
 
 public:
-	enum MixMode {
+	enum MixMode
+	{
 		MIX_MODE_BLEND,
 		MIX_MODE_ADD
 	};
@@ -130,7 +103,8 @@ public:
 
 VARIANT_ENUM_CAST(AnimationNodeOneShot::MixMode)
 
-class AnimationNodeAdd2 : public AnimationNode {
+class AnimationNodeAdd2 : public AnimationNode
+{
 	GDCLASS(AnimationNodeAdd2, AnimationNode);
 
 	StringName add_amount;
@@ -154,7 +128,8 @@ public:
 	AnimationNodeAdd2();
 };
 
-class AnimationNodeAdd3 : public AnimationNode {
+class AnimationNodeAdd3 : public AnimationNode
+{
 	GDCLASS(AnimationNodeAdd3, AnimationNode);
 
 	StringName add_amount;
@@ -178,7 +153,8 @@ public:
 	AnimationNodeAdd3();
 };
 
-class AnimationNodeBlend2 : public AnimationNode {
+class AnimationNodeBlend2 : public AnimationNode
+{
 	GDCLASS(AnimationNodeBlend2, AnimationNode);
 
 	StringName blend_amount;
@@ -201,7 +177,8 @@ public:
 	AnimationNodeBlend2();
 };
 
-class AnimationNodeBlend3 : public AnimationNode {
+class AnimationNodeBlend3 : public AnimationNode
+{
 	GDCLASS(AnimationNodeBlend3, AnimationNode);
 
 	StringName blend_amount;
@@ -223,7 +200,8 @@ public:
 	AnimationNodeBlend3();
 };
 
-class AnimationNodeTimeScale : public AnimationNode {
+class AnimationNodeTimeScale : public AnimationNode
+{
 	GDCLASS(AnimationNodeTimeScale, AnimationNode);
 
 	StringName scale;
@@ -242,7 +220,8 @@ public:
 	AnimationNodeTimeScale();
 };
 
-class AnimationNodeTimeSeek : public AnimationNode {
+class AnimationNodeTimeSeek : public AnimationNode
+{
 	GDCLASS(AnimationNodeTimeSeek, AnimationNode);
 
 	StringName seek_pos;
@@ -261,13 +240,16 @@ public:
 	AnimationNodeTimeSeek();
 };
 
-class AnimationNodeTransition : public AnimationNode {
+class AnimationNodeTransition : public AnimationNode
+{
 	GDCLASS(AnimationNodeTransition, AnimationNode);
 
-	enum {
+	enum
+	{
 		MAX_INPUTS = 32
 	};
-	struct InputData {
+	struct InputData
+	{
 
 		String name;
 		bool auto_advance;
@@ -321,7 +303,8 @@ public:
 	AnimationNodeTransition();
 };
 
-class AnimationNodeOutput : public AnimationNode {
+class AnimationNodeOutput : public AnimationNode
+{
 	GDCLASS(AnimationNodeOutput, AnimationNode);
 
 public:
@@ -332,10 +315,12 @@ public:
 
 /////
 
-class AnimationNodeBlendTree : public AnimationRootNode {
+class AnimationNodeBlendTree : public AnimationRootNode
+{
 	GDCLASS(AnimationNodeBlendTree, AnimationRootNode);
 
-	struct Node {
+	struct Node
+	{
 		Ref<AnimationNode> node;
 		Vector2 position;
 		Vector<StringName> connections;
@@ -355,7 +340,8 @@ protected:
 	void _get_property_list(List<PropertyInfo> *p_list) const;
 
 public:
-	enum ConnectionError {
+	enum ConnectionError
+	{
 		CONNECTION_OK,
 		CONNECTION_ERROR_NO_INPUT,
 		CONNECTION_ERROR_NO_INPUT_INDEX,
@@ -381,7 +367,8 @@ public:
 	void connect_node(const StringName &p_input_node, int p_input_index, const StringName &p_output_node);
 	void disconnect_node(const StringName &p_node, int p_input_index);
 
-	struct NodeConnection {
+	struct NodeConnection
+	{
 		StringName input_node;
 		int input_index;
 		StringName output_node;

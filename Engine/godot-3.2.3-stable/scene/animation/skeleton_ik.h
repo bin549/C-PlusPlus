@@ -1,33 +1,3 @@
-/*************************************************************************/
-/*  skeleton_ik.h                                                        */
-/*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
-/*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
-/*                                                                       */
-/* Permission is hereby granted, free of charge, to any person obtaining */
-/* a copy of this software and associated documentation files (the       */
-/* "Software"), to deal in the Software without restriction, including   */
-/* without limitation the rights to use, copy, modify, merge, publish,   */
-/* distribute, sublicense, and/or sell copies of the Software, and to    */
-/* permit persons to whom the Software is furnished to do so, subject to */
-/* the following conditions:                                             */
-/*                                                                       */
-/* The above copyright notice and this permission notice shall be        */
-/* included in all copies or substantial portions of the Software.       */
-/*                                                                       */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
-/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
-/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
-/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
-/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
-/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
-/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
-/*************************************************************************/
-
 #ifndef SKELETON_IK_H
 #define SKELETON_IK_H
 
@@ -40,14 +10,17 @@
 #include "core/math/transform.h"
 #include "scene/3d/skeleton.h"
 
-class FabrikInverseKinematic {
+class FabrikInverseKinematic
+{
 
-	struct EndEffector {
+	struct EndEffector
+	{
 		BoneId tip_bone;
 		Transform goal_transform;
 	};
 
-	struct ChainItem {
+	struct ChainItem
+	{
 
 		Vector<ChainItem> children;
 		ChainItem *parent_item;
@@ -63,34 +36,32 @@ class FabrikInverseKinematic {
 		// Direction from this bone to child
 		Vector3 current_ori;
 
-		ChainItem() :
-				parent_item(NULL),
-				bone(-1),
-				pb(NULL),
-				length(0) {}
+		ChainItem() : parent_item(NULL),
+					  bone(-1),
+					  pb(NULL),
+					  length(0) {}
 
 		ChainItem *find_child(const BoneId p_bone_id);
 		ChainItem *add_child(const BoneId p_bone_id);
 	};
 
-	struct ChainTip {
+	struct ChainTip
+	{
 		ChainItem *chain_item;
 		const EndEffector *end_effector;
 
-		ChainTip() :
-				chain_item(NULL),
-				end_effector(NULL) {}
+		ChainTip() : chain_item(NULL),
+					 end_effector(NULL) {}
 
-		ChainTip(ChainItem *p_chain_item, const EndEffector *p_end_effector) :
-				chain_item(p_chain_item),
-				end_effector(p_end_effector) {}
+		ChainTip(ChainItem *p_chain_item, const EndEffector *p_end_effector) : chain_item(p_chain_item),
+																			   end_effector(p_end_effector) {}
 
-		ChainTip(const ChainTip &p_other_ct) :
-				chain_item(p_other_ct.chain_item),
-				end_effector(p_other_ct.end_effector) {}
+		ChainTip(const ChainTip &p_other_ct) : chain_item(p_other_ct.chain_item),
+											   end_effector(p_other_ct.end_effector) {}
 	};
 
-	struct Chain {
+	struct Chain
+	{
 		ChainItem chain_root;
 		ChainItem *middle_chain_item;
 		Vector<ChainTip> tips;
@@ -98,7 +69,8 @@ class FabrikInverseKinematic {
 	};
 
 public:
-	struct Task : public RID_Data {
+	struct Task : public RID_Data
+	{
 		RID self;
 		Skeleton *skeleton;
 
@@ -114,11 +86,10 @@ public:
 
 		Transform goal_global_transform;
 
-		Task() :
-				skeleton(NULL),
-				min_distance(0.01),
-				max_iterations(10),
-				root_bone(-1) {}
+		Task() : skeleton(NULL),
+				 min_distance(0.01),
+				 max_iterations(10),
+				 root_bone(-1) {}
 	};
 
 private:
@@ -141,7 +112,8 @@ public:
 	static void solve(Task *p_task, real_t blending_delta, bool override_tip_basis, bool p_use_magnet, const Vector3 &p_magnet_position);
 };
 
-class SkeletonIK : public Node {
+class SkeletonIK : public Node
+{
 	GDCLASS(SkeletonIK, Node);
 
 	StringName root_bone;

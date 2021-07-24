@@ -1,39 +1,9 @@
-/*************************************************************************/
-/*  navigation.cpp                                                       */
-/*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
-/*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
-/*                                                                       */
-/* Permission is hereby granted, free of charge, to any person obtaining */
-/* a copy of this software and associated documentation files (the       */
-/* "Software"), to deal in the Software without restriction, including   */
-/* without limitation the rights to use, copy, modify, merge, publish,   */
-/* distribute, sublicense, and/or sell copies of the Software, and to    */
-/* permit persons to whom the Software is furnished to do so, subject to */
-/* the following conditions:                                             */
-/*                                                                       */
-/* The above copyright notice and this permission notice shall be        */
-/* included in all copies or substantial portions of the Software.       */
-/*                                                                       */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
-/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
-/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
-/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
-/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
-/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
-/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
-/*************************************************************************/
-
 #include "navigation.h"
 
 #define USE_ENTRY_POINT
 
-void Navigation::_navmesh_link(int p_id) {
-
+void Navigation::_navmesh_link(int p_id)
+{
 	ERR_FAIL_COND(!navmesh_map.has(p_id));
 	NavMesh &nm = navmesh_map[p_id];
 	ERR_FAIL_COND(nm.linked);
@@ -46,7 +16,8 @@ void Navigation::_navmesh_link(int p_id) {
 
 	PoolVector<Vector3>::Read r = vertices.read();
 
-	for (int i = 0; i < nm.navmesh->get_polygon_count(); i++) {
+	for (int i = 0; i < nm.navmesh->get_polygon_count(); i++)
+	{
 
 		//build
 
@@ -63,10 +34,12 @@ void Navigation::_navmesh_link(int p_id) {
 		Vector3 center;
 		float sum = 0;
 
-		for (int j = 0; j < plen; j++) {
+		for (int j = 0; j < plen; j++)
+		{
 
 			int idx = indices[j];
-			if (idx < 0 || idx >= len) {
+			if (idx < 0 || idx >= len)
+			{
 				valid = false;
 				break;
 			}
@@ -77,7 +50,8 @@ void Navigation::_navmesh_link(int p_id) {
 			e.point = _get_point(ep);
 			p.edges.write[j] = e;
 
-			if (j >= 2) {
+			if (j >= 2)
+			{
 				Vector3 epa = nm.xform.xform(r[indices[j - 2]]);
 				Vector3 epb = nm.xform.xform(r[indices[j - 1]]);
 
@@ -87,25 +61,29 @@ void Navigation::_navmesh_link(int p_id) {
 
 		p.clockwise = sum > 0;
 
-		if (!valid) {
+		if (!valid)
+		{
 			nm.polygons.pop_back();
 			ERR_CONTINUE(!valid);
 		}
 
 		p.center = center;
-		if (plen != 0) {
+		if (plen != 0)
+		{
 			p.center /= plen;
 		}
 
 		//connect
 
-		for (int j = 0; j < plen; j++) {
+		for (int j = 0; j < plen; j++)
+		{
 
 			int next = (j + 1) % plen;
 			EdgeKey ek(p.edges[j].point, p.edges[next].point);
 
 			Map<EdgeKey, Connection>::Element *C = connections.find(ek);
-			if (!C) {
+			if (!C)
+			{
 
 				Connection c;
 				c.A = &p;
@@ -113,9 +91,12 @@ void Navigation::_navmesh_link(int p_id) {
 				c.B = NULL;
 				c.B_edge = -1;
 				connections[ek] = c;
-			} else {
+			}
+			else
+			{
 
-				if (C->get().B != NULL) {
+				if (C->get().B != NULL)
+				{
 					ConnectionPending pending;
 					pending.polygon = &p;
 					pending.edge = j;
@@ -137,20 +118,23 @@ void Navigation::_navmesh_link(int p_id) {
 	nm.linked = true;
 }
 
-void Navigation::_navmesh_unlink(int p_id) {
+void Navigation::_navmesh_unlink(int p_id)
+{
 
 	ERR_FAIL_COND(!navmesh_map.has(p_id));
 	NavMesh &nm = navmesh_map[p_id];
 	ERR_FAIL_COND(!nm.linked);
 
-	for (List<Polygon>::Element *E = nm.polygons.front(); E; E = E->next()) {
+	for (List<Polygon>::Element *E = nm.polygons.front(); E; E = E->next())
+	{
 
 		Polygon &p = E->get();
 
 		int edge_count = p.edges.size();
 		Polygon::Edge *edges = p.edges.ptrw();
 
-		for (int i = 0; i < edge_count; i++) {
+		for (int i = 0; i < edge_count; i++)
+		{
 
 			int next = (i + 1) % edge_count;
 			EdgeKey ek(edges[i].point, edges[next].point);
@@ -158,10 +142,13 @@ void Navigation::_navmesh_unlink(int p_id) {
 
 			ERR_CONTINUE(!C);
 
-			if (edges[i].P) {
+			if (edges[i].P)
+			{
 				C->get().pending.erase(edges[i].P);
 				edges[i].P = NULL;
-			} else if (C->get().B) {
+			}
+			else if (C->get().B)
+			{
 				//disconnect
 
 				C->get().B->edges.write[C->get().B_edge].C = NULL;
@@ -169,7 +156,8 @@ void Navigation::_navmesh_unlink(int p_id) {
 				C->get().A->edges.write[C->get().A_edge].C = NULL;
 				C->get().A->edges.write[C->get().A_edge].C_edge = -1;
 
-				if (C->get().A == &E->get()) {
+				if (C->get().A == &E->get())
+				{
 
 					C->get().A = C->get().B;
 					C->get().A_edge = C->get().B_edge;
@@ -177,7 +165,8 @@ void Navigation::_navmesh_unlink(int p_id) {
 				C->get().B = NULL;
 				C->get().B_edge = -1;
 
-				if (C->get().pending.size()) {
+				if (C->get().pending.size())
+				{
 					//reconnect if something is pending
 					ConnectionPending cp = C->get().pending.front()->get();
 					C->get().pending.pop_front();
@@ -190,8 +179,9 @@ void Navigation::_navmesh_unlink(int p_id) {
 					cp.polygon->edges.write[cp.edge].C_edge = C->get().A_edge;
 					cp.polygon->edges.write[cp.edge].P = NULL;
 				}
-
-			} else {
+			}
+			else
+			{
 				connections.erase(C);
 				//erase
 			}
@@ -203,7 +193,8 @@ void Navigation::_navmesh_unlink(int p_id) {
 	nm.linked = false;
 }
 
-int Navigation::navmesh_add(const Ref<NavigationMesh> &p_mesh, const Transform &p_xform, Object *p_owner) {
+int Navigation::navmesh_add(const Ref<NavigationMesh> &p_mesh, const Transform &p_xform, Object *p_owner)
+{
 
 	int id = last_id++;
 	NavMesh nm;
@@ -218,7 +209,8 @@ int Navigation::navmesh_add(const Ref<NavigationMesh> &p_mesh, const Transform &
 	return id;
 }
 
-void Navigation::navmesh_set_transform(int p_id, const Transform &p_xform) {
+void Navigation::navmesh_set_transform(int p_id, const Transform &p_xform)
+{
 
 	ERR_FAIL_COND(!navmesh_map.has(p_id));
 	NavMesh &nm = navmesh_map[p_id];
@@ -228,14 +220,16 @@ void Navigation::navmesh_set_transform(int p_id, const Transform &p_xform) {
 	nm.xform = p_xform;
 	_navmesh_link(p_id);
 }
-void Navigation::navmesh_remove(int p_id) {
+void Navigation::navmesh_remove(int p_id)
+{
 
 	ERR_FAIL_COND_MSG(!navmesh_map.has(p_id), "Trying to remove nonexisting navmesh with id: " + itos(p_id));
 	_navmesh_unlink(p_id);
 	navmesh_map.erase(p_id);
 }
 
-void Navigation::_clip_path(Vector<Vector3> &path, Polygon *from_poly, const Vector3 &p_to_point, Polygon *p_to_poly) {
+void Navigation::_clip_path(Vector<Vector3> &path, Polygon *from_poly, const Vector3 &p_to_point, Polygon *p_to_poly)
+{
 
 	Vector3 from = path[path.size() - 1];
 
@@ -248,7 +242,8 @@ void Navigation::_clip_path(Vector<Vector3> &path, Polygon *from_poly, const Vec
 	cut_plane.normal.normalize();
 	cut_plane.d = cut_plane.normal.dot(from);
 
-	while (from_poly != p_to_poly) {
+	while (from_poly != p_to_poly)
+	{
 		int edge_count = from_poly->edges.size();
 		ERR_FAIL_COND_MSG(edge_count == 0, "Polygon has no edges.");
 		int pe = from_poly->prev_edge;
@@ -259,11 +254,14 @@ void Navigation::_clip_path(Vector<Vector3> &path, Polygon *from_poly, const Vec
 		from_poly = from_poly->edges[pe].C;
 		ERR_FAIL_COND(!from_poly);
 
-		if (a.distance_to(b) > CMP_EPSILON) {
+		if (a.distance_to(b) > CMP_EPSILON)
+		{
 
 			Vector3 inters;
-			if (cut_plane.intersects_segment(a, b, &inters)) {
-				if (inters.distance_to(p_to_point) > CMP_EPSILON && inters.distance_to(path[path.size() - 1]) > CMP_EPSILON) {
+			if (cut_plane.intersects_segment(a, b, &inters))
+			{
+				if (inters.distance_to(p_to_point) > CMP_EPSILON && inters.distance_to(path[path.size() - 1]) > CMP_EPSILON)
+				{
 					path.push_back(inters);
 				}
 			}
@@ -271,7 +269,8 @@ void Navigation::_clip_path(Vector<Vector3> &path, Polygon *from_poly, const Vec
 	}
 }
 
-Vector<Vector3> Navigation::get_simple_path(const Vector3 &p_start, const Vector3 &p_end, bool p_optimize) {
+Vector<Vector3> Navigation::get_simple_path(const Vector3 &p_start, const Vector3 &p_end, bool p_optimize)
+{
 
 	Polygon *begin_poly = NULL;
 	Polygon *end_poly = NULL;
@@ -280,19 +279,23 @@ Vector<Vector3> Navigation::get_simple_path(const Vector3 &p_start, const Vector
 	float begin_d = 1e20;
 	float end_d = 1e20;
 
-	for (Map<int, NavMesh>::Element *E = navmesh_map.front(); E; E = E->next()) {
+	for (Map<int, NavMesh>::Element *E = navmesh_map.front(); E; E = E->next())
+	{
 
 		if (!E->get().linked)
 			continue;
-		for (List<Polygon>::Element *F = E->get().polygons.front(); F; F = F->next()) {
+		for (List<Polygon>::Element *F = E->get().polygons.front(); F; F = F->next())
+		{
 
 			Polygon &p = F->get();
-			for (int i = 2; i < p.edges.size(); i++) {
+			for (int i = 2; i < p.edges.size(); i++)
+			{
 
 				Face3 f(_get_vertex(p.edges[0].point), _get_vertex(p.edges[i - 1].point), _get_vertex(p.edges[i].point));
 				Vector3 spoint = f.get_closest_point_to(p_start);
 				float dpoint = spoint.distance_to(p_start);
-				if (dpoint < begin_d) {
+				if (dpoint < begin_d)
+				{
 					begin_d = dpoint;
 					begin_poly = &p;
 					begin_point = spoint;
@@ -300,7 +303,8 @@ Vector<Vector3> Navigation::get_simple_path(const Vector3 &p_start, const Vector
 
 				spoint = f.get_closest_point_to(p_end);
 				dpoint = spoint.distance_to(p_end);
-				if (dpoint < end_d) {
+				if (dpoint < end_d)
+				{
 					end_d = dpoint;
 					end_poly = &p;
 					end_point = spoint;
@@ -311,12 +315,14 @@ Vector<Vector3> Navigation::get_simple_path(const Vector3 &p_start, const Vector
 		}
 	}
 
-	if (!begin_poly || !end_poly) {
+	if (!begin_poly || !end_poly)
+	{
 
 		return Vector<Vector3>(); //no path
 	}
 
-	if (begin_poly == end_poly) {
+	if (begin_poly == end_poly)
+	{
 
 		Vector<Vector3> path;
 		path.resize(2);
@@ -330,17 +336,18 @@ Vector<Vector3> Navigation::get_simple_path(const Vector3 &p_start, const Vector
 	List<Polygon *> open_list;
 	int begin_edge_count = begin_poly->edges.size();
 
-	for (int i = 0; i < begin_edge_count; i++) {
+	for (int i = 0; i < begin_edge_count; i++)
+	{
 
-		if (begin_poly->edges[i].C) {
+		if (begin_poly->edges[i].C)
+		{
 
 			begin_poly->edges[i].C->prev_edge = begin_poly->edges[i].C_edge;
 #ifdef USE_ENTRY_POINT
 			int next = (i + 1) % begin_edge_count;
 			Vector3 edge[2] = {
 				_get_vertex(begin_poly->edges[i].point),
-				_get_vertex(begin_poly->edges[next].point)
-			};
+				_get_vertex(begin_poly->edges[next].point)};
 
 			Vector3 entry = Geometry::get_closest_point_to_segment(begin_poly->entry, edge);
 			begin_poly->edges[i].C->distance = begin_point.distance_to(entry);
@@ -352,9 +359,11 @@ Vector<Vector3> Navigation::get_simple_path(const Vector3 &p_start, const Vector
 		}
 	}
 
-	while (!found_route) {
+	while (!found_route)
+	{
 
-		if (open_list.size() == 0) {
+		if (open_list.size() == 0)
+		{
 			break;
 		}
 		//check open list
@@ -363,7 +372,8 @@ Vector<Vector3> Navigation::get_simple_path(const Vector3 &p_start, const Vector
 		float least_cost = 1e30;
 
 		//this could be faster (cache previous results)
-		for (List<Polygon *>::Element *E = open_list.front(); E; E = E->next()) {
+		for (List<Polygon *>::Element *E = open_list.front(); E; E = E->next())
+		{
 
 			Polygon *p = E->get();
 
@@ -373,7 +383,8 @@ Vector<Vector3> Navigation::get_simple_path(const Vector3 &p_start, const Vector
 #else
 			cost += p->center.distance_to(end_point);
 #endif
-			if (cost < least_cost) {
+			if (cost < least_cost)
+			{
 				least_cost_poly = E;
 				least_cost = cost;
 			}
@@ -382,14 +393,16 @@ Vector<Vector3> Navigation::get_simple_path(const Vector3 &p_start, const Vector
 		Polygon *p = least_cost_poly->get();
 		//open the neighbours for search
 
-		if (p == end_poly) {
+		if (p == end_poly)
+		{
 			//oh my reached end! stop algorithm
 			found_route = true;
 			break;
 		}
 
 		int edge_count = p->edges.size();
-		for (int i = 0; i < edge_count; i++) {
+		for (int i = 0; i < edge_count; i++)
+		{
 
 			Polygon::Edge &e = p->edges.write[i];
 
@@ -400,8 +413,7 @@ Vector<Vector3> Navigation::get_simple_path(const Vector3 &p_start, const Vector
 			int next = (i + 1) % edge_count;
 			Vector3 edge[2] = {
 				_get_vertex(p->edges[i].point),
-				_get_vertex(p->edges[next].point)
-			};
+				_get_vertex(p->edges[next].point)};
 
 			Vector3 entry = Geometry::get_closest_point_to_segment(p->entry, edge);
 			float distance = p->entry.distance_to(entry) + p->distance;
@@ -409,10 +421,12 @@ Vector<Vector3> Navigation::get_simple_path(const Vector3 &p_start, const Vector
 			float distance = p->center.distance_to(e.C->center) + p->distance;
 #endif
 
-			if (e.C->prev_edge != -1) {
+			if (e.C->prev_edge != -1)
+			{
 				//oh this was visited already, can we win the cost?
 
-				if (e.C->distance > distance) {
+				if (e.C->distance > distance)
+				{
 
 					e.C->prev_edge = e.C_edge;
 					e.C->distance = distance;
@@ -420,7 +434,9 @@ Vector<Vector3> Navigation::get_simple_path(const Vector3 &p_start, const Vector
 					e.C->entry = entry;
 #endif
 				}
-			} else {
+			}
+			else
+			{
 				//add to open neighbours
 
 				e.C->prev_edge = e.C_edge;
@@ -435,11 +451,13 @@ Vector<Vector3> Navigation::get_simple_path(const Vector3 &p_start, const Vector
 		open_list.erase(least_cost_poly);
 	}
 
-	if (found_route) {
+	if (found_route)
+	{
 
 		Vector<Vector3> path;
 
-		if (p_optimize) {
+		if (p_optimize)
+		{
 			//string pulling
 
 			Polygon *apex_poly = end_poly;
@@ -451,17 +469,21 @@ Vector<Vector3> Navigation::get_simple_path(const Vector3 &p_start, const Vector
 			Polygon *p = end_poly;
 			path.push_back(end_point);
 
-			while (p) {
+			while (p)
+			{
 
 				Vector3 left;
 				Vector3 right;
 
 #define CLOCK_TANGENT(m_a, m_b, m_c) (((m_a) - (m_c)).cross((m_a) - (m_b)))
 
-				if (p == begin_poly) {
+				if (p == begin_poly)
+				{
 					left = begin_point;
 					right = begin_point;
-				} else {
+				}
+				else
+				{
 					int edge_count = p->edges.size();
 					ERR_FAIL_COND_V_MSG(edge_count == 0, Vector<Vector3>(), "Polygon has no edges.");
 					int prev = p->prev_edge;
@@ -470,19 +492,24 @@ Vector<Vector3> Navigation::get_simple_path(const Vector3 &p_start, const Vector
 					right = _get_vertex(p->edges[prev_n].point);
 
 					//if (CLOCK_TANGENT(apex_point,left,(left+right)*0.5).dot(up) < 0){
-					if (p->clockwise) {
+					if (p->clockwise)
+					{
 						SWAP(left, right);
 					}
 				}
 
 				bool skip = false;
 
-				if (CLOCK_TANGENT(apex_point, portal_left, left).dot(up) >= 0) {
+				if (CLOCK_TANGENT(apex_point, portal_left, left).dot(up) >= 0)
+				{
 					//process
-					if (portal_left == apex_point || CLOCK_TANGENT(apex_point, left, portal_right).dot(up) > 0) {
+					if (portal_left == apex_point || CLOCK_TANGENT(apex_point, left, portal_right).dot(up) > 0)
+					{
 						left_poly = p;
 						portal_left = left;
-					} else {
+					}
+					else
+					{
 
 						_clip_path(path, apex_poly, portal_right, right_poly);
 
@@ -497,12 +524,16 @@ Vector<Vector3> Navigation::get_simple_path(const Vector3 &p_start, const Vector
 					}
 				}
 
-				if (!skip && CLOCK_TANGENT(apex_point, portal_right, right).dot(up) <= 0) {
+				if (!skip && CLOCK_TANGENT(apex_point, portal_right, right).dot(up) <= 0)
+				{
 					//process
-					if (portal_right == apex_point || CLOCK_TANGENT(apex_point, right, portal_left).dot(up) < 0) {
+					if (portal_right == apex_point || CLOCK_TANGENT(apex_point, right, portal_left).dot(up) < 0)
+					{
 						right_poly = p;
 						portal_right = right;
-					} else {
+					}
+					else
+					{
 
 						_clip_path(path, apex_poly, portal_left, left_poly);
 
@@ -526,13 +557,15 @@ Vector<Vector3> Navigation::get_simple_path(const Vector3 &p_start, const Vector
 				path.push_back(begin_point);
 
 			path.invert();
-
-		} else {
+		}
+		else
+		{
 			//midpoints
 			Polygon *p = end_poly;
 
 			path.push_back(end_point);
-			while (true) {
+			while (true)
+			{
 				int prev = p->prev_edge;
 #ifdef USE_ENTRY_POINT
 				Vector3 point = p->entry;
@@ -559,30 +592,38 @@ Vector<Vector3> Navigation::get_simple_path(const Vector3 &p_start, const Vector
 	return Vector<Vector3>();
 }
 
-Vector3 Navigation::get_closest_point_to_segment(const Vector3 &p_from, const Vector3 &p_to, const bool &p_use_collision) {
+Vector3 Navigation::get_closest_point_to_segment(const Vector3 &p_from, const Vector3 &p_to, const bool &p_use_collision)
+{
 
 	bool use_collision = p_use_collision;
 	Vector3 closest_point;
 	float closest_point_d = 1e20;
 
-	for (Map<int, NavMesh>::Element *E = navmesh_map.front(); E; E = E->next()) {
+	for (Map<int, NavMesh>::Element *E = navmesh_map.front(); E; E = E->next())
+	{
 
 		if (!E->get().linked)
 			continue;
-		for (List<Polygon>::Element *F = E->get().polygons.front(); F; F = F->next()) {
+		for (List<Polygon>::Element *F = E->get().polygons.front(); F; F = F->next())
+		{
 
 			Polygon &p = F->get();
-			for (int i = 2; i < p.edges.size(); i++) {
+			for (int i = 2; i < p.edges.size(); i++)
+			{
 
 				Face3 f(_get_vertex(p.edges[0].point), _get_vertex(p.edges[i - 1].point), _get_vertex(p.edges[i].point));
 				Vector3 inters;
-				if (f.intersects_segment(p_from, p_to, &inters)) {
+				if (f.intersects_segment(p_from, p_to, &inters))
+				{
 
-					if (!use_collision) {
+					if (!use_collision)
+					{
 						closest_point = inters;
 						use_collision = true;
 						closest_point_d = p_from.distance_to(inters);
-					} else if (closest_point_d > inters.distance_to(p_from)) {
+					}
+					else if (closest_point_d > inters.distance_to(p_from))
+					{
 
 						closest_point = inters;
 						closest_point_d = p_from.distance_to(inters);
@@ -590,17 +631,20 @@ Vector3 Navigation::get_closest_point_to_segment(const Vector3 &p_from, const Ve
 				}
 			}
 
-			if (!use_collision) {
+			if (!use_collision)
+			{
 
 				int edge_count = p.edges.size();
-				for (int i = 0; i < edge_count; i++) {
+				for (int i = 0; i < edge_count; i++)
+				{
 
 					Vector3 a, b;
 					int next = (i + 1) % edge_count;
 					Geometry::get_closest_points_between_segments(p_from, p_to, _get_vertex(p.edges[i].point), _get_vertex(p.edges[next].point), a, b);
 
 					float d = a.distance_to(b);
-					if (d < closest_point_d) {
+					if (d < closest_point_d)
+					{
 
 						closest_point_d = d;
 						closest_point = b;
@@ -613,24 +657,29 @@ Vector3 Navigation::get_closest_point_to_segment(const Vector3 &p_from, const Ve
 	return closest_point;
 }
 
-Vector3 Navigation::get_closest_point(const Vector3 &p_point) {
+Vector3 Navigation::get_closest_point(const Vector3 &p_point)
+{
 
 	Vector3 closest_point;
 	float closest_point_d = 1e20;
 
-	for (Map<int, NavMesh>::Element *E = navmesh_map.front(); E; E = E->next()) {
+	for (Map<int, NavMesh>::Element *E = navmesh_map.front(); E; E = E->next())
+	{
 
 		if (!E->get().linked)
 			continue;
-		for (List<Polygon>::Element *F = E->get().polygons.front(); F; F = F->next()) {
+		for (List<Polygon>::Element *F = E->get().polygons.front(); F; F = F->next())
+		{
 
 			Polygon &p = F->get();
-			for (int i = 2; i < p.edges.size(); i++) {
+			for (int i = 2; i < p.edges.size(); i++)
+			{
 
 				Face3 f(_get_vertex(p.edges[0].point), _get_vertex(p.edges[i - 1].point), _get_vertex(p.edges[i].point));
 				Vector3 inters = f.get_closest_point_to(p_point);
 				float d = inters.distance_to(p_point);
-				if (d < closest_point_d) {
+				if (d < closest_point_d)
+				{
 					closest_point = inters;
 					closest_point_d = d;
 				}
@@ -641,25 +690,30 @@ Vector3 Navigation::get_closest_point(const Vector3 &p_point) {
 	return closest_point;
 }
 
-Vector3 Navigation::get_closest_point_normal(const Vector3 &p_point) {
+Vector3 Navigation::get_closest_point_normal(const Vector3 &p_point)
+{
 
 	Vector3 closest_point;
 	Vector3 closest_normal;
 	float closest_point_d = 1e20;
 
-	for (Map<int, NavMesh>::Element *E = navmesh_map.front(); E; E = E->next()) {
+	for (Map<int, NavMesh>::Element *E = navmesh_map.front(); E; E = E->next())
+	{
 
 		if (!E->get().linked)
 			continue;
-		for (List<Polygon>::Element *F = E->get().polygons.front(); F; F = F->next()) {
+		for (List<Polygon>::Element *F = E->get().polygons.front(); F; F = F->next())
+		{
 
 			Polygon &p = F->get();
-			for (int i = 2; i < p.edges.size(); i++) {
+			for (int i = 2; i < p.edges.size(); i++)
+			{
 
 				Face3 f(_get_vertex(p.edges[0].point), _get_vertex(p.edges[i - 1].point), _get_vertex(p.edges[i].point));
 				Vector3 inters = f.get_closest_point_to(p_point);
 				float d = inters.distance_to(p_point);
-				if (d < closest_point_d) {
+				if (d < closest_point_d)
+				{
 					closest_point = inters;
 					closest_point_d = d;
 					closest_normal = f.get_plane().normal;
@@ -671,25 +725,30 @@ Vector3 Navigation::get_closest_point_normal(const Vector3 &p_point) {
 	return closest_normal;
 }
 
-Object *Navigation::get_closest_point_owner(const Vector3 &p_point) {
+Object *Navigation::get_closest_point_owner(const Vector3 &p_point)
+{
 
 	Vector3 closest_point;
 	Object *owner = NULL;
 	float closest_point_d = 1e20;
 
-	for (Map<int, NavMesh>::Element *E = navmesh_map.front(); E; E = E->next()) {
+	for (Map<int, NavMesh>::Element *E = navmesh_map.front(); E; E = E->next())
+	{
 
 		if (!E->get().linked)
 			continue;
-		for (List<Polygon>::Element *F = E->get().polygons.front(); F; F = F->next()) {
+		for (List<Polygon>::Element *F = E->get().polygons.front(); F; F = F->next())
+		{
 
 			Polygon &p = F->get();
-			for (int i = 2; i < p.edges.size(); i++) {
+			for (int i = 2; i < p.edges.size(); i++)
+			{
 
 				Face3 f(_get_vertex(p.edges[0].point), _get_vertex(p.edges[i - 1].point), _get_vertex(p.edges[i].point));
 				Vector3 inters = f.get_closest_point_to(p_point);
 				float d = inters.distance_to(p_point);
-				if (d < closest_point_d) {
+				if (d < closest_point_d)
+				{
 					closest_point = inters;
 					closest_point_d = d;
 					owner = E->get().owner;
@@ -701,17 +760,20 @@ Object *Navigation::get_closest_point_owner(const Vector3 &p_point) {
 	return owner;
 }
 
-void Navigation::set_up_vector(const Vector3 &p_up) {
+void Navigation::set_up_vector(const Vector3 &p_up)
+{
 
 	up = p_up;
 }
 
-Vector3 Navigation::get_up_vector() const {
+Vector3 Navigation::get_up_vector() const
+{
 
 	return up;
 }
 
-void Navigation::_bind_methods() {
+void Navigation::_bind_methods()
+{
 
 	ClassDB::bind_method(D_METHOD("navmesh_add", "mesh", "xform", "owner"), &Navigation::navmesh_add, DEFVAL(Variant()));
 	ClassDB::bind_method(D_METHOD("navmesh_set_transform", "id", "xform"), &Navigation::navmesh_set_transform);
@@ -729,7 +791,8 @@ void Navigation::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "up_vector"), "set_up_vector", "get_up_vector");
 }
 
-Navigation::Navigation() {
+Navigation::Navigation()
+{
 
 	ERR_FAIL_COND(sizeof(Point) != 8);
 	cell_size = 0.01; //one centimeter

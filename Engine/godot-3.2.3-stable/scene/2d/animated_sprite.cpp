@@ -1,33 +1,3 @@
-/*************************************************************************/
-/*  animated_sprite.cpp                                                  */
-/*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
-/*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
-/*                                                                       */
-/* Permission is hereby granted, free of charge, to any person obtaining */
-/* a copy of this software and associated documentation files (the       */
-/* "Software"), to deal in the Software without restriction, including   */
-/* without limitation the rights to use, copy, modify, merge, publish,   */
-/* distribute, sublicense, and/or sell copies of the Software, and to    */
-/* permit persons to whom the Software is furnished to do so, subject to */
-/* the following conditions:                                             */
-/*                                                                       */
-/* The above copyright notice and this permission notice shall be        */
-/* included in all copies or substantial portions of the Software.       */
-/*                                                                       */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
-/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
-/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
-/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
-/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
-/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
-/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
-/*************************************************************************/
-
 #include "animated_sprite.h"
 
 #include "core/os/os.h"
@@ -36,36 +6,44 @@
 #define NORMAL_SUFFIX "_normal"
 
 #ifdef TOOLS_ENABLED
-Dictionary AnimatedSprite::_edit_get_state() const {
+Dictionary AnimatedSprite::_edit_get_state() const
+{
 	Dictionary state = Node2D::_edit_get_state();
 	state["offset"] = offset;
 	return state;
 }
 
-void AnimatedSprite::_edit_set_state(const Dictionary &p_state) {
+void AnimatedSprite::_edit_set_state(const Dictionary &p_state)
+{
 	Node2D::_edit_set_state(p_state);
 	set_offset(p_state["offset"]);
 }
 
-void AnimatedSprite::_edit_set_pivot(const Point2 &p_pivot) {
+void AnimatedSprite::_edit_set_pivot(const Point2 &p_pivot)
+{
 	set_offset(get_offset() - p_pivot);
 	set_position(get_transform().xform(p_pivot));
 }
 
-Point2 AnimatedSprite::_edit_get_pivot() const {
+Point2 AnimatedSprite::_edit_get_pivot() const
+{
 	return Vector2();
 }
 
-bool AnimatedSprite::_edit_use_pivot() const {
+bool AnimatedSprite::_edit_use_pivot() const
+{
 	return true;
 }
 
-Rect2 AnimatedSprite::_edit_get_rect() const {
+Rect2 AnimatedSprite::_edit_get_rect() const
+{
 	return _get_rect();
 }
 
-bool AnimatedSprite::_edit_use_rect() const {
-	if (!frames.is_valid() || !frames->has_animation(animation) || frame < 0 || frame >= frames->get_frame_count(animation)) {
+bool AnimatedSprite::_edit_use_rect() const
+{
+	if (!frames.is_valid() || !frames->has_animation(animation) || frame < 0 || frame >= frames->get_frame_count(animation))
+	{
 		return false;
 	}
 	Ref<Texture> t;
@@ -75,12 +53,15 @@ bool AnimatedSprite::_edit_use_rect() const {
 }
 #endif
 
-Rect2 AnimatedSprite::get_anchorable_rect() const {
+Rect2 AnimatedSprite::get_anchorable_rect() const
+{
 	return _get_rect();
 }
 
-Rect2 AnimatedSprite::_get_rect() const {
-	if (!frames.is_valid() || !frames->has_animation(animation) || frame < 0 || frame >= frames->get_frame_count(animation)) {
+Rect2 AnimatedSprite::_get_rect() const
+{
+	if (!frames.is_valid() || !frames->has_animation(animation) || frame < 0 || frame >= frames->get_frame_count(animation))
+	{
 		return Rect2();
 	}
 
@@ -101,7 +82,8 @@ Rect2 AnimatedSprite::_get_rect() const {
 	return Rect2(ofs, s);
 }
 
-void SpriteFrames::add_frame(const StringName &p_anim, const Ref<Texture> &p_frame, int p_at_pos) {
+void SpriteFrames::add_frame(const StringName &p_anim, const Ref<Texture> &p_frame, int p_at_pos)
+{
 
 	Map<StringName, Anim>::Element *E = animations.find(p_anim);
 	ERR_FAIL_COND_MSG(!E, "Animation '" + String(p_anim) + "' doesn't exist.");
@@ -114,14 +96,16 @@ void SpriteFrames::add_frame(const StringName &p_anim, const Ref<Texture> &p_fra
 	emit_changed();
 }
 
-int SpriteFrames::get_frame_count(const StringName &p_anim) const {
+int SpriteFrames::get_frame_count(const StringName &p_anim) const
+{
 	const Map<StringName, Anim>::Element *E = animations.find(p_anim);
 	ERR_FAIL_COND_V_MSG(!E, 0, "Animation '" + String(p_anim) + "' doesn't exist.");
 
 	return E->get().frames.size();
 }
 
-void SpriteFrames::remove_frame(const StringName &p_anim, int p_idx) {
+void SpriteFrames::remove_frame(const StringName &p_anim, int p_idx)
+{
 
 	Map<StringName, Anim>::Element *E = animations.find(p_anim);
 	ERR_FAIL_COND_MSG(!E, "Animation '" + String(p_anim) + "' doesn't exist.");
@@ -129,7 +113,8 @@ void SpriteFrames::remove_frame(const StringName &p_anim, int p_idx) {
 	E->get().frames.remove(p_idx);
 	emit_changed();
 }
-void SpriteFrames::clear(const StringName &p_anim) {
+void SpriteFrames::clear(const StringName &p_anim)
+{
 
 	Map<StringName, Anim>::Element *E = animations.find(p_anim);
 	ERR_FAIL_COND_MSG(!E, "Animation '" + String(p_anim) + "' doesn't exist.");
@@ -138,13 +123,14 @@ void SpriteFrames::clear(const StringName &p_anim) {
 	emit_changed();
 }
 
-void SpriteFrames::clear_all() {
-
+void SpriteFrames::clear_all()
+{
 	animations.clear();
 	add_animation("default");
 }
 
-void SpriteFrames::add_animation(const StringName &p_anim) {
+void SpriteFrames::add_animation(const StringName &p_anim)
+{
 
 	ERR_FAIL_COND_MSG(animations.has(p_anim), "SpriteFrames already has animation '" + p_anim + "'.");
 
@@ -152,16 +138,19 @@ void SpriteFrames::add_animation(const StringName &p_anim) {
 	animations[p_anim].normal_name = String(p_anim) + NORMAL_SUFFIX;
 }
 
-bool SpriteFrames::has_animation(const StringName &p_anim) const {
+bool SpriteFrames::has_animation(const StringName &p_anim) const
+{
 
 	return animations.has(p_anim);
 }
-void SpriteFrames::remove_animation(const StringName &p_anim) {
+void SpriteFrames::remove_animation(const StringName &p_anim)
+{
 
 	animations.erase(p_anim);
 }
 
-void SpriteFrames::rename_animation(const StringName &p_prev, const StringName &p_next) {
+void SpriteFrames::rename_animation(const StringName &p_prev, const StringName &p_next)
+{
 
 	ERR_FAIL_COND_MSG(!animations.has(p_prev), "SpriteFrames doesn't have animation '" + String(p_prev) + "'.");
 	ERR_FAIL_COND_MSG(animations.has(p_next), "Animation '" + String(p_next) + "' already exists.");
@@ -172,12 +161,14 @@ void SpriteFrames::rename_animation(const StringName &p_prev, const StringName &
 	animations[p_next].normal_name = String(p_next) + NORMAL_SUFFIX;
 }
 
-Vector<String> SpriteFrames::_get_animation_list() const {
+Vector<String> SpriteFrames::_get_animation_list() const
+{
 
 	Vector<String> ret;
 	List<StringName> al;
 	get_animation_list(&al);
-	for (List<StringName>::Element *E = al.front(); E; E = E->next()) {
+	for (List<StringName>::Element *E = al.front(); E; E = E->next())
+	{
 
 		ret.push_back(E->get());
 	}
@@ -185,49 +176,58 @@ Vector<String> SpriteFrames::_get_animation_list() const {
 	return ret;
 }
 
-void SpriteFrames::get_animation_list(List<StringName> *r_animations) const {
+void SpriteFrames::get_animation_list(List<StringName> *r_animations) const
+{
 
-	for (const Map<StringName, Anim>::Element *E = animations.front(); E; E = E->next()) {
+	for (const Map<StringName, Anim>::Element *E = animations.front(); E; E = E->next())
+	{
 		r_animations->push_back(E->key());
 	}
 }
 
-Vector<String> SpriteFrames::get_animation_names() const {
+Vector<String> SpriteFrames::get_animation_names() const
+{
 
 	Vector<String> names;
-	for (const Map<StringName, Anim>::Element *E = animations.front(); E; E = E->next()) {
+	for (const Map<StringName, Anim>::Element *E = animations.front(); E; E = E->next())
+	{
 		names.push_back(E->key());
 	}
 	names.sort();
 	return names;
 }
 
-void SpriteFrames::set_animation_speed(const StringName &p_anim, float p_fps) {
+void SpriteFrames::set_animation_speed(const StringName &p_anim, float p_fps)
+{
 
 	ERR_FAIL_COND_MSG(p_fps < 0, "Animation speed cannot be negative (" + itos(p_fps) + ").");
 	Map<StringName, Anim>::Element *E = animations.find(p_anim);
 	ERR_FAIL_COND_MSG(!E, "Animation '" + String(p_anim) + "' doesn't exist.");
 	E->get().speed = p_fps;
 }
-float SpriteFrames::get_animation_speed(const StringName &p_anim) const {
+float SpriteFrames::get_animation_speed(const StringName &p_anim) const
+{
 
 	const Map<StringName, Anim>::Element *E = animations.find(p_anim);
 	ERR_FAIL_COND_V_MSG(!E, 0, "Animation '" + String(p_anim) + "' doesn't exist.");
 	return E->get().speed;
 }
 
-void SpriteFrames::set_animation_loop(const StringName &p_anim, bool p_loop) {
+void SpriteFrames::set_animation_loop(const StringName &p_anim, bool p_loop)
+{
 	Map<StringName, Anim>::Element *E = animations.find(p_anim);
 	ERR_FAIL_COND_MSG(!E, "Animation '" + String(p_anim) + "' doesn't exist.");
 	E->get().loop = p_loop;
 }
-bool SpriteFrames::get_animation_loop(const StringName &p_anim) const {
+bool SpriteFrames::get_animation_loop(const StringName &p_anim) const
+{
 	const Map<StringName, Anim>::Element *E = animations.find(p_anim);
 	ERR_FAIL_COND_V_MSG(!E, false, "Animation '" + String(p_anim) + "' doesn't exist.");
 	return E->get().loop;
 }
 
-void SpriteFrames::_set_frames(const Array &p_frames) {
+void SpriteFrames::_set_frames(const Array &p_frames)
+{
 
 	clear_all();
 	Map<StringName, Anim>::Element *E = animations.find(SceneStringNames::get_singleton()->_default);
@@ -237,21 +237,25 @@ void SpriteFrames::_set_frames(const Array &p_frames) {
 	for (int i = 0; i < E->get().frames.size(); i++)
 		E->get().frames.write[i] = p_frames[i];
 }
-Array SpriteFrames::_get_frames() const {
+Array SpriteFrames::_get_frames() const
+{
 
 	return Array();
 }
 
-Array SpriteFrames::_get_animations() const {
+Array SpriteFrames::_get_animations() const
+{
 
 	Array anims;
-	for (Map<StringName, Anim>::Element *E = animations.front(); E; E = E->next()) {
+	for (Map<StringName, Anim>::Element *E = animations.front(); E; E = E->next())
+	{
 		Dictionary d;
 		d["name"] = E->key();
 		d["speed"] = E->get().speed;
 		d["loop"] = E->get().loop;
 		Array frames;
-		for (int i = 0; i < E->get().frames.size(); i++) {
+		for (int i = 0; i < E->get().frames.size(); i++)
+		{
 			frames.push_back(E->get().frames[i]);
 		}
 		d["frames"] = frames;
@@ -260,10 +264,12 @@ Array SpriteFrames::_get_animations() const {
 
 	return anims;
 }
-void SpriteFrames::_set_animations(const Array &p_animations) {
+void SpriteFrames::_set_animations(const Array &p_animations)
+{
 
 	animations.clear();
-	for (int i = 0; i < p_animations.size(); i++) {
+	for (int i = 0; i < p_animations.size(); i++)
+	{
 
 		Dictionary d = p_animations[i];
 
@@ -276,7 +282,8 @@ void SpriteFrames::_set_animations(const Array &p_animations) {
 		anim.speed = d["speed"];
 		anim.loop = d["loop"];
 		Array frames = d["frames"];
-		for (int j = 0; j < frames.size(); j++) {
+		for (int j = 0; j < frames.size(); j++)
+		{
 
 			RES res = frames[j];
 			anim.frames.push_back(res);
@@ -286,7 +293,8 @@ void SpriteFrames::_set_animations(const Array &p_animations) {
 	}
 }
 
-void SpriteFrames::_bind_methods() {
+void SpriteFrames::_bind_methods()
+{
 
 	ClassDB::bind_method(D_METHOD("add_animation", "anim"), &SpriteFrames::add_animation);
 	ClassDB::bind_method(D_METHOD("has_animation", "anim"), &SpriteFrames::has_animation);
@@ -320,16 +328,19 @@ void SpriteFrames::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "animations", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL), "_set_animations", "_get_animations"); //compatibility
 }
 
-SpriteFrames::SpriteFrames() {
+SpriteFrames::SpriteFrames()
+{
 
 	add_animation(SceneStringNames::get_singleton()->_default);
 }
 
-void AnimatedSprite::_validate_property(PropertyInfo &property) const {
+void AnimatedSprite::_validate_property(PropertyInfo &property) const
+{
 
 	if (!frames.is_valid())
 		return;
-	if (property.name == "animation") {
+	if (property.name == "animation")
+	{
 
 		property.hint = PROPERTY_HINT_ENUM;
 		List<StringName> names;
@@ -338,137 +349,162 @@ void AnimatedSprite::_validate_property(PropertyInfo &property) const {
 
 		bool current_found = false;
 
-		for (List<StringName>::Element *E = names.front(); E; E = E->next()) {
-			if (E->prev()) {
+		for (List<StringName>::Element *E = names.front(); E; E = E->next())
+		{
+			if (E->prev())
+			{
 				property.hint_string += ",";
 			}
 
 			property.hint_string += String(E->get());
-			if (animation == E->get()) {
+			if (animation == E->get())
+			{
 				current_found = true;
 			}
 		}
 
-		if (!current_found) {
-			if (property.hint_string == String()) {
+		if (!current_found)
+		{
+			if (property.hint_string == String())
+			{
 				property.hint_string = String(animation);
-			} else {
+			}
+			else
+			{
 				property.hint_string = String(animation) + "," + property.hint_string;
 			}
 		}
 	}
 
-	if (property.name == "frame") {
+	if (property.name == "frame")
+	{
 		property.hint = PROPERTY_HINT_RANGE;
-		if (frames->has_animation(animation) && frames->get_frame_count(animation) > 1) {
+		if (frames->has_animation(animation) && frames->get_frame_count(animation) > 1)
+		{
 			property.hint_string = "0," + itos(frames->get_frame_count(animation) - 1) + ",1";
 		}
 		property.usage |= PROPERTY_USAGE_KEYING_INCREMENTS;
 	}
 }
 
-void AnimatedSprite::_notification(int p_what) {
+void AnimatedSprite::_notification(int p_what)
+{
 
-	switch (p_what) {
-		case NOTIFICATION_INTERNAL_PROCESS: {
+	switch (p_what)
+	{
+	case NOTIFICATION_INTERNAL_PROCESS:
+	{
 
-			if (frames.is_null())
-				return;
-			if (!frames->has_animation(animation))
-				return;
-			if (frame < 0)
-				return;
+		if (frames.is_null())
+			return;
+		if (!frames->has_animation(animation))
+			return;
+		if (frame < 0)
+			return;
 
-			float speed = frames->get_animation_speed(animation) * speed_scale;
-			if (speed == 0)
-				return; //do nothing
+		float speed = frames->get_animation_speed(animation) * speed_scale;
+		if (speed == 0)
+			return; //do nothing
 
-			float remaining = get_process_delta_time();
+		float remaining = get_process_delta_time();
 
-			while (remaining) {
+		while (remaining)
+		{
 
-				if (timeout <= 0) {
+			if (timeout <= 0)
+			{
 
-					timeout = _get_frame_duration();
+				timeout = _get_frame_duration();
 
-					int fc = frames->get_frame_count(animation);
-					if ((!backwards && frame >= fc - 1) || (backwards && frame <= 0)) {
-						if (frames->get_animation_loop(animation)) {
-							if (backwards)
-								frame = fc - 1;
-							else
-								frame = 0;
-
-							emit_signal(SceneStringNames::get_singleton()->animation_finished);
-						} else {
-							if (backwards)
-								frame = 0;
-							else
-								frame = fc - 1;
-
-							if (!is_over) {
-								is_over = true;
-								emit_signal(SceneStringNames::get_singleton()->animation_finished);
-							}
-						}
-					} else {
+				int fc = frames->get_frame_count(animation);
+				if ((!backwards && frame >= fc - 1) || (backwards && frame <= 0))
+				{
+					if (frames->get_animation_loop(animation))
+					{
 						if (backwards)
-							frame--;
+							frame = fc - 1;
 						else
-							frame++;
-					}
+							frame = 0;
 
-					update();
-					_change_notify("frame");
-					emit_signal(SceneStringNames::get_singleton()->frame_changed);
+						emit_signal(SceneStringNames::get_singleton()->animation_finished);
+					}
+					else
+					{
+						if (backwards)
+							frame = 0;
+						else
+							frame = fc - 1;
+
+						if (!is_over)
+						{
+							is_over = true;
+							emit_signal(SceneStringNames::get_singleton()->animation_finished);
+						}
+					}
+				}
+				else
+				{
+					if (backwards)
+						frame--;
+					else
+						frame++;
 				}
 
-				float to_process = MIN(timeout, remaining);
-				remaining -= to_process;
-				timeout -= to_process;
+				update();
+				_change_notify("frame");
+				emit_signal(SceneStringNames::get_singleton()->frame_changed);
 			}
-		} break;
 
-		case NOTIFICATION_DRAW: {
+			float to_process = MIN(timeout, remaining);
+			remaining -= to_process;
+			timeout -= to_process;
+		}
+	}
+	break;
 
-			if (frames.is_null())
-				return;
-			if (frame < 0)
-				return;
-			if (!frames->has_animation(animation))
-				return;
+	case NOTIFICATION_DRAW:
+	{
 
-			Ref<Texture> texture = frames->get_frame(animation, frame);
-			if (texture.is_null())
-				return;
+		if (frames.is_null())
+			return;
+		if (frame < 0)
+			return;
+		if (!frames->has_animation(animation))
+			return;
 
-			Ref<Texture> normal = frames->get_normal_frame(animation, frame);
+		Ref<Texture> texture = frames->get_frame(animation, frame);
+		if (texture.is_null())
+			return;
 
-			RID ci = get_canvas_item();
+		Ref<Texture> normal = frames->get_normal_frame(animation, frame);
 
-			Size2i s;
-			s = texture->get_size();
-			Point2 ofs = offset;
-			if (centered)
-				ofs -= s / 2;
+		RID ci = get_canvas_item();
 
-			if (Engine::get_singleton()->get_use_pixel_snap()) {
-				ofs = ofs.floor();
-			}
-			Rect2 dst_rect(ofs, s);
+		Size2i s;
+		s = texture->get_size();
+		Point2 ofs = offset;
+		if (centered)
+			ofs -= s / 2;
 
-			if (hflip)
-				dst_rect.size.x = -dst_rect.size.x;
-			if (vflip)
-				dst_rect.size.y = -dst_rect.size.y;
+		if (Engine::get_singleton()->get_use_pixel_snap())
+		{
+			ofs = ofs.floor();
+		}
+		Rect2 dst_rect(ofs, s);
 
-			texture->draw_rect_region(ci, dst_rect, Rect2(Vector2(), texture->get_size()), Color(1, 1, 1), false, normal);
+		if (hflip)
+			dst_rect.size.x = -dst_rect.size.x;
+		if (vflip)
+			dst_rect.size.y = -dst_rect.size.y;
 
-		} break;
+		texture->draw_rect_region(ci, dst_rect, Rect2(Vector2(), texture->get_size()), Color(1, 1, 1), false, normal);
+	}
+	break;
 	}
 }
 
-void AnimatedSprite::set_sprite_frames(const Ref<SpriteFrames> &p_frames) {
+void AnimatedSprite::set_sprite_frames(const Ref<SpriteFrames> &p_frames)
+{
 
 	if (frames.is_valid())
 		frames->disconnect("changed", this, "_res_changed");
@@ -476,9 +512,12 @@ void AnimatedSprite::set_sprite_frames(const Ref<SpriteFrames> &p_frames) {
 	if (frames.is_valid())
 		frames->connect("changed", this, "_res_changed");
 
-	if (!frames.is_valid()) {
+	if (!frames.is_valid())
+	{
 		frame = 0;
-	} else {
+	}
+	else
+	{
 		set_frame(frame);
 	}
 
@@ -488,18 +527,22 @@ void AnimatedSprite::set_sprite_frames(const Ref<SpriteFrames> &p_frames) {
 	update_configuration_warning();
 }
 
-Ref<SpriteFrames> AnimatedSprite::get_sprite_frames() const {
+Ref<SpriteFrames> AnimatedSprite::get_sprite_frames() const
+{
 
 	return frames;
 }
 
-void AnimatedSprite::set_frame(int p_frame) {
+void AnimatedSprite::set_frame(int p_frame)
+{
 
-	if (!frames.is_valid()) {
+	if (!frames.is_valid())
+	{
 		return;
 	}
 
-	if (frames->has_animation(animation)) {
+	if (frames->has_animation(animation))
+	{
 		int limit = frames->get_frame_count(animation);
 		if (p_frame >= limit)
 			p_frame = limit - 1;
@@ -517,12 +560,14 @@ void AnimatedSprite::set_frame(int p_frame) {
 	_change_notify("frame");
 	emit_signal(SceneStringNames::get_singleton()->frame_changed);
 }
-int AnimatedSprite::get_frame() const {
+int AnimatedSprite::get_frame() const
+{
 
 	return frame;
 }
 
-void AnimatedSprite::set_speed_scale(float p_speed_scale) {
+void AnimatedSprite::set_speed_scale(float p_speed_scale)
+{
 
 	float elapsed = _get_frame_duration() - timeout;
 
@@ -533,56 +578,66 @@ void AnimatedSprite::set_speed_scale(float p_speed_scale) {
 	timeout -= elapsed;
 }
 
-float AnimatedSprite::get_speed_scale() const {
+float AnimatedSprite::get_speed_scale() const
+{
 
 	return speed_scale;
 }
 
-void AnimatedSprite::set_centered(bool p_center) {
+void AnimatedSprite::set_centered(bool p_center)
+{
 
 	centered = p_center;
 	update();
 	item_rect_changed();
 }
 
-bool AnimatedSprite::is_centered() const {
+bool AnimatedSprite::is_centered() const
+{
 
 	return centered;
 }
 
-void AnimatedSprite::set_offset(const Point2 &p_offset) {
+void AnimatedSprite::set_offset(const Point2 &p_offset)
+{
 
 	offset = p_offset;
 	update();
 	item_rect_changed();
 	_change_notify("offset");
 }
-Point2 AnimatedSprite::get_offset() const {
+Point2 AnimatedSprite::get_offset() const
+{
 
 	return offset;
 }
 
-void AnimatedSprite::set_flip_h(bool p_flip) {
+void AnimatedSprite::set_flip_h(bool p_flip)
+{
 
 	hflip = p_flip;
 	update();
 }
-bool AnimatedSprite::is_flipped_h() const {
+bool AnimatedSprite::is_flipped_h() const
+{
 
 	return hflip;
 }
 
-void AnimatedSprite::set_flip_v(bool p_flip) {
+void AnimatedSprite::set_flip_v(bool p_flip)
+{
 
 	vflip = p_flip;
 	update();
 }
-bool AnimatedSprite::is_flipped_v() const {
+bool AnimatedSprite::is_flipped_v() const
+{
 
 	return vflip;
 }
 
-void AnimatedSprite::_res_changed() {
+void AnimatedSprite::_res_changed()
+{
 
 	set_frame(frame);
 	_change_notify("frame");
@@ -590,7 +645,8 @@ void AnimatedSprite::_res_changed() {
 	update();
 }
 
-void AnimatedSprite::_set_playing(bool p_playing) {
+void AnimatedSprite::_set_playing(bool p_playing)
+{
 
 	if (playing == p_playing)
 		return;
@@ -599,16 +655,19 @@ void AnimatedSprite::_set_playing(bool p_playing) {
 	set_process_internal(playing);
 }
 
-bool AnimatedSprite::_is_playing() const {
+bool AnimatedSprite::_is_playing() const
+{
 
 	return playing;
 }
 
-void AnimatedSprite::play(const StringName &p_animation, const bool p_backwards) {
+void AnimatedSprite::play(const StringName &p_animation, const bool p_backwards)
+{
 
 	backwards = p_backwards;
 
-	if (p_animation) {
+	if (p_animation)
+	{
 		set_animation(p_animation);
 		if (backwards && get_frame() == 0)
 			set_frame(frames->get_frame_count(p_animation) - 1);
@@ -617,27 +676,33 @@ void AnimatedSprite::play(const StringName &p_animation, const bool p_backwards)
 	_set_playing(true);
 }
 
-void AnimatedSprite::stop() {
+void AnimatedSprite::stop()
+{
 
 	_set_playing(false);
 }
 
-bool AnimatedSprite::is_playing() const {
+bool AnimatedSprite::is_playing() const
+{
 
 	return playing;
 }
 
-float AnimatedSprite::_get_frame_duration() {
-	if (frames.is_valid() && frames->has_animation(animation)) {
+float AnimatedSprite::_get_frame_duration()
+{
+	if (frames.is_valid() && frames->has_animation(animation))
+	{
 		float speed = frames->get_animation_speed(animation) * speed_scale;
-		if (speed > 0) {
+		if (speed > 0)
+		{
 			return 1.0 / speed;
 		}
 	}
 	return 0.0;
 }
 
-void AnimatedSprite::_reset_timeout() {
+void AnimatedSprite::_reset_timeout()
+{
 
 	if (!playing)
 		return;
@@ -646,7 +711,8 @@ void AnimatedSprite::_reset_timeout() {
 	is_over = false;
 }
 
-void AnimatedSprite::set_animation(const StringName &p_animation) {
+void AnimatedSprite::set_animation(const StringName &p_animation)
+{
 
 	ERR_FAIL_COND_MSG(frames == NULL, vformat("There is no animation with name '%s'.", p_animation));
 	ERR_FAIL_COND_MSG(frames->get_animation_names().find(p_animation) == -1, vformat("There is no animation with name '%s'.", p_animation));
@@ -660,21 +726,25 @@ void AnimatedSprite::set_animation(const StringName &p_animation) {
 	_change_notify();
 	update();
 }
-StringName AnimatedSprite::get_animation() const {
+StringName AnimatedSprite::get_animation() const
+{
 
 	return animation;
 }
 
-String AnimatedSprite::get_configuration_warning() const {
+String AnimatedSprite::get_configuration_warning() const
+{
 
-	if (frames.is_null()) {
+	if (frames.is_null())
+	{
 		return TTR("A SpriteFrames resource must be created or set in the \"Frames\" property in order for AnimatedSprite to display frames.");
 	}
 
 	return String();
 }
 
-void AnimatedSprite::_bind_methods() {
+void AnimatedSprite::_bind_methods()
+{
 
 	ClassDB::bind_method(D_METHOD("set_sprite_frames", "sprite_frames"), &AnimatedSprite::set_sprite_frames);
 	ClassDB::bind_method(D_METHOD("get_sprite_frames"), &AnimatedSprite::get_sprite_frames);
@@ -723,7 +793,8 @@ void AnimatedSprite::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "flip_v"), "set_flip_v", "is_flipped_v");
 }
 
-AnimatedSprite::AnimatedSprite() {
+AnimatedSprite::AnimatedSprite()
+{
 
 	centered = true;
 	hflip = false;

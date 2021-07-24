@@ -1,33 +1,3 @@
-/*************************************************************************/
-/*  os.h                                                                 */
-/*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
-/*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
-/*                                                                       */
-/* Permission is hereby granted, free of charge, to any person obtaining */
-/* a copy of this software and associated documentation files (the       */
-/* "Software"), to deal in the Software without restriction, including   */
-/* without limitation the rights to use, copy, modify, merge, publish,   */
-/* distribute, sublicense, and/or sell copies of the Software, and to    */
-/* permit persons to whom the Software is furnished to do so, subject to */
-/* the following conditions:                                             */
-/*                                                                       */
-/* The above copyright notice and this permission notice shall be        */
-/* included in all copies or substantial portions of the Software.       */
-/*                                                                       */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
-/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
-/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
-/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
-/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
-/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
-/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
-/*************************************************************************/
-
 #ifndef OS_H
 #define OS_H
 
@@ -43,8 +13,8 @@
 
 class Mutex;
 
-class OS {
-
+class OS
+{
 	static OS *singleton;
 	static uint64_t target_ticks;
 	String _execpath;
@@ -80,21 +50,24 @@ public:
 	typedef void (*ImeCallback)(void *p_inp, String p_text, Point2 p_selection);
 	typedef bool (*HasServerFeatureCallback)(const String &p_feature);
 
-	enum PowerState {
-		POWERSTATE_UNKNOWN, /**< cannot determine power status */
+	enum PowerState
+	{
+		POWERSTATE_UNKNOWN,	   /**< cannot determine power status */
 		POWERSTATE_ON_BATTERY, /**< Not plugged in, running on the battery */
 		POWERSTATE_NO_BATTERY, /**< Plugged in, no battery available */
-		POWERSTATE_CHARGING, /**< Plugged in, charging battery */
-		POWERSTATE_CHARGED /**< Plugged in, battery charged */
+		POWERSTATE_CHARGING,   /**< Plugged in, charging battery */
+		POWERSTATE_CHARGED	   /**< Plugged in, battery charged */
 	};
 
-	enum RenderThreadMode {
+	enum RenderThreadMode
+	{
 
 		RENDER_THREAD_UNSAFE,
 		RENDER_THREAD_SAFE,
 		RENDER_SEPARATE_THREAD
 	};
-	struct VideoMode {
+	struct VideoMode
+	{
 
 		int width, height;
 		bool fullscreen;
@@ -106,7 +79,8 @@ public:
 		bool vsync_via_compositor;
 		bool layered;
 		float get_aspect() const { return (float)width / (float)height; }
-		VideoMode(int p_width = 1024, int p_height = 600, bool p_fullscreen = false, bool p_resizable = true, bool p_borderless_window = false, bool p_maximized = false, bool p_always_on_top = false, bool p_use_vsync = false, bool p_vsync_via_compositor = false) {
+		VideoMode(int p_width = 1024, int p_height = 600, bool p_fullscreen = false, bool p_resizable = true, bool p_borderless_window = false, bool p_maximized = false, bool p_always_on_top = false, bool p_use_vsync = false, bool p_vsync_via_compositor = false)
+		{
 			width = p_width;
 			height = p_height;
 			fullscreen = p_fullscreen;
@@ -160,7 +134,8 @@ public:
 	virtual void alert(const String &p_alert, const String &p_title = "ALERT!") = 0;
 	virtual String get_stdin_string(bool p_block = true) = 0;
 
-	enum MouseMode {
+	enum MouseMode
+	{
 		MOUSE_MODE_VISIBLE,
 		MOUSE_MODE_HIDDEN,
 		MOUSE_MODE_CAPTURED,
@@ -182,7 +157,8 @@ public:
 	virtual VideoMode get_video_mode(int p_screen = 0) const = 0;
 	virtual void get_fullscreen_mode_list(List<VideoMode> *p_list, int p_screen = 0) const = 0;
 
-	enum VideoDriver {
+	enum VideoDriver
+	{
 		VIDEO_DRIVER_GLES3,
 		VIDEO_DRIVER_GLES2,
 		VIDEO_DRIVER_MAX,
@@ -244,7 +220,8 @@ public:
 	// viewport coordinates - you should perform the conversion on your own.
 	//
 	// The maximum size of the area is Rect2(0, 0, window_size.width, window_size.height).
-	virtual Rect2 get_window_safe_area() const {
+	virtual Rect2 get_window_safe_area() const
+	{
 		Size2 window_size = get_window_size();
 		return Rect2(0, 0, window_size.width, window_size.height);
 	}
@@ -292,7 +269,8 @@ public:
 
 	virtual void yield();
 
-	enum Weekday {
+	enum Weekday
+	{
 		DAY_SUNDAY,
 		DAY_MONDAY,
 		DAY_TUESDAY,
@@ -302,7 +280,8 @@ public:
 		DAY_SATURDAY
 	};
 
-	enum Month {
+	enum Month
+	{
 		/// Start at 1 to follow Windows SYSTEMTIME structure
 		/// https://msdn.microsoft.com/en-us/library/windows/desktop/ms724950(v=vs.85).aspx
 		MONTH_JANUARY = 1,
@@ -319,7 +298,8 @@ public:
 		MONTH_DECEMBER
 	};
 
-	struct Date {
+	struct Date
+	{
 
 		int year;
 		Month month;
@@ -328,14 +308,16 @@ public:
 		bool dst;
 	};
 
-	struct Time {
+	struct Time
+	{
 
 		int hour;
 		int min;
 		int sec;
 	};
 
-	struct TimeZoneInfo {
+	struct TimeZoneInfo
+	{
 		int bias;
 		String name;
 	};
@@ -366,7 +348,8 @@ public:
 	virtual bool is_disable_crash_handler() const { return false; }
 	virtual void initialize_debugging() {}
 
-	enum CursorShape {
+	enum CursorShape
+	{
 		CURSOR_ARROW,
 		CURSOR_IBEAM,
 		CURSOR_POINTING_HAND,
@@ -424,7 +407,8 @@ public:
 	virtual String get_user_data_dir() const;
 	virtual String get_resource_dir() const;
 
-	enum SystemDir {
+	enum SystemDir
+	{
 		SYSTEM_DIR_DESKTOP,
 		SYSTEM_DIR_DCIM,
 		SYSTEM_DIR_DOCUMENTS,
@@ -444,7 +428,8 @@ public:
 
 	virtual bool has_touchscreen_ui_hint() const;
 
-	enum ScreenOrientation {
+	enum ScreenOrientation
+	{
 
 		SCREEN_LANDSCAPE,
 		SCREEN_PORTRAIT,
@@ -488,7 +473,8 @@ public:
 	virtual Error dialog_show(String p_title, String p_description, Vector<String> p_buttons, Object *p_obj, String p_callback);
 	virtual Error dialog_input_text(String p_title, String p_description, String p_partial, Object *p_obj, String p_callback);
 
-	enum LatinKeyboardVariant {
+	enum LatinKeyboardVariant
+	{
 		LATIN_KEYBOARD_QWERTY,
 		LATIN_KEYBOARD_QWERTZ,
 		LATIN_KEYBOARD_AZERTY,
@@ -509,7 +495,8 @@ public:
 	virtual bool is_joy_known(int p_device);
 	virtual String get_joy_guid(int p_device) const;
 
-	enum EngineContext {
+	enum EngineContext
+	{
 		CONTEXT_EDITOR,
 		CONTEXT_PROJECTMAN,
 		CONTEXT_ENGINE,

@@ -1,50 +1,21 @@
-/*************************************************************************/
-/*  animated_sprite.h                                                    */
-/*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
-/*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
-/*                                                                       */
-/* Permission is hereby granted, free of charge, to any person obtaining */
-/* a copy of this software and associated documentation files (the       */
-/* "Software"), to deal in the Software without restriction, including   */
-/* without limitation the rights to use, copy, modify, merge, publish,   */
-/* distribute, sublicense, and/or sell copies of the Software, and to    */
-/* permit persons to whom the Software is furnished to do so, subject to */
-/* the following conditions:                                             */
-/*                                                                       */
-/* The above copyright notice and this permission notice shall be        */
-/* included in all copies or substantial portions of the Software.       */
-/*                                                                       */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
-/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
-/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
-/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
-/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
-/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
-/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
-/*************************************************************************/
-
 #ifndef ANIMATED_SPRITE_H
 #define ANIMATED_SPRITE_H
 
 #include "scene/2d/node_2d.h"
 #include "scene/resources/texture.h"
 
-class SpriteFrames : public Resource {
-
+class SpriteFrames : public Resource
+{
 	GDCLASS(SpriteFrames, Resource);
 
-	struct Anim {
-
+	struct Anim
+	{
 		float speed;
 		bool loop;
-		Vector<Ref<Texture> > frames;
+		Vector<Ref<Texture>> frames;
 
-		Anim() {
+		Anim()
+		{
 			loop = true;
 			speed = 5;
 		}
@@ -82,7 +53,8 @@ public:
 
 	void add_frame(const StringName &p_anim, const Ref<Texture> &p_frame, int p_at_pos = -1);
 	int get_frame_count(const StringName &p_anim) const;
-	_FORCE_INLINE_ Ref<Texture> get_frame(const StringName &p_anim, int p_idx) const {
+	_FORCE_INLINE_ Ref<Texture> get_frame(const StringName &p_anim, int p_idx) const
+	{
 
 		const Map<StringName, Anim>::Element *E = animations.find(p_anim);
 		ERR_FAIL_COND_V_MSG(!E, Ref<Texture>(), "Animation '" + String(p_anim) + "' doesn't exist.");
@@ -93,7 +65,8 @@ public:
 		return E->get().frames[p_idx];
 	}
 
-	_FORCE_INLINE_ Ref<Texture> get_normal_frame(const StringName &p_anim, int p_idx) const {
+	_FORCE_INLINE_ Ref<Texture> get_normal_frame(const StringName &p_anim, int p_idx) const
+	{
 
 		const Map<StringName, Anim>::Element *E = animations.find(p_anim);
 		ERR_FAIL_COND_V_MSG(!E, Ref<Texture>(), "Animation '" + String(p_anim) + "' doesn't exist.");
@@ -107,7 +80,8 @@ public:
 		return EN->get().frames[p_idx];
 	}
 
-	void set_frame(const StringName &p_anim, int p_idx, const Ref<Texture> &p_frame) {
+	void set_frame(const StringName &p_anim, int p_idx, const Ref<Texture> &p_frame)
+	{
 		Map<StringName, Anim>::Element *E = animations.find(p_anim);
 		ERR_FAIL_COND_MSG(!E, "Animation '" + String(p_anim) + "' doesn't exist.");
 		ERR_FAIL_COND(p_idx < 0);
@@ -122,7 +96,8 @@ public:
 	SpriteFrames();
 };
 
-class AnimatedSprite : public Node2D {
+class AnimatedSprite : public Node2D
+{
 
 	GDCLASS(AnimatedSprite, Node2D);
 
@@ -204,4 +179,4 @@ public:
 	AnimatedSprite();
 };
 
-#endif // ANIMATED_SPRITE_H
+#endif

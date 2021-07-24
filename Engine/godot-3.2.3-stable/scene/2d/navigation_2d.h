@@ -1,46 +1,18 @@
-/*************************************************************************/
-/*  navigation_2d.h                                                      */
-/*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
-/*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
-/*                                                                       */
-/* Permission is hereby granted, free of charge, to any person obtaining */
-/* a copy of this software and associated documentation files (the       */
-/* "Software"), to deal in the Software without restriction, including   */
-/* without limitation the rights to use, copy, modify, merge, publish,   */
-/* distribute, sublicense, and/or sell copies of the Software, and to    */
-/* permit persons to whom the Software is furnished to do so, subject to */
-/* the following conditions:                                             */
-/*                                                                       */
-/* The above copyright notice and this permission notice shall be        */
-/* included in all copies or substantial portions of the Software.       */
-/*                                                                       */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
-/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
-/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
-/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
-/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
-/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
-/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
-/*************************************************************************/
-
 #ifndef NAVIGATION_2D_H
 #define NAVIGATION_2D_H
 
 #include "scene/2d/navigation_polygon.h"
 #include "scene/2d/node_2d.h"
 
-class Navigation2D : public Node2D {
-
+class Navigation2D : public Node2D
+{
 	GDCLASS(Navigation2D, Node2D);
 
-	union Point {
+	union Point
+	{
 
-		struct {
+		struct
+		{
 			int64_t x : 32;
 			int64_t y : 32;
 		};
@@ -49,19 +21,22 @@ class Navigation2D : public Node2D {
 		bool operator<(const Point &p_key) const { return key < p_key.key; }
 	};
 
-	struct EdgeKey {
+	struct EdgeKey
+	{
 
 		Point a;
 		Point b;
 
-		bool operator<(const EdgeKey &p_key) const {
+		bool operator<(const EdgeKey &p_key) const
+		{
 			return (a.key == p_key.a.key) ? (b.key < p_key.b.key) : (a.key < p_key.a.key);
 		};
 
-		EdgeKey(const Point &p_a = Point(), const Point &p_b = Point()) :
-				a(p_a),
-				b(p_b) {
-			if (a.key > b.key) {
+		EdgeKey(const Point &p_a = Point(), const Point &p_b = Point()) : a(p_a),
+																		  b(p_b)
+		{
+			if (a.key > b.key)
+			{
 				SWAP(a, b);
 			}
 		}
@@ -70,20 +45,24 @@ class Navigation2D : public Node2D {
 	struct NavMesh;
 	struct Polygon;
 
-	struct ConnectionPending {
+	struct ConnectionPending
+	{
 
 		Polygon *polygon;
 		int edge;
 	};
 
-	struct Polygon {
+	struct Polygon
+	{
 
-		struct Edge {
+		struct Edge
+		{
 			Point point;
 			Polygon *C; //connection
 			int C_edge;
 			List<ConnectionPending>::Element *P;
-			Edge() {
+			Edge()
+			{
 				C = NULL;
 				C_edge = -1;
 				P = NULL;
@@ -103,8 +82,8 @@ class Navigation2D : public Node2D {
 		NavMesh *owner;
 	};
 
-	struct Connection {
-
+	struct Connection
+	{
 		Polygon *A;
 		int A_edge;
 		Polygon *B;
@@ -112,7 +91,8 @@ class Navigation2D : public Node2D {
 
 		List<ConnectionPending> pending;
 
-		Connection() {
+		Connection()
+		{
 			A = NULL;
 			B = NULL;
 			A_edge = -1;
@@ -122,7 +102,8 @@ class Navigation2D : public Node2D {
 
 	Map<EdgeKey, Connection> connections;
 
-	struct NavMesh {
+	struct NavMesh
+	{
 
 		Object *owner;
 		Transform2D xform;
@@ -131,8 +112,8 @@ class Navigation2D : public Node2D {
 		List<Polygon> polygons;
 	};
 
-	_FORCE_INLINE_ Point _get_point(const Vector2 &p_pos) const {
-
+	_FORCE_INLINE_ Point _get_point(const Vector2 &p_pos) const
+	{
 		int x = int(Math::floor(p_pos.x / cell_size));
 		int y = int(Math::floor(p_pos.y / cell_size));
 
@@ -143,7 +124,8 @@ class Navigation2D : public Node2D {
 		return p;
 	}
 
-	_FORCE_INLINE_ Vector2 _get_vertex(const Point &p_point) const {
+	_FORCE_INLINE_ Vector2 _get_vertex(const Point &p_point) const
+	{
 
 		return Vector2(p_point.x, p_point.y) * cell_size;
 	}
@@ -171,4 +153,4 @@ public:
 	Navigation2D();
 };
 
-#endif // NAVIGATION_2D_H
+#endif

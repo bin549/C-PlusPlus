@@ -4,17 +4,18 @@
  * @author Anmol3299
  * \brief A basic implementation of trie class to store only lower-case strings.
  */
-#include <iostream>  // for io operations
-#include <memory>    // for std::shared_ptr<>
-#include <string>    // for std::string class
+#include <iostream> // for io operations
+#include <memory>   // for std::shared_ptr<>
+#include <string>   // for std::string class
 
 /**
  * A basic implementation of trie class to store only lower-case strings.
  * You can extend the implementation to all the ASCII characters by changing the
  * value of @ ALPHABETS to 128.
  */
-class Trie {
- private:
+class Trie
+{
+private:
     static constexpr size_t ALPHABETS = 26;
 
     /**
@@ -23,7 +24,8 @@ class Trie {
      * intializer list which is more efficient than if we had done so with
      * constructor.
      */
-    struct TrieNode {
+    struct TrieNode
+    {
         // An array of pointers of size 26 which tells if a character of word is
         // present or not.
         std::shared_ptr<TrieNode> character[ALPHABETS]{nullptr};
@@ -38,9 +40,12 @@ class Trie {
      * @return `true` if a child is found
      * @return `false` if a child is not found
      */
-    inline static bool hasChildren(std::shared_ptr<TrieNode> node) {
-        for (size_t i = 0; i < ALPHABETS; i++) {
-            if (node->character[i]) {
+    inline static bool hasChildren(std::shared_ptr<TrieNode> node)
+    {
+        for (size_t i = 0; i < ALPHABETS; i++)
+        {
+            if (node->character[i])
+            {
                 return true;
             }
         }
@@ -61,14 +66,18 @@ class Trie {
      * nullptr.
      * @throw a runtime error in case @ word is not found in the trie.
      */
-    std::shared_ptr<TrieNode> removeWordHelper(const std::string& word,
+    std::shared_ptr<TrieNode> removeWordHelper(const std::string &word,
                                                std::shared_ptr<TrieNode> curr,
-                                               size_t index) {
-        if (word.size() == index) {
-            if (curr->isEndOfWord) {
+                                               size_t index)
+    {
+        if (word.size() == index)
+        {
+            if (curr->isEndOfWord)
+            {
                 curr->isEndOfWord = false;
             }
-            if (hasChildren(curr)) {
+            if (hasChildren(curr))
+            {
                 return curr;
             }
             return nullptr;
@@ -78,7 +87,8 @@ class Trie {
 
         // Throw a runtime error in case the user enters a word which is not
         // present in the trie.
-        if (!curr->character[idx]) {
+        if (!curr->character[idx])
+        {
             throw std::runtime_error(std::move(std::string("Word not found.")));
         }
 
@@ -92,13 +102,14 @@ class Trie {
         // abbey, str2 = abbex and we want to delete string "abbey", then in
         // this case, there would be no need to check all characters for the
         // chars a,b,b.
-        if (curr->character[idx] || hasChildren(curr)) {
+        if (curr->character[idx] || hasChildren(curr))
+        {
             return curr;
         }
         return nullptr;
     }
 
- public:
+public:
     /// constructor to initialise the root of the trie.
     Trie() : m_root(std::make_shared<TrieNode>()) {}
 
@@ -106,14 +117,17 @@ class Trie {
      * Insert a word into the trie.
      * @param word which needs to be inserted into the string.
      */
-    void insert(const std::string& word) {
+    void insert(const std::string &word)
+    {
         auto curr = m_root;
-        for (char ch : word) {
+        for (char ch : word)
+        {
             size_t index = ch - 'a';
 
             // if a node for current word is not already present in trie, create
             // a new node for it.
-            if (!curr->character[index]) {
+            if (!curr->character[index])
+            {
                 curr->character[index] = std::make_shared<TrieNode>();
             }
 
@@ -129,14 +143,17 @@ class Trie {
      * @return False if word is not found in trie or isEndOfWord is set to
      * false.
      */
-    bool search(const std::string& word) {
+    bool search(const std::string &word)
+    {
         auto curr = m_root;
-        for (char ch : word) {
+        for (char ch : word)
+        {
             size_t index = ch - 'a';
 
             // if any node for a character is not found, then return that the
             // word cannot be formed.
-            if (!curr->character[index]) {
+            if (!curr->character[index])
+            {
                 return false;
             }
             curr = curr->character[index];
@@ -145,11 +162,12 @@ class Trie {
     }
 
     // Function to remove the word which calls the helper function.
-    void removeWord(const std::string& word) {
+    void removeWord(const std::string &word)
+    {
         m_root = removeWordHelper(word, m_root, 0);
     }
 
- private:
+private:
     // data member to store the root of the trie.
     std::shared_ptr<TrieNode> m_root;
 };
@@ -157,7 +175,8 @@ class Trie {
 /**
  * Main function
  */
-int main() {
+int main()
+{
     Trie trie;
     trie.insert("hel");
     trie.insert("hello");

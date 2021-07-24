@@ -1,44 +1,17 @@
-/*************************************************************************/
-/*  color.h                                                              */
-/*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
-/*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
-/*                                                                       */
-/* Permission is hereby granted, free of charge, to any person obtaining */
-/* a copy of this software and associated documentation files (the       */
-/* "Software"), to deal in the Software without restriction, including   */
-/* without limitation the rights to use, copy, modify, merge, publish,   */
-/* distribute, sublicense, and/or sell copies of the Software, and to    */
-/* permit persons to whom the Software is furnished to do so, subject to */
-/* the following conditions:                                             */
-/*                                                                       */
-/* The above copyright notice and this permission notice shall be        */
-/* included in all copies or substantial portions of the Software.       */
-/*                                                                       */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
-/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
-/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
-/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
-/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
-/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
-/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
-/*************************************************************************/
-
 #ifndef COLOR_H
 #define COLOR_H
 
 #include "core/math/math_funcs.h"
 #include "core/ustring.h"
 
-struct Color {
+struct Color
+{
 
-	union {
+	union
+	{
 
-		struct {
+		struct
+		{
 			float r;
 			float g;
 			float b;
@@ -62,10 +35,12 @@ struct Color {
 	float get_v() const;
 	void set_hsv(float p_h, float p_s, float p_v, float p_alpha = 1.0);
 
-	_FORCE_INLINE_ float &operator[](int idx) {
+	_FORCE_INLINE_ float &operator[](int idx)
+	{
 		return components[idx];
 	}
-	_FORCE_INLINE_ const float &operator[](int idx) const {
+	_FORCE_INLINE_ const float &operator[](int idx) const
+	{
 		return components[idx];
 	}
 
@@ -93,7 +68,8 @@ struct Color {
 	Color inverted() const;
 	Color contrasted() const;
 
-	_FORCE_INLINE_ Color linear_interpolate(const Color &p_b, float p_t) const {
+	_FORCE_INLINE_ Color linear_interpolate(const Color &p_b, float p_t) const
+	{
 
 		Color res = *this;
 
@@ -105,7 +81,8 @@ struct Color {
 		return res;
 	}
 
-	_FORCE_INLINE_ Color darkened(float p_amount) const {
+	_FORCE_INLINE_ Color darkened(float p_amount) const
+	{
 
 		Color res = *this;
 		res.r = res.r * (1.0f - p_amount);
@@ -114,7 +91,8 @@ struct Color {
 		return res;
 	}
 
-	_FORCE_INLINE_ Color lightened(float p_amount) const {
+	_FORCE_INLINE_ Color lightened(float p_amount) const
+	{
 
 		Color res = *this;
 		res.r = res.r + (1.0f - res.r) * p_amount;
@@ -123,7 +101,8 @@ struct Color {
 		return res;
 	}
 
-	_FORCE_INLINE_ uint32_t to_rgbe9995() const {
+	_FORCE_INLINE_ uint32_t to_rgbe9995() const
+	{
 
 		const float pow2to9 = 512.0f;
 		const float B = 15.0f;
@@ -146,7 +125,8 @@ struct Color {
 
 		float exps = expp + 1.0f;
 
-		if (0.0 <= sMax && sMax < pow2to9) {
+		if (0.0 <= sMax && sMax < pow2to9)
+		{
 			exps = expp;
 		}
 
@@ -157,14 +137,18 @@ struct Color {
 		return (uint32_t(Math::fast_ftoi(sRed)) & 0x1FF) | ((uint32_t(Math::fast_ftoi(sGreen)) & 0x1FF) << 9) | ((uint32_t(Math::fast_ftoi(sBlue)) & 0x1FF) << 18) | ((uint32_t(Math::fast_ftoi(exps)) & 0x1F) << 27);
 	}
 
-	_FORCE_INLINE_ Color blend(const Color &p_over) const {
+	_FORCE_INLINE_ Color blend(const Color &p_over) const
+	{
 
 		Color res;
 		float sa = 1.0 - p_over.a;
 		res.a = a * sa + p_over.a;
-		if (res.a == 0) {
+		if (res.a == 0)
+		{
 			return Color(0, 0, 0, 0);
-		} else {
+		}
+		else
+		{
 			res.r = (r * a * sa + p_over.r * p_over.a) / res.a;
 			res.g = (g * a * sa + p_over.g * p_over.a) / res.a;
 			res.b = (b * a * sa + p_over.b * p_over.a) / res.a;
@@ -172,20 +156,22 @@ struct Color {
 		return res;
 	}
 
-	_FORCE_INLINE_ Color to_linear() const {
+	_FORCE_INLINE_ Color to_linear() const
+	{
 
 		return Color(
-				r < 0.04045 ? r * (1.0 / 12.92) : Math::pow((r + 0.055) * (1.0 / (1 + 0.055)), 2.4),
-				g < 0.04045 ? g * (1.0 / 12.92) : Math::pow((g + 0.055) * (1.0 / (1 + 0.055)), 2.4),
-				b < 0.04045 ? b * (1.0 / 12.92) : Math::pow((b + 0.055) * (1.0 / (1 + 0.055)), 2.4),
-				a);
+			r < 0.04045 ? r * (1.0 / 12.92) : Math::pow((r + 0.055) * (1.0 / (1 + 0.055)), 2.4),
+			g < 0.04045 ? g * (1.0 / 12.92) : Math::pow((g + 0.055) * (1.0 / (1 + 0.055)), 2.4),
+			b < 0.04045 ? b * (1.0 / 12.92) : Math::pow((b + 0.055) * (1.0 / (1 + 0.055)), 2.4),
+			a);
 	}
-	_FORCE_INLINE_ Color to_srgb() const {
+	_FORCE_INLINE_ Color to_srgb() const
+	{
 
 		return Color(
-				r < 0.0031308 ? 12.92 * r : (1.0 + 0.055) * Math::pow(r, 1.0f / 2.4f) - 0.055,
-				g < 0.0031308 ? 12.92 * g : (1.0 + 0.055) * Math::pow(g, 1.0f / 2.4f) - 0.055,
-				b < 0.0031308 ? 12.92 * b : (1.0 + 0.055) * Math::pow(b, 1.0f / 2.4f) - 0.055, a);
+			r < 0.0031308 ? 12.92 * r : (1.0 + 0.055) * Math::pow(r, 1.0f / 2.4f) - 0.055,
+			g < 0.0031308 ? 12.92 * g : (1.0 + 0.055) * Math::pow(g, 1.0f / 2.4f) - 0.055,
+			b < 0.0031308 ? 12.92 * b : (1.0 + 0.055) * Math::pow(b, 1.0f / 2.4f) - 0.055, a);
 	}
 
 	static Color hex(uint32_t p_hex);
@@ -203,7 +189,8 @@ struct Color {
 	/**
 	 * No construct parameters, r=0, g=0, b=0. a=255
 	 */
-	_FORCE_INLINE_ Color() {
+	_FORCE_INLINE_ Color()
+	{
 		r = 0;
 		g = 0;
 		b = 0;
@@ -213,7 +200,8 @@ struct Color {
 	/**
 	 * RGB / RGBA construct parameters. Alpha is optional, but defaults to 1.0
 	 */
-	_FORCE_INLINE_ Color(float p_r, float p_g, float p_b, float p_a = 1.0) {
+	_FORCE_INLINE_ Color(float p_r, float p_g, float p_b, float p_a = 1.0)
+	{
 		r = p_r;
 		g = p_g;
 		b = p_b;
@@ -221,17 +209,24 @@ struct Color {
 	}
 };
 
-bool Color::operator<(const Color &p_color) const {
+bool Color::operator<(const Color &p_color) const
+{
 
-	if (r == p_color.r) {
-		if (g == p_color.g) {
-			if (b == p_color.b) {
+	if (r == p_color.r)
+	{
+		if (g == p_color.g)
+		{
+			if (b == p_color.b)
+			{
 				return (a < p_color.a);
-			} else
+			}
+			else
 				return (b < p_color.b);
-		} else
+		}
+		else
 			return g < p_color.g;
-	} else
+	}
+	else
 		return r < p_color.r;
 }
 

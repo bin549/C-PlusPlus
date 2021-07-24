@@ -35,28 +35,18 @@ namespace graph
                     visited[node] = false;
                 }
             }
-            /// queue to store the nodes which are yet to be traversed
             std::queue<T> tracker;
-            /// push the source vertex to queue to begin traversing
             tracker.push(src);
-            /// mark the source vertex as visited
             visited[src] = true;
             while (!tracker.empty())
             {
-                /// traverse the graph till no connected vertex are left
-                /// extract a node from queue for further traversal
                 T node = tracker.front();
-                /// remove the node from the queue
                 tracker.pop();
                 for (T const &neighbour : adjacency_list[node])
                 {
-                    /// check every vertex connected to the node which are still
-                    /// unvisited
                     if (!visited[neighbour])
                     {
-                        /// if the neighbour is unvisited , push it into the queue
                         tracker.push(neighbour);
-                        /// mark the neighbour as visited
                         visited[neighbour] = true;
                     }
                 }
@@ -67,13 +57,10 @@ namespace graph
     private:
         std::map<T, std::list<T>> adjacency_list;
     };
-
 }
 
-/** Test function */
 static void tests()
 {
-    /// Test 1 Begin
     graph::Graph<int> g;
     std::map<int, bool> correct_result;
     g.add_edge(0, 1);
@@ -89,13 +76,11 @@ static void tests()
     assert(returned_result == correct_result);
     std::cout << "Test 1 Passed..." << std::endl;
 
-    /// Test 2 Begin
     returned_result = g.breadth_first_search(0);
 
     assert(returned_result == correct_result);
     std::cout << "Test 2 Passed..." << std::endl;
 
-    /// Test 3 Begins
     graph::Graph<std::string> g2;
 
     g2.add_edge("Gorakhpur", "Lucknow", false);
@@ -118,7 +103,6 @@ static void tests()
     std::cout << "Test 3 Passed..." << std::endl;
 }
 
-/** Main function */
 int main()
 {
     tests();

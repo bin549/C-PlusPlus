@@ -25,8 +25,7 @@ int main()
             if (numbers[j] > numbers[j + 1])
             {
                 swap_check = true;
-                std::swap(numbers[j],
-                          numbers[j + 1]);
+                std::swap(numbers[j], numbers[j + 1]);
             }
         }
     }

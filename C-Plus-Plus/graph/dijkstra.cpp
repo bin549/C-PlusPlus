@@ -10,50 +10,18 @@ constexpr int64_t INF = std::numeric_limits<int64_t>::max();
 
 namespace graph
 {
-    /**
- * @brief Function that add edge between two nodes or vertices of graph
- *
- * @param u any node or vertex of graph
- * @param v any node or vertex of graph
- */
-    void addEdge(std::vector<std::vector<std::pair<int, int>>> *adj, int u, int v,
-                 int w)
+    void addEdge(std::vector<std::vector<std::pair<int, int>>> *adj, int u, int v, int w)
     {
         (*adj)[u - 1].push_back(std::make_pair(v - 1, w));
         // (*adj)[v - 1].push_back(std::make_pair(u - 1, w));
     }
 
-    /**
- * @brief Function runs the dijkstra algorithm for some source vertex and
- * target vertex in the graph and returns the shortest distance of target
- * from the source.
- *
- * @param adj input graph
- * @param s source vertex
- * @param t target vertex
- *
- * @return shortest distance if target is reachable from source else -1 in
- * case if target is not reachable from source.
- */
     int dijkstra(std::vector<std::vector<std::pair<int, int>>> *adj, int s, int t)
     {
-        /// n denotes the number of vertices in graph
         int n = adj->size();
-
-        /// setting all the distances initially to INF
         std::vector<int64_t> dist(n, INF);
-
-        /// creating a min heap using priority queue
-        /// first element of pair contains the distance
-        /// second element of pair contains the vertex
-        std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>,
-                            std::greater<std::pair<int, int>>>
-            pq;
-
-        /// pushing the source vertex 's' with 0 distance in min heap
+        std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<std::pair<int, int>>> pq;
         pq.push(std::make_pair(0, s));
-
-        /// marking the distance of source as 0
         dist[s] = 0;
 
         while (!pq.empty())
@@ -84,9 +52,8 @@ namespace graph
         }
         return -1;
     }
-} // namespace graph
+}
 
-/** Function to test the Algorithm */
 void tests()
 {
     std::cout << "Initiatinig Predefined Tests..." << std::endl;
@@ -129,7 +96,6 @@ void tests()
 
 int main()
 {
-    // running predefined tests
     tests();
 
     int vertices = int(), edges = int();

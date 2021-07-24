@@ -5,13 +5,6 @@
 
 namespace sorting
 {
-    /** \brief
- * Insertion Sort Function
- *
- * @tparam T type of array
- * @param [in,out] arr Array to be sorted
- * @param n Size of Array
- */
     template <typename T>
     void insertionSort(T *arr, int n)
     {
@@ -28,11 +21,6 @@ namespace sorting
         }
     }
 
-    /** Insertion Sort Function
- *
- * @tparam T type of array
- * @param [in,out] arr pointer to array to be sorted
- */
     template <typename T>
     void insertionSort(std::vector<T> *arr)
     {
@@ -51,15 +39,8 @@ namespace sorting
         }
     }
 
-} // namespace sorting
+}
 
-/**
- * @brief Create a random array objecthelper function to create a random array
- *
- * @tparam T type of array
- * @param arr array to fill (must be pre-allocated)
- * @param N number of array elements
- */
 template <typename T>
 static void create_random_array(T *arr, int N)
 {
@@ -70,7 +51,6 @@ static void create_random_array(T *arr, int N)
     }
 }
 
-/** Test Cases to test algorithm */
 void tests()
 {
     int arr1[10] = {78, 34, 35, 6, 34, 56, 3, 56, 2, 4};
@@ -114,10 +94,8 @@ void tests()
 
 int main()
 {
-    /// Running predefined tests to test algorithm
     tests();
 
-    /// For user insteraction
     size_t n;
     std::cout << "Enter the length of your array (0 to exit): ";
     std::cin >> n;

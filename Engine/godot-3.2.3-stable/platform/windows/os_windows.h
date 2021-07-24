@@ -1,33 +1,3 @@
-/*************************************************************************/
-/*  os_windows.h                                                         */
-/*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
-/*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
-/*                                                                       */
-/* Permission is hereby granted, free of charge, to any person obtaining */
-/* a copy of this software and associated documentation files (the       */
-/* "Software"), to deal in the Software without restriction, including   */
-/* without limitation the rights to use, copy, modify, merge, publish,   */
-/* distribute, sublicense, and/or sell copies of the Software, and to    */
-/* permit persons to whom the Software is furnished to do so, subject to */
-/* the following conditions:                                             */
-/*                                                                       */
-/* The above copyright notice and this permission notice shall be        */
-/* included in all copies or substantial portions of the Software.       */
-/*                                                                       */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
-/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
-/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
-/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
-/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
-/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
-/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
-/*************************************************************************/
-
 #ifndef OS_WINDOWS_H
 #define OS_WINDOWS_H
 
@@ -73,7 +43,8 @@
 #define PK_TANGENT_PRESSURE 0x0800
 #define PK_ORIENTATION 0x1000
 
-typedef struct tagLOGCONTEXTW {
+typedef struct tagLOGCONTEXTW
+{
 	WCHAR lcName[40];
 	UINT lcOptions;
 	UINT lcStatus;
@@ -110,20 +81,23 @@ typedef struct tagLOGCONTEXTW {
 	DWORD lcSysSensY;
 } LOGCONTEXTW;
 
-typedef struct tagAXIS {
+typedef struct tagAXIS
+{
 	LONG axMin;
 	LONG axMax;
 	UINT axUnits;
 	DWORD axResolution;
 } AXIS;
 
-typedef struct tagORIENTATION {
+typedef struct tagORIENTATION
+{
 	int orAzimuth;
 	int orAltitude;
 	int orTwist;
 } ORIENTATION;
 
-typedef struct tagPACKET {
+typedef struct tagPACKET
+{
 	int pkNormalPressure;
 	int pkTangentPressure;
 	ORIENTATION pkOrientation;
@@ -161,7 +135,8 @@ typedef UINT32 PEN_MASK;
 #define POINTER_MESSAGE_FLAG_FIRSTBUTTON 0x00000010
 #endif
 
-enum tagPOINTER_INPUT_TYPE {
+enum tagPOINTER_INPUT_TYPE
+{
 	PT_POINTER = 0x00000001,
 	PT_TOUCH = 0x00000002,
 	PT_PEN = 0x00000003,
@@ -169,7 +144,8 @@ enum tagPOINTER_INPUT_TYPE {
 	PT_TOUCHPAD = 0x00000005
 };
 
-typedef enum tagPOINTER_BUTTON_CHANGE_TYPE {
+typedef enum tagPOINTER_BUTTON_CHANGE_TYPE
+{
 	POINTER_CHANGE_NONE,
 	POINTER_CHANGE_FIRSTBUTTON_DOWN,
 	POINTER_CHANGE_FIRSTBUTTON_UP,
@@ -183,7 +159,8 @@ typedef enum tagPOINTER_BUTTON_CHANGE_TYPE {
 	POINTER_CHANGE_FIFTHBUTTON_UP,
 } POINTER_BUTTON_CHANGE_TYPE;
 
-typedef struct tagPOINTER_INFO {
+typedef struct tagPOINTER_INFO
+{
 	POINTER_INPUT_TYPE pointerType;
 	UINT32 pointerId;
 	UINT32 frameId;
@@ -202,7 +179,8 @@ typedef struct tagPOINTER_INFO {
 	POINTER_BUTTON_CHANGE_TYPE ButtonChangeType;
 } POINTER_INFO;
 
-typedef struct tagPOINTER_PEN_INFO {
+typedef struct tagPOINTER_PEN_INFO
+{
 	POINTER_INFO pointerInfo;
 	PEN_FLAGS penFlags;
 	PEN_MASK penMask;
@@ -229,26 +207,29 @@ typedef struct tagPOINTER_PEN_INFO {
 typedef BOOL(WINAPI *GetPointerTypePtr)(uint32_t p_id, POINTER_INPUT_TYPE *p_type);
 typedef BOOL(WINAPI *GetPointerPenInfoPtr)(uint32_t p_id, POINTER_PEN_INFO *p_pen_info);
 
-typedef struct {
-	BYTE bWidth; // Width, in pixels, of the image
-	BYTE bHeight; // Height, in pixels, of the image
-	BYTE bColorCount; // Number of colors in image (0 if >=8bpp)
-	BYTE bReserved; // Reserved ( must be 0)
-	WORD wPlanes; // Color Planes
-	WORD wBitCount; // Bits per pixel
-	DWORD dwBytesInRes; // How many bytes in this resource?
+typedef struct
+{
+	BYTE bWidth;		 // Width, in pixels, of the image
+	BYTE bHeight;		 // Height, in pixels, of the image
+	BYTE bColorCount;	 // Number of colors in image (0 if >=8bpp)
+	BYTE bReserved;		 // Reserved ( must be 0)
+	WORD wPlanes;		 // Color Planes
+	WORD wBitCount;		 // Bits per pixel
+	DWORD dwBytesInRes;	 // How many bytes in this resource?
 	DWORD dwImageOffset; // Where in the file is this image?
 } ICONDIRENTRY, *LPICONDIRENTRY;
 
-typedef struct {
-	WORD idReserved; // Reserved (must be 0)
-	WORD idType; // Resource Type (1 for icons)
-	WORD idCount; // How many images?
+typedef struct
+{
+	WORD idReserved;		   // Reserved (must be 0)
+	WORD idType;			   // Resource Type (1 for icons)
+	WORD idCount;			   // How many images?
 	ICONDIRENTRY idEntries[1]; // An entry for each image (idCount of 'em)
 } ICONDIR, *LPICONDIR;
 
 class JoypadWindows;
-class OS_Windows : public OS {
+class OS_Windows : public OS
+{
 	String tablet_driver;
 	Vector<String> tablet_drivers;
 
@@ -276,7 +257,8 @@ class OS_Windows : public OS {
 	float last_pressure;
 	Vector2 last_tilt;
 
-	enum {
+	enum
+	{
 		KEY_EVENT_BUFFER_SIZE = 512
 	};
 
@@ -284,7 +266,8 @@ class OS_Windows : public OS {
 	FILE *stdo;
 #endif
 
-	struct KeyEvent {
+	struct KeyEvent
+	{
 
 		bool alt, shift, control, meta;
 		UINT uMsg;
@@ -344,9 +327,9 @@ class OS_Windows : public OS {
 	bool use_raw_input;
 	bool drop_events;
 
-	HCURSOR cursors[CURSOR_MAX] = { NULL };
+	HCURSOR cursors[CURSOR_MAX] = {NULL};
 	CursorShape cursor_shape;
-	Map<CursorShape, Vector<Variant> > cursors_cache;
+	Map<CursorShape, Vector<Variant>> cursors_cache;
 
 	InputDefault *input;
 	JoypadWindows *joypad;
@@ -392,7 +375,8 @@ protected:
 
 	String _quote_command_line_argument(const String &p_text) const;
 
-	struct ProcessInfo {
+	struct ProcessInfo
+	{
 
 		STARTUPINFO si;
 		PROCESS_INFORMATION pi;

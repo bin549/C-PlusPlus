@@ -1,33 +1,3 @@
-/*************************************************************************/
-/*  sprite.cpp                                                           */
-/*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
-/*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
-/*                                                                       */
-/* Permission is hereby granted, free of charge, to any person obtaining */
-/* a copy of this software and associated documentation files (the       */
-/* "Software"), to deal in the Software without restriction, including   */
-/* without limitation the rights to use, copy, modify, merge, publish,   */
-/* distribute, sublicense, and/or sell copies of the Software, and to    */
-/* permit persons to whom the Software is furnished to do so, subject to */
-/* the following conditions:                                             */
-/*                                                                       */
-/* The above copyright notice and this permission notice shall be        */
-/* included in all copies or substantial portions of the Software.       */
-/*                                                                       */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
-/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
-/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
-/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
-/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
-/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
-/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
-/*************************************************************************/
-
 #include "sprite.h"
 #include "core/core_string_names.h"
 #include "core/os/os.h"
@@ -35,56 +5,69 @@
 #include "scene/scene_string_names.h"
 
 #ifdef TOOLS_ENABLED
-Dictionary Sprite::_edit_get_state() const {
+Dictionary Sprite::_edit_get_state() const
+{
 	Dictionary state = Node2D::_edit_get_state();
 	state["offset"] = offset;
 	return state;
 }
 
-void Sprite::_edit_set_state(const Dictionary &p_state) {
+void Sprite::_edit_set_state(const Dictionary &p_state)
+{
 	Node2D::_edit_set_state(p_state);
 	set_offset(p_state["offset"]);
 }
 
-void Sprite::_edit_set_pivot(const Point2 &p_pivot) {
+void Sprite::_edit_set_pivot(const Point2 &p_pivot)
+{
 	set_offset(get_offset() - p_pivot);
 	set_position(get_transform().xform(p_pivot));
 }
 
-Point2 Sprite::_edit_get_pivot() const {
+Point2 Sprite::_edit_get_pivot() const
+{
 	return Vector2();
 }
 
-bool Sprite::_edit_use_pivot() const {
+bool Sprite::_edit_use_pivot() const
+{
 	return true;
 }
 
-bool Sprite::_edit_is_selected_on_click(const Point2 &p_point, double p_tolerance) const {
+bool Sprite::_edit_is_selected_on_click(const Point2 &p_point, double p_tolerance) const
+{
 
 	return is_pixel_opaque(p_point);
 }
 
-Rect2 Sprite::_edit_get_rect() const {
+Rect2 Sprite::_edit_get_rect() const
+{
 	return get_rect();
 }
 
-bool Sprite::_edit_use_rect() const {
+bool Sprite::_edit_use_rect() const
+{
 	return texture.is_valid();
 }
 #endif
 
-Rect2 Sprite::get_anchorable_rect() const {
+Rect2 Sprite::get_anchorable_rect() const
+{
 	return get_rect();
 }
 
-void Sprite::_get_rects(Rect2 &r_src_rect, Rect2 &r_dst_rect, bool &r_filter_clip) const {
+void Sprite::_get_rects(Rect2 &r_src_rect, Rect2 &r_dst_rect, bool &r_filter_clip) const
+{
 
 	Rect2 base_rect;
 
-	if (region) {
+	if (region)
+	{
 		r_filter_clip = region_filter_clip;
 		base_rect = region_rect;
-	} else {
+	}
+	else
+	{
 		r_filter_clip = false;
 		base_rect = Rect2(0, 0, texture->get_width(), texture->get_height());
 	}
@@ -99,7 +82,8 @@ void Sprite::_get_rects(Rect2 &r_src_rect, Rect2 &r_dst_rect, bool &r_filter_cli
 	Point2 dest_offset = offset;
 	if (centered)
 		dest_offset -= frame_size / 2;
-	if (Engine::get_singleton()->get_use_pixel_snap()) {
+	if (Engine::get_singleton()->get_use_pixel_snap())
+	{
 		dest_offset = dest_offset.floor();
 	}
 
@@ -111,32 +95,36 @@ void Sprite::_get_rects(Rect2 &r_src_rect, Rect2 &r_dst_rect, bool &r_filter_cli
 		r_dst_rect.size.y = -r_dst_rect.size.y;
 }
 
-void Sprite::_notification(int p_what) {
+void Sprite::_notification(int p_what)
+{
 
-	switch (p_what) {
+	switch (p_what)
+	{
 
-		case NOTIFICATION_DRAW: {
+	case NOTIFICATION_DRAW:
+	{
 
-			if (texture.is_null())
-				return;
+		if (texture.is_null())
+			return;
 
-			RID ci = get_canvas_item();
+		RID ci = get_canvas_item();
 
-			/*
+		/*
 			texture->draw(ci,Point2());
 			break;
 			*/
 
-			Rect2 src_rect, dst_rect;
-			bool filter_clip;
-			_get_rects(src_rect, dst_rect, filter_clip);
-			texture->draw_rect_region(ci, dst_rect, src_rect, Color(1, 1, 1), false, normal_map, filter_clip);
-
-		} break;
+		Rect2 src_rect, dst_rect;
+		bool filter_clip;
+		_get_rects(src_rect, dst_rect, filter_clip);
+		texture->draw_rect_region(ci, dst_rect, src_rect, Color(1, 1, 1), false, normal_map, filter_clip);
+	}
+	break;
 	}
 }
 
-void Sprite::set_texture(const Ref<Texture> &p_texture) {
+void Sprite::set_texture(const Ref<Texture> &p_texture)
+{
 
 	if (p_texture == texture)
 		return;
@@ -155,67 +143,79 @@ void Sprite::set_texture(const Ref<Texture> &p_texture) {
 	_change_notify("texture");
 }
 
-void Sprite::set_normal_map(const Ref<Texture> &p_texture) {
+void Sprite::set_normal_map(const Ref<Texture> &p_texture)
+{
 
 	normal_map = p_texture;
 	update();
 }
 
-Ref<Texture> Sprite::get_normal_map() const {
+Ref<Texture> Sprite::get_normal_map() const
+{
 
 	return normal_map;
 }
 
-Ref<Texture> Sprite::get_texture() const {
+Ref<Texture> Sprite::get_texture() const
+{
 
 	return texture;
 }
 
-void Sprite::set_centered(bool p_center) {
+void Sprite::set_centered(bool p_center)
+{
 
 	centered = p_center;
 	update();
 	item_rect_changed();
 }
 
-bool Sprite::is_centered() const {
+bool Sprite::is_centered() const
+{
 
 	return centered;
 }
 
-void Sprite::set_offset(const Point2 &p_offset) {
+void Sprite::set_offset(const Point2 &p_offset)
+{
 
 	offset = p_offset;
 	update();
 	item_rect_changed();
 	_change_notify("offset");
 }
-Point2 Sprite::get_offset() const {
+Point2 Sprite::get_offset() const
+{
 
 	return offset;
 }
 
-void Sprite::set_flip_h(bool p_flip) {
+void Sprite::set_flip_h(bool p_flip)
+{
 
 	hflip = p_flip;
 	update();
 }
-bool Sprite::is_flipped_h() const {
+bool Sprite::is_flipped_h() const
+{
 
 	return hflip;
 }
 
-void Sprite::set_flip_v(bool p_flip) {
+void Sprite::set_flip_v(bool p_flip)
+{
 
 	vflip = p_flip;
 	update();
 }
-bool Sprite::is_flipped_v() const {
+bool Sprite::is_flipped_v() const
+{
 
 	return vflip;
 }
 
-void Sprite::set_region(bool p_region) {
+void Sprite::set_region(bool p_region)
+{
 
 	if (p_region == region)
 		return;
@@ -224,12 +224,14 @@ void Sprite::set_region(bool p_region) {
 	update();
 }
 
-bool Sprite::is_region() const {
+bool Sprite::is_region() const
+{
 
 	return region;
 }
 
-void Sprite::set_region_rect(const Rect2 &p_region_rect) {
+void Sprite::set_region_rect(const Rect2 &p_region_rect)
+{
 
 	if (region_rect == p_region_rect)
 		return;
@@ -242,21 +244,25 @@ void Sprite::set_region_rect(const Rect2 &p_region_rect) {
 	_change_notify("region_rect");
 }
 
-Rect2 Sprite::get_region_rect() const {
+Rect2 Sprite::get_region_rect() const
+{
 
 	return region_rect;
 }
 
-void Sprite::set_region_filter_clip(bool p_enable) {
+void Sprite::set_region_filter_clip(bool p_enable)
+{
 	region_filter_clip = p_enable;
 	update();
 }
 
-bool Sprite::is_region_filter_clip_enabled() const {
+bool Sprite::is_region_filter_clip_enabled() const
+{
 	return region_filter_clip;
 }
 
-void Sprite::set_frame(int p_frame) {
+void Sprite::set_frame(int p_frame)
+{
 
 	ERR_FAIL_INDEX(p_frame, vframes * hframes);
 
@@ -270,23 +276,27 @@ void Sprite::set_frame(int p_frame) {
 	emit_signal(SceneStringNames::get_singleton()->frame_changed);
 }
 
-int Sprite::get_frame() const {
+int Sprite::get_frame() const
+{
 
 	return frame;
 }
 
-void Sprite::set_frame_coords(const Vector2 &p_coord) {
+void Sprite::set_frame_coords(const Vector2 &p_coord)
+{
 	ERR_FAIL_INDEX(int(p_coord.x), hframes);
 	ERR_FAIL_INDEX(int(p_coord.y), vframes);
 
 	set_frame(int(p_coord.y) * hframes + int(p_coord.x));
 }
 
-Vector2 Sprite::get_frame_coords() const {
+Vector2 Sprite::get_frame_coords() const
+{
 	return Vector2(frame % hframes, frame / hframes);
 }
 
-void Sprite::set_vframes(int p_amount) {
+void Sprite::set_vframes(int p_amount)
+{
 
 	ERR_FAIL_COND_MSG(p_amount < 1, "Amount of vframes cannot be smaller than 1.");
 	vframes = p_amount;
@@ -294,12 +304,14 @@ void Sprite::set_vframes(int p_amount) {
 	item_rect_changed();
 	_change_notify();
 }
-int Sprite::get_vframes() const {
+int Sprite::get_vframes() const
+{
 
 	return vframes;
 }
 
-void Sprite::set_hframes(int p_amount) {
+void Sprite::set_hframes(int p_amount)
+{
 
 	ERR_FAIL_COND_MSG(p_amount < 1, "Amount of hframes cannot be smaller than 1.");
 	hframes = p_amount;
@@ -307,12 +319,14 @@ void Sprite::set_hframes(int p_amount) {
 	item_rect_changed();
 	_change_notify();
 }
-int Sprite::get_hframes() const {
+int Sprite::get_hframes() const
+{
 
 	return hframes;
 }
 
-bool Sprite::is_pixel_opaque(const Point2 &p_point) const {
+bool Sprite::is_pixel_opaque(const Point2 &p_point) const
+{
 
 	if (texture.is_null())
 		return false;
@@ -337,22 +351,28 @@ bool Sprite::is_pixel_opaque(const Point2 &p_point) const {
 
 	bool is_repeat = texture->get_flags() & Texture::FLAG_REPEAT;
 	bool is_mirrored_repeat = texture->get_flags() & Texture::FLAG_MIRRORED_REPEAT;
-	if (is_repeat) {
+	if (is_repeat)
+	{
 		int mirror_x = 0;
 		int mirror_y = 0;
-		if (is_mirrored_repeat) {
+		if (is_mirrored_repeat)
+		{
 			mirror_x = (int)(q.x / texture->get_size().width);
 			mirror_y = (int)(q.y / texture->get_size().height);
 		}
 		q.x = Math::fmod(q.x, texture->get_size().width);
 		q.y = Math::fmod(q.y, texture->get_size().height);
-		if (mirror_x % 2 == 1) {
+		if (mirror_x % 2 == 1)
+		{
 			q.x = texture->get_size().width - q.x - 1;
 		}
-		if (mirror_y % 2 == 1) {
+		if (mirror_y % 2 == 1)
+		{
 			q.y = texture->get_size().height - q.y - 1;
 		}
-	} else {
+	}
+	else
+	{
 		q.x = MIN(q.x, texture->get_size().width - 1);
 		q.y = MIN(q.y, texture->get_size().height - 1);
 	}
@@ -360,16 +380,20 @@ bool Sprite::is_pixel_opaque(const Point2 &p_point) const {
 	return texture->is_pixel_opaque((int)q.x, (int)q.y);
 }
 
-Rect2 Sprite::get_rect() const {
+Rect2 Sprite::get_rect() const
+{
 
 	if (texture.is_null())
 		return Rect2(0, 0, 1, 1);
 
 	Size2i s;
 
-	if (region) {
+	if (region)
+	{
 		s = region_rect.size;
-	} else {
+	}
+	else
+	{
 		s = texture->get_size();
 	}
 
@@ -385,29 +409,35 @@ Rect2 Sprite::get_rect() const {
 	return Rect2(ofs, s);
 }
 
-void Sprite::_validate_property(PropertyInfo &property) const {
+void Sprite::_validate_property(PropertyInfo &property) const
+{
 
-	if (property.name == "frame") {
+	if (property.name == "frame")
+	{
 		property.hint = PROPERTY_HINT_RANGE;
 		property.hint_string = "0," + itos(vframes * hframes - 1) + ",1";
 		property.usage |= PROPERTY_USAGE_KEYING_INCREMENTS;
 	}
 
-	if (property.name == "frame_coords") {
+	if (property.name == "frame_coords")
+	{
 		property.usage |= PROPERTY_USAGE_KEYING_INCREMENTS;
 	}
 }
 
-void Sprite::_texture_changed() {
+void Sprite::_texture_changed()
+{
 
 	// Changes to the texture need to trigger an update to make
 	// the editor redraw the sprite with the updated texture.
-	if (texture.is_valid()) {
+	if (texture.is_valid())
+	{
 		update();
 	}
 }
 
-void Sprite::_bind_methods() {
+void Sprite::_bind_methods()
+{
 
 	ClassDB::bind_method(D_METHOD("set_texture", "texture"), &Sprite::set_texture);
 	ClassDB::bind_method(D_METHOD("get_texture"), &Sprite::get_texture);
@@ -476,7 +506,8 @@ void Sprite::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "region_filter_clip"), "set_region_filter_clip", "is_region_filter_clip_enabled");
 }
 
-Sprite::Sprite() {
+Sprite::Sprite()
+{
 
 	centered = true;
 	hflip = false;
@@ -490,5 +521,6 @@ Sprite::Sprite() {
 	hframes = 1;
 }
 
-Sprite::~Sprite() {
+Sprite::~Sprite()
+{
 }

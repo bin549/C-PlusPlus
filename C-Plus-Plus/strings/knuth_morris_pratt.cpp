@@ -61,11 +61,10 @@ namespace string_search
         }
         return false;
     }
-} // namespace string_search
+}
 
 using string_search::kmp;
 
-/** Main function */
 int main()
 {
     std::string text = "alskfjaldsabc1abc1abc12k23adsfabcabc";

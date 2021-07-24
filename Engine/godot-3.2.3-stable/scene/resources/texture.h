@@ -1,33 +1,3 @@
-/*************************************************************************/
-/*  texture.h                                                            */
-/*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
-/*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
-/*                                                                       */
-/* Permission is hereby granted, free of charge, to any person obtaining */
-/* a copy of this software and associated documentation files (the       */
-/* "Software"), to deal in the Software without restriction, including   */
-/* without limitation the rights to use, copy, modify, merge, publish,   */
-/* distribute, sublicense, and/or sell copies of the Software, and to    */
-/* permit persons to whom the Software is furnished to do so, subject to */
-/* the following conditions:                                             */
-/*                                                                       */
-/* The above copyright notice and this permission notice shall be        */
-/* included in all copies or substantial portions of the Software.       */
-/*                                                                       */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
-/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
-/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
-/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
-/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
-/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
-/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
-/*************************************************************************/
-
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
@@ -42,8 +12,8 @@
 #include "servers/camera_server.h"
 #include "servers/visual_server.h"
 
-class Texture : public Resource {
-
+class Texture : public Resource
+{
 	GDCLASS(Texture, Resource);
 	OBJ_SAVE_TYPE(Texture); // Saves derived classes with common type so they can be interchanged.
 
@@ -51,7 +21,8 @@ protected:
 	static void _bind_methods();
 
 public:
-	enum Flags {
+	enum Flags
+	{
 		FLAG_MIPMAPS = VisualServer::TEXTURE_FLAG_MIPMAPS,
 		FLAG_REPEAT = VisualServer::TEXTURE_FLAG_REPEAT,
 		FLAG_FILTER = VisualServer::TEXTURE_FLAG_FILTER,
@@ -88,13 +59,15 @@ VARIANT_ENUM_CAST(Texture::Flags);
 
 class BitMap;
 
-class ImageTexture : public Texture {
+class ImageTexture : public Texture
+{
 
 	GDCLASS(ImageTexture, Texture);
 	RES_BASE_EXTENSION("tex");
 
 public:
-	enum Storage {
+	enum Storage
+	{
 		STORAGE_RAW,
 		STORAGE_COMPRESS_LOSSY,
 		STORAGE_COMPRESS_LOSSLESS
@@ -162,18 +135,21 @@ public:
 	~ImageTexture();
 };
 
-class StreamTexture : public Texture {
+class StreamTexture : public Texture
+{
 
 	GDCLASS(StreamTexture, Texture);
 
 public:
-	enum DataFormat {
+	enum DataFormat
+	{
 		DATA_FORMAT_IMAGE,
 		DATA_FORMAT_LOSSLESS,
 		DATA_FORMAT_LOSSY
 	};
 
-	enum FormatBits {
+	enum FormatBits
+	{
 		FORMAT_MASK_IMAGE_FORMAT = (1 << 20) - 1,
 		FORMAT_BIT_LOSSLESS = 1 << 20,
 		FORMAT_BIT_LOSSY = 1 << 21,
@@ -235,7 +211,8 @@ public:
 	~StreamTexture();
 };
 
-class ResourceFormatLoaderStreamTexture : public ResourceFormatLoader {
+class ResourceFormatLoaderStreamTexture : public ResourceFormatLoader
+{
 public:
 	virtual RES load(const String &p_path, const String &p_original_path = "", Error *r_error = NULL);
 	virtual void get_recognized_extensions(List<String> *p_extensions) const;
@@ -245,7 +222,8 @@ public:
 
 VARIANT_ENUM_CAST(ImageTexture::Storage);
 
-class AtlasTexture : public Texture {
+class AtlasTexture : public Texture
+{
 
 	GDCLASS(AtlasTexture, Texture);
 	RES_BASE_EXTENSION("atlastex");
@@ -292,7 +270,8 @@ public:
 
 class Mesh;
 
-class MeshTexture : public Texture {
+class MeshTexture : public Texture
+{
 
 	GDCLASS(MeshTexture, Texture);
 	RES_BASE_EXTENSION("meshtex");
@@ -333,13 +312,15 @@ public:
 	MeshTexture();
 };
 
-class LargeTexture : public Texture {
+class LargeTexture : public Texture
+{
 
 	GDCLASS(LargeTexture, Texture);
 	RES_BASE_EXTENSION("largetex");
 
 protected:
-	struct Piece {
+	struct Piece
+	{
 
 		Point2 offset;
 		Ref<Texture> texture;
@@ -383,19 +364,22 @@ public:
 	LargeTexture();
 };
 
-class CubeMap : public Resource {
+class CubeMap : public Resource
+{
 
 	GDCLASS(CubeMap, Resource);
 	RES_BASE_EXTENSION("cubemap");
 
 public:
-	enum Storage {
+	enum Storage
+	{
 		STORAGE_RAW,
 		STORAGE_COMPRESS_LOSSY,
 		STORAGE_COMPRESS_LOSSLESS
 	};
 
-	enum Side {
+	enum Side
+	{
 
 		SIDE_LEFT,
 		SIDE_RIGHT,
@@ -405,7 +389,8 @@ public:
 		SIDE_BACK
 	};
 
-	enum Flags {
+	enum Flags
+	{
 		FLAG_MIPMAPS = VisualServer::TEXTURE_FLAG_MIPMAPS,
 		FLAG_REPEAT = VisualServer::TEXTURE_FLAG_REPEAT,
 		FLAG_FILTER = VisualServer::TEXTURE_FLAG_FILTER,
@@ -422,9 +407,12 @@ private:
 	Size2 size_override;
 	float lossy_storage_quality;
 
-	_FORCE_INLINE_ bool _is_valid() const {
-		for (int i = 0; i < 6; i++) {
-			if (valid[i]) return true;
+	_FORCE_INLINE_ bool _is_valid() const
+	{
+		for (int i = 0; i < 6; i++)
+		{
+			if (valid[i])
+				return true;
 		}
 		return false;
 	}
@@ -464,12 +452,14 @@ VARIANT_ENUM_CAST(CubeMap::Flags)
 VARIANT_ENUM_CAST(CubeMap::Side)
 VARIANT_ENUM_CAST(CubeMap::Storage)
 
-class TextureLayered : public Resource {
+class TextureLayered : public Resource
+{
 
 	GDCLASS(TextureLayered, Resource);
 
 public:
-	enum Flags {
+	enum Flags
+	{
 		FLAG_MIPMAPS = VisualServer::TEXTURE_FLAG_MIPMAPS,
 		FLAG_REPEAT = VisualServer::TEXTURE_FLAG_REPEAT,
 		FLAG_FILTER = VisualServer::TEXTURE_FLAG_FILTER,
@@ -516,27 +506,29 @@ public:
 
 VARIANT_ENUM_CAST(TextureLayered::Flags)
 
-class Texture3D : public TextureLayered {
+class Texture3D : public TextureLayered
+{
 
 	GDCLASS(Texture3D, TextureLayered);
 
 public:
-	Texture3D() :
-			TextureLayered(true) {}
+	Texture3D() : TextureLayered(true) {}
 };
 
-class TextureArray : public TextureLayered {
+class TextureArray : public TextureLayered
+{
 
 	GDCLASS(TextureArray, TextureLayered);
 
 public:
-	TextureArray() :
-			TextureLayered(false) {}
+	TextureArray() : TextureLayered(false) {}
 };
 
-class ResourceFormatLoaderTextureLayered : public ResourceFormatLoader {
+class ResourceFormatLoaderTextureLayered : public ResourceFormatLoader
+{
 public:
-	enum Compression {
+	enum Compression
+	{
 		COMPRESSION_LOSSLESS,
 		COMPRESSION_VRAM,
 		COMPRESSION_UNCOMPRESSED
@@ -548,7 +540,8 @@ public:
 	virtual String get_resource_type(const String &p_path) const;
 };
 
-class CurveTexture : public Texture {
+class CurveTexture : public Texture
+{
 
 	GDCLASS(CurveTexture, Texture);
 	RES_BASE_EXTENSION("curvetex")
@@ -597,15 +590,18 @@ public:
 */
 //VARIANT_ENUM_CAST( Texture::CubeMapSide );
 
-class GradientTexture : public Texture {
+class GradientTexture : public Texture
+{
 	GDCLASS(GradientTexture, Texture);
 
 public:
-	struct Point {
+	struct Point
+	{
 
 		float offset;
 		Color color;
-		bool operator<(const Point &p_ponit) const {
+		bool operator<(const Point &p_ponit) const
+		{
 			return offset < p_ponit.offset;
 		}
 	};
@@ -642,7 +638,8 @@ public:
 	virtual ~GradientTexture();
 };
 
-class ProxyTexture : public Texture {
+class ProxyTexture : public Texture
+{
 	GDCLASS(ProxyTexture, Texture);
 
 private:
@@ -669,26 +666,30 @@ public:
 	~ProxyTexture();
 };
 
-class AnimatedTexture : public Texture {
+class AnimatedTexture : public Texture
+{
 	GDCLASS(AnimatedTexture, Texture);
 
 	//use readers writers lock for this, since its far more times read than written to
 	RWLock *rw_lock;
 
 public:
-	enum {
+	enum
+	{
 		MAX_FRAMES = 256
 	};
 
 private:
 	RID proxy;
 
-	struct Frame {
+	struct Frame
+	{
 
 		Ref<Texture> texture;
 		float delay_sec;
 
-		Frame() {
+		Frame()
+		{
 			delay_sec = 0;
 		}
 	};
@@ -749,7 +750,8 @@ public:
 	~AnimatedTexture();
 };
 
-class CameraTexture : public Texture {
+class CameraTexture : public Texture
+{
 	GDCLASS(CameraTexture, Texture);
 
 private:
@@ -784,7 +786,8 @@ public:
 };
 
 // External textures as defined by https://www.khronos.org/registry/OpenGL/extensions/OES/OES_EGL_image_external.txt
-class ExternalTexture : public Texture {
+class ExternalTexture : public Texture
+{
 	GDCLASS(ExternalTexture, Texture);
 
 private:
