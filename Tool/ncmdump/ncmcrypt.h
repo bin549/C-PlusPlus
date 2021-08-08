@@ -6,17 +6,6 @@
 
 class NeteaseMusicMetadata
 {
-private:
-	std::string mAlbum;
-	std::string mArtist;
-	std::string mFormat;
-	std::string mName;
-	int mDuration;
-	int mBitrate;
-
-private:
-	cJSON *mRaw;
-
 public:
 	NeteaseMusicMetadata(cJSON *);
 	~NeteaseMusicMetadata();
@@ -26,8 +15,16 @@ public:
 	const std::string &format() const { return mFormat; }
 	const int duration() const { return mDuration; }
 	const int bitrate() const { return mBitrate; }
-};
 
+private:
+	std::string mAlbum;
+	std::string mArtist;
+	std::string mFormat;
+	std::string mName;
+	int mDuration;
+	int mBitrate;
+	cJSON *mRaw;
+};
 
 class NeteaseCrypt
 {

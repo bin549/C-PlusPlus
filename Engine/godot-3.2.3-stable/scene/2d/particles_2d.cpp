@@ -1,33 +1,3 @@
-/*************************************************************************/
-/*  particles_2d.cpp                                                     */
-/*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
-/*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
-/*                                                                       */
-/* Permission is hereby granted, free of charge, to any person obtaining */
-/* a copy of this software and associated documentation files (the       */
-/* "Software"), to deal in the Software without restriction, including   */
-/* without limitation the rights to use, copy, modify, merge, publish,   */
-/* distribute, sublicense, and/or sell copies of the Software, and to    */
-/* permit persons to whom the Software is furnished to do so, subject to */
-/* the following conditions:                                             */
-/*                                                                       */
-/* The above copyright notice and this permission notice shall be        */
-/* included in all copies or substantial portions of the Software.       */
-/*                                                                       */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
-/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
-/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
-/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
-/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
-/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
-/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
-/*************************************************************************/
-
 #include "particles_2d.h"
 
 #include "core/os/os.h"
@@ -38,36 +8,44 @@
 #include "core/engine.h"
 #endif
 
-void Particles2D::set_emitting(bool p_emitting) {
+void Particles2D::set_emitting(bool p_emitting)
+{
 
 	VS::get_singleton()->particles_set_emitting(particles, p_emitting);
 
-	if (p_emitting && one_shot) {
+	if (p_emitting && one_shot)
+	{
 		set_process_internal(true);
-	} else if (!p_emitting) {
+	}
+	else if (!p_emitting)
+	{
 		set_process_internal(false);
 	}
 }
 
-void Particles2D::set_amount(int p_amount) {
+void Particles2D::set_amount(int p_amount)
+{
 
 	ERR_FAIL_COND_MSG(p_amount < 1, "Amount of particles cannot be smaller than 1.");
 	amount = p_amount;
 	VS::get_singleton()->particles_set_amount(particles, amount);
 }
-void Particles2D::set_lifetime(float p_lifetime) {
+void Particles2D::set_lifetime(float p_lifetime)
+{
 
 	ERR_FAIL_COND_MSG(p_lifetime <= 0, "Particles lifetime must be greater than 0.");
 	lifetime = p_lifetime;
 	VS::get_singleton()->particles_set_lifetime(particles, lifetime);
 }
 
-void Particles2D::set_one_shot(bool p_enable) {
+void Particles2D::set_one_shot(bool p_enable)
+{
 
 	one_shot = p_enable;
 	VS::get_singleton()->particles_set_one_shot(particles, one_shot);
 
-	if (is_emitting()) {
+	if (is_emitting())
+	{
 
 		set_process_internal(true);
 		if (!one_shot)
@@ -77,22 +55,26 @@ void Particles2D::set_one_shot(bool p_enable) {
 	if (!one_shot)
 		set_process_internal(false);
 }
-void Particles2D::set_pre_process_time(float p_time) {
+void Particles2D::set_pre_process_time(float p_time)
+{
 
 	pre_process_time = p_time;
 	VS::get_singleton()->particles_set_pre_process_time(particles, pre_process_time);
 }
-void Particles2D::set_explosiveness_ratio(float p_ratio) {
+void Particles2D::set_explosiveness_ratio(float p_ratio)
+{
 
 	explosiveness_ratio = p_ratio;
 	VS::get_singleton()->particles_set_explosiveness_ratio(particles, explosiveness_ratio);
 }
-void Particles2D::set_randomness_ratio(float p_ratio) {
+void Particles2D::set_randomness_ratio(float p_ratio)
+{
 
 	randomness_ratio = p_ratio;
 	VS::get_singleton()->particles_set_randomness_ratio(particles, randomness_ratio);
 }
-void Particles2D::set_visibility_rect(const Rect2 &p_visibility_rect) {
+void Particles2D::set_visibility_rect(const Rect2 &p_visibility_rect)
+{
 
 	visibility_rect = p_visibility_rect;
 	AABB aabb;
@@ -106,17 +88,20 @@ void Particles2D::set_visibility_rect(const Rect2 &p_visibility_rect) {
 	_change_notify("visibility_rect");
 	update();
 }
-void Particles2D::set_use_local_coordinates(bool p_enable) {
+void Particles2D::set_use_local_coordinates(bool p_enable)
+{
 
 	local_coords = p_enable;
 	VS::get_singleton()->particles_set_use_local_coordinates(particles, local_coords);
 	set_notify_transform(!p_enable);
-	if (!p_enable && is_inside_tree()) {
+	if (!p_enable && is_inside_tree())
+	{
 		_update_particle_emission_transform();
 	}
 }
 
-void Particles2D::_update_particle_emission_transform() {
+void Particles2D::_update_particle_emission_transform()
+{
 
 	Transform2D xf2d = get_global_transform();
 	Transform xf;
@@ -127,11 +112,13 @@ void Particles2D::_update_particle_emission_transform() {
 	VS::get_singleton()->particles_set_emission_transform(particles, xf);
 }
 
-void Particles2D::set_process_material(const Ref<Material> &p_material) {
+void Particles2D::set_process_material(const Ref<Material> &p_material)
+{
 
 	process_material = p_material;
 	Ref<ParticlesMaterial> pm = p_material;
-	if (pm.is_valid() && !pm->get_flag(ParticlesMaterial::FLAG_DISABLE_Z) && pm->get_gravity() == Vector3(0, -9.8, 0)) {
+	if (pm.is_valid() && !pm->get_flag(ParticlesMaterial::FLAG_DISABLE_Z) && pm->get_gravity() == Vector3(0, -9.8, 0))
+	{
 		// Likely a new (3D) material, modify it to match 2D space
 		pm->set_flag(ParticlesMaterial::FLAG_DISABLE_Z, true);
 		pm->set_gravity(Vector3(0, 98, 0));
@@ -144,109 +131,134 @@ void Particles2D::set_process_material(const Ref<Material> &p_material) {
 	update_configuration_warning();
 }
 
-void Particles2D::set_speed_scale(float p_scale) {
+void Particles2D::set_speed_scale(float p_scale)
+{
 
 	speed_scale = p_scale;
 	VS::get_singleton()->particles_set_speed_scale(particles, p_scale);
 }
 
-bool Particles2D::is_emitting() const {
+bool Particles2D::is_emitting() const
+{
 
 	return VS::get_singleton()->particles_get_emitting(particles);
 }
-int Particles2D::get_amount() const {
+int Particles2D::get_amount() const
+{
 
 	return amount;
 }
-float Particles2D::get_lifetime() const {
+float Particles2D::get_lifetime() const
+{
 
 	return lifetime;
 }
 
-bool Particles2D::get_one_shot() const {
+bool Particles2D::get_one_shot() const
+{
 
 	return one_shot;
 }
-float Particles2D::get_pre_process_time() const {
+float Particles2D::get_pre_process_time() const
+{
 
 	return pre_process_time;
 }
-float Particles2D::get_explosiveness_ratio() const {
+float Particles2D::get_explosiveness_ratio() const
+{
 
 	return explosiveness_ratio;
 }
-float Particles2D::get_randomness_ratio() const {
+float Particles2D::get_randomness_ratio() const
+{
 
 	return randomness_ratio;
 }
-Rect2 Particles2D::get_visibility_rect() const {
+Rect2 Particles2D::get_visibility_rect() const
+{
 
 	return visibility_rect;
 }
-bool Particles2D::get_use_local_coordinates() const {
+bool Particles2D::get_use_local_coordinates() const
+{
 
 	return local_coords;
 }
-Ref<Material> Particles2D::get_process_material() const {
+Ref<Material> Particles2D::get_process_material() const
+{
 
 	return process_material;
 }
 
-float Particles2D::get_speed_scale() const {
+float Particles2D::get_speed_scale() const
+{
 
 	return speed_scale;
 }
 
-void Particles2D::set_draw_order(DrawOrder p_order) {
+void Particles2D::set_draw_order(DrawOrder p_order)
+{
 
 	draw_order = p_order;
 	VS::get_singleton()->particles_set_draw_order(particles, VS::ParticlesDrawOrder(p_order));
 }
 
-Particles2D::DrawOrder Particles2D::get_draw_order() const {
+Particles2D::DrawOrder Particles2D::get_draw_order() const
+{
 
 	return draw_order;
 }
 
-void Particles2D::set_fixed_fps(int p_count) {
+void Particles2D::set_fixed_fps(int p_count)
+{
 	fixed_fps = p_count;
 	VS::get_singleton()->particles_set_fixed_fps(particles, p_count);
 }
 
-int Particles2D::get_fixed_fps() const {
+int Particles2D::get_fixed_fps() const
+{
 	return fixed_fps;
 }
 
-void Particles2D::set_fractional_delta(bool p_enable) {
+void Particles2D::set_fractional_delta(bool p_enable)
+{
 	fractional_delta = p_enable;
 	VS::get_singleton()->particles_set_fractional_delta(particles, p_enable);
 }
 
-bool Particles2D::get_fractional_delta() const {
+bool Particles2D::get_fractional_delta() const
+{
 	return fractional_delta;
 }
 
-String Particles2D::get_configuration_warning() const {
+String Particles2D::get_configuration_warning() const
+{
 
-	if (OS::get_singleton()->get_current_video_driver() == OS::VIDEO_DRIVER_GLES2) {
+	if (OS::get_singleton()->get_current_video_driver() == OS::VIDEO_DRIVER_GLES2)
+	{
 		return TTR("GPU-based particles are not supported by the GLES2 video driver.\nUse the CPUParticles2D node instead. You can use the \"Convert to CPUParticles\" option for this purpose.");
 	}
 
 	String warnings;
 
-	if (process_material.is_null()) {
+	if (process_material.is_null())
+	{
 		if (warnings != String())
 			warnings += "\n";
 		warnings += "- " + TTR("A material to process the particles is not assigned, so no behavior is imprinted.");
-	} else {
+	}
+	else
+	{
 
 		CanvasItemMaterial *mat = Object::cast_to<CanvasItemMaterial>(get_material().ptr());
 
-		if (get_material().is_null() || (mat && !mat->get_particles_animation())) {
+		if (get_material().is_null() || (mat && !mat->get_particles_animation()))
+		{
 			const ParticlesMaterial *process = Object::cast_to<ParticlesMaterial>(process_material.ptr());
 			if (process &&
-					(process->get_param(ParticlesMaterial::PARAM_ANIM_SPEED) != 0.0 || process->get_param(ParticlesMaterial::PARAM_ANIM_OFFSET) != 0.0 ||
-							process->get_param_texture(ParticlesMaterial::PARAM_ANIM_SPEED).is_valid() || process->get_param_texture(ParticlesMaterial::PARAM_ANIM_OFFSET).is_valid())) {
+				(process->get_param(ParticlesMaterial::PARAM_ANIM_SPEED) != 0.0 || process->get_param(ParticlesMaterial::PARAM_ANIM_OFFSET) != 0.0 ||
+				 process->get_param_texture(ParticlesMaterial::PARAM_ANIM_SPEED).is_valid() || process->get_param_texture(ParticlesMaterial::PARAM_ANIM_OFFSET).is_valid()))
+			{
 				if (warnings != String())
 					warnings += "\n";
 				warnings += "- " + TTR("Particles2D animation requires the usage of a CanvasItemMaterial with \"Particles Animation\" enabled.");
@@ -257,7 +269,8 @@ String Particles2D::get_configuration_warning() const {
 	return warnings;
 }
 
-Rect2 Particles2D::capture_rect() const {
+Rect2 Particles2D::capture_rect() const
+{
 
 	AABB aabb = VS::get_singleton()->particles_get_current_aabb(particles);
 	Rect2 r;
@@ -268,36 +281,44 @@ Rect2 Particles2D::capture_rect() const {
 	return r;
 }
 
-void Particles2D::set_texture(const Ref<Texture> &p_texture) {
+void Particles2D::set_texture(const Ref<Texture> &p_texture)
+{
 	texture = p_texture;
 	update();
 }
 
-Ref<Texture> Particles2D::get_texture() const {
+Ref<Texture> Particles2D::get_texture() const
+{
 	return texture;
 }
 
-void Particles2D::set_normal_map(const Ref<Texture> &p_normal_map) {
+void Particles2D::set_normal_map(const Ref<Texture> &p_normal_map)
+{
 
 	normal_map = p_normal_map;
 	update();
 }
 
-Ref<Texture> Particles2D::get_normal_map() const {
+Ref<Texture> Particles2D::get_normal_map() const
+{
 	return normal_map;
 }
 
-void Particles2D::_validate_property(PropertyInfo &property) const {
+void Particles2D::_validate_property(PropertyInfo &property) const
+{
 }
 
-void Particles2D::restart() {
+void Particles2D::restart()
+{
 	VS::get_singleton()->particles_restart(particles);
 	VS::get_singleton()->particles_set_emitting(particles, true);
 }
 
-void Particles2D::_notification(int p_what) {
+void Particles2D::_notification(int p_what)
+{
 
-	if (p_what == NOTIFICATION_DRAW) {
+	if (p_what == NOTIFICATION_DRAW)
+	{
 
 		RID texture_rid;
 		if (texture.is_valid())
@@ -309,36 +330,45 @@ void Particles2D::_notification(int p_what) {
 		VS::get_singleton()->canvas_item_add_particles(get_canvas_item(), particles, texture_rid, normal_rid);
 
 #ifdef TOOLS_ENABLED
-		if (Engine::get_singleton()->is_editor_hint() && (this == get_tree()->get_edited_scene_root() || get_tree()->get_edited_scene_root()->is_a_parent_of(this))) {
+		if (Engine::get_singleton()->is_editor_hint() && (this == get_tree()->get_edited_scene_root() || get_tree()->get_edited_scene_root()->is_a_parent_of(this)))
+		{
 
 			draw_rect(visibility_rect, Color(0, 0.7, 0.9, 0.4), false);
 		}
 #endif
 	}
 
-	if (p_what == NOTIFICATION_PAUSED || p_what == NOTIFICATION_UNPAUSED) {
-		if (can_process()) {
+	if (p_what == NOTIFICATION_PAUSED || p_what == NOTIFICATION_UNPAUSED)
+	{
+		if (can_process())
+		{
 			VS::get_singleton()->particles_set_speed_scale(particles, speed_scale);
-		} else {
+		}
+		else
+		{
 
 			VS::get_singleton()->particles_set_speed_scale(particles, 0);
 		}
 	}
 
-	if (p_what == NOTIFICATION_TRANSFORM_CHANGED) {
+	if (p_what == NOTIFICATION_TRANSFORM_CHANGED)
+	{
 		_update_particle_emission_transform();
 	}
 
-	if (p_what == NOTIFICATION_INTERNAL_PROCESS) {
+	if (p_what == NOTIFICATION_INTERNAL_PROCESS)
+	{
 
-		if (one_shot && !is_emitting()) {
+		if (one_shot && !is_emitting())
+		{
 			_change_notify();
 			set_process_internal(false);
 		}
 	}
 }
 
-void Particles2D::_bind_methods() {
+void Particles2D::_bind_methods()
+{
 
 	ClassDB::bind_method(D_METHOD("set_emitting", "emitting"), &Particles2D::set_emitting);
 	ClassDB::bind_method(D_METHOD("set_amount", "amount"), &Particles2D::set_amount);
@@ -406,8 +436,8 @@ void Particles2D::_bind_methods() {
 	BIND_ENUM_CONSTANT(DRAW_ORDER_LIFETIME);
 }
 
-Particles2D::Particles2D() {
-
+Particles2D::Particles2D()
+{
 	particles = VS::get_singleton()->particles_create();
 
 	one_shot = false; // Needed so that set_emitting doesn't access uninitialized values
@@ -426,7 +456,8 @@ Particles2D::Particles2D() {
 	set_speed_scale(1);
 }
 
-Particles2D::~Particles2D() {
+Particles2D::~Particles2D()
+{
 
 	VS::get_singleton()->free(particles);
 }

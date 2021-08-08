@@ -1,33 +1,3 @@
-/*************************************************************************/
-/*  joypad_windows.h                                                     */
-/*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
-/*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
-/*                                                                       */
-/* Permission is hereby granted, free of charge, to any person obtaining */
-/* a copy of this software and associated documentation files (the       */
-/* "Software"), to deal in the Software without restriction, including   */
-/* without limitation the rights to use, copy, modify, merge, publish,   */
-/* distribute, sublicense, and/or sell copies of the Software, and to    */
-/* permit persons to whom the Software is furnished to do so, subject to */
-/* the following conditions:                                             */
-/*                                                                       */
-/* The above copyright notice and this permission notice shall be        */
-/* included in all copies or substantial portions of the Software.       */
-/*                                                                       */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
-/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
-/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
-/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
-/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
-/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
-/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
-/*************************************************************************/
-
 #ifndef JOYPAD_WINDOWS_H
 #define JOYPAD_WINDOWS_H
 
@@ -39,7 +9,8 @@
 
 #ifndef SAFE_RELEASE // when Windows Media Device M? is not present
 #define SAFE_RELEASE(x) \
-	if (x != NULL) {    \
+	if (x != NULL)      \
+	{                   \
 		x->Release();   \
 		x = NULL;       \
 	}
@@ -49,7 +20,8 @@
 #define XUSER_MAX_COUNT 4
 #endif
 
-class JoypadWindows {
+class JoypadWindows
+{
 public:
 	JoypadWindows();
 	JoypadWindows(InputDefault *_input, HWND *hwnd);
@@ -59,7 +31,8 @@ public:
 	void process_joypads();
 
 private:
-	enum {
+	enum
+	{
 		JOYPADS_MAX = 16,
 		JOY_AXIS_COUNT = 6,
 		MIN_JOY_AXIS = 10,
@@ -69,7 +42,8 @@ private:
 		MAX_TRIGGER = 255
 	};
 
-	struct dinput_gamepad {
+	struct dinput_gamepad
+	{
 
 		int id;
 		bool attached;
@@ -81,7 +55,8 @@ private:
 		List<DWORD> joy_axis;
 		GUID guid;
 
-		dinput_gamepad() {
+		dinput_gamepad()
+		{
 			id = -1;
 			last_pad = -1;
 			attached = false;
@@ -92,7 +67,8 @@ private:
 		}
 	};
 
-	struct xinput_gamepad {
+	struct xinput_gamepad
+	{
 
 		int id;
 		bool attached;
@@ -102,7 +78,8 @@ private:
 		uint64_t ff_timestamp;
 		uint64_t ff_end_timestamp;
 
-		xinput_gamepad() {
+		xinput_gamepad()
+		{
 			attached = false;
 			vibrating = false;
 			ff_timestamp = 0;
@@ -147,4 +124,4 @@ private:
 	XInputSetState_t xinput_set_state;
 };
 
-#endif // JOYPAD_WINDOWS_H
+#endif

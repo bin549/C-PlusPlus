@@ -10,7 +10,7 @@
 class UnitClass : public DriveClass
 {
 public:
-	/*
+	/* 
 		**	This points to the static control data that gives 'this' unit its characteristics.
 		*/
 	CCPtr<UnitTypeClass> Class;
@@ -33,7 +33,7 @@ public:
 	unsigned Gold : 5;
 	unsigned Gems : 5;
 
-	/*
+	/* 
 		** This flag tells a unit that, if after reaching its destination, it
 		** should scatter away.  It's meant to help a LST unload its units by
 		** having its previous passengers get out of the way.

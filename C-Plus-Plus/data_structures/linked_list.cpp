@@ -1,34 +1,9 @@
-/**
- * @file
- * @brief Implementation of singly linked list algorithm.
- * @details
- * The linked list is a data structure used for holding a sequence of
- * values, which can be added, removed and displayed.
- * ### Algorithm
- * Values can be added by iterating to the end of a list(by following
- * the pointers) starting from the first link. Whichever link points to null
- * is considered the last link and is pointed to the new value.
- *
- * Values can be removed by also iterating through the list. When the node
- * containing the value is found, the node pointing to the current node is made
- * to point to the node that the current node is pointing to, and then returning
- * the current node to heap store.
- */
 #include <iostream>
 #include <memory>
 #include <string>
 
-/**
- * @namespace data_structures
- * @brief Data Structures algorithms
- */
 namespace data_structures
 {
-
-    /**
- * @namespace linked_list
- * @brief Functions for singly linked list algorithm
- */
     namespace linked_list
     {
 
@@ -146,10 +121,6 @@ namespace data_structures
             }
         }
 
-        /**
- * function adds new element to the beginning of the list
- * @param new_elem to be added to front of the list
- */
         void list::push_front(int new_elem)
         {
             if (isEmpty())

@@ -59,6 +59,7 @@ public:
 	void Write(string filename);					//----
 	T get_mat(int row, int col) { return mat_[row][col]; }
 	void set_mat(int row, int col, T val) { mat_[row][col] = val; }
+	
 private:
 	int rows_;
 	int cols_;

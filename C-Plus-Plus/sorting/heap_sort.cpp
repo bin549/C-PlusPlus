@@ -19,7 +19,6 @@ void heapify(T *arr, int n, int i)
 
     if (l < n && arr[l] > arr[largest])
         largest = l;
-
     if (r < n && arr[r] > arr[largest])
         largest = r;
 
@@ -47,10 +46,10 @@ void test()
 {
     std::cout << "Test 1\n";
     int arr[] = {-10, 78, -1, -6, 7, 4, 94, 5, 99, 0};
-    int sz = sizeof(arr) / sizeof(arr[0]); // sz - size of array
-    printArray(arr, sz);                   // displaying the array before sorting
-    heapSort(arr, sz);                     // calling heapsort to sort the array
-    printArray(arr, sz);                   // display array after sorting
+    int sz = sizeof(arr) / sizeof(arr[0]);
+    printArray(arr, sz);
+    heapSort(arr, sz);
+    printArray(arr, sz);
     assert(std::is_sorted(arr, arr + sz));
     std::cout << "Test 1 Passed\n========================\n";
 

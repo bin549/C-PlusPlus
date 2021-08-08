@@ -7,13 +7,10 @@
 
 #include <GL\glew.h>
 #include <GLFW\glfw3.h>
-
 #include <glm\glm.hpp>
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm\gtc\type_ptr.hpp>
-
 #include "CommonValues.h"
-
 #include "Window.h"
 #include "Mesh.h"
 #include "Shader.h"
@@ -23,9 +20,7 @@
 #include "PointLight.h"
 #include "SpotLight.h"
 #include "Material.h"
-
 #include "Model.h"
-
 #include "Skybox.h"
 
 const float toRadians = 3.14159265f / 180.0f;
@@ -212,19 +207,13 @@ void RenderScene()
 void DirectionalShadowMapPass(DirectionalLight *light)
 {
 	directionalShadowShader.UseShader();
-
 	glViewport(0, 0, light->getShadowMap()->GetShadowWidth(), light->getShadowMap()->GetShadowHeight());
-
 	light->getShadowMap()->Write();
 	glClear(GL_DEPTH_BUFFER_BIT);
-
 	uniformModel = directionalShadowShader.GetModelLocation();
 	directionalShadowShader.SetDirectionalLightTransform(&light->CalculateLightTransform());
-
 	directionalShadowShader.Validate();
-
 	RenderScene();
-
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 

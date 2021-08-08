@@ -1,33 +1,3 @@
-/*************************************************************************/
-/*  math_funcs.h                                                         */
-/*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
-/*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
-/*                                                                       */
-/* Permission is hereby granted, free of charge, to any person obtaining */
-/* a copy of this software and associated documentation files (the       */
-/* "Software"), to deal in the Software without restriction, including   */
-/* without limitation the rights to use, copy, modify, merge, publish,   */
-/* distribute, sublicense, and/or sell copies of the Software, and to    */
-/* permit persons to whom the Software is furnished to do so, subject to */
-/* the following conditions:                                             */
-/*                                                                       */
-/* The above copyright notice and this permission notice shall be        */
-/* included in all copies or substantial portions of the Software.       */
-/*                                                                       */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
-/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
-/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
-/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
-/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
-/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
-/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
-/*************************************************************************/
-
 #ifndef MATH_FUNCS_H
 #define MATH_FUNCS_H
 
@@ -40,7 +10,8 @@
 #include <float.h>
 #include <math.h>
 
-class Math {
+class Math
+{
 
 	static RandomPCG default_rand;
 
@@ -106,11 +77,13 @@ public:
 	static _ALWAYS_INLINE_ double exp(double p_x) { return ::exp(p_x); }
 	static _ALWAYS_INLINE_ float exp(float p_x) { return ::expf(p_x); }
 
-	static _ALWAYS_INLINE_ bool is_nan(double p_val) {
+	static _ALWAYS_INLINE_ bool is_nan(double p_val)
+	{
 #ifdef _MSC_VER
 		return _isnan(p_val);
 #elif defined(__GNUC__) && __GNUC__ < 6
-		union {
+		union
+		{
 			uint64_t u;
 			double f;
 		} ieee754;
@@ -122,11 +95,13 @@ public:
 #endif
 	}
 
-	static _ALWAYS_INLINE_ bool is_nan(float p_val) {
+	static _ALWAYS_INLINE_ bool is_nan(float p_val)
+	{
 #ifdef _MSC_VER
 		return _isnan(p_val);
 #elif defined(__GNUC__) && __GNUC__ < 6
-		union {
+		union
+		{
 			uint32_t u;
 			float f;
 		} ieee754;
@@ -145,12 +120,14 @@ public:
 #endif
 	}
 
-	static _ALWAYS_INLINE_ bool is_inf(double p_val) {
+	static _ALWAYS_INLINE_ bool is_inf(double p_val)
+	{
 #ifdef _MSC_VER
 		return !_finite(p_val);
 // use an inline implementation of isinf as a workaround for problematic libstdc++ versions from gcc 5.x era
 #elif defined(__GNUC__) && __GNUC__ < 6
-		union {
+		union
+		{
 			uint64_t u;
 			double f;
 		} ieee754;
@@ -162,12 +139,14 @@ public:
 #endif
 	}
 
-	static _ALWAYS_INLINE_ bool is_inf(float p_val) {
+	static _ALWAYS_INLINE_ bool is_inf(float p_val)
+	{
 #ifdef _MSC_VER
 		return !_finite(p_val);
 // use an inline implementation of isinf as a workaround for problematic libstdc++ versions from gcc 5.x era
 #elif defined(__GNUC__) && __GNUC__ < 6
-		union {
+		union
+		{
 			uint32_t u;
 			float f;
 		} ieee754;
@@ -182,25 +161,31 @@ public:
 	static _ALWAYS_INLINE_ float abs(float g) { return absf(g); }
 	static _ALWAYS_INLINE_ int abs(int g) { return g > 0 ? g : -g; }
 
-	static _ALWAYS_INLINE_ double fposmod(double p_x, double p_y) {
+	static _ALWAYS_INLINE_ double fposmod(double p_x, double p_y)
+	{
 		double value = Math::fmod(p_x, p_y);
-		if ((value < 0 && p_y > 0) || (value > 0 && p_y < 0)) {
+		if ((value < 0 && p_y > 0) || (value > 0 && p_y < 0))
+		{
 			value += p_y;
 		}
 		value += 0.0;
 		return value;
 	}
-	static _ALWAYS_INLINE_ float fposmod(float p_x, float p_y) {
+	static _ALWAYS_INLINE_ float fposmod(float p_x, float p_y)
+	{
 		float value = Math::fmod(p_x, p_y);
-		if ((value < 0 && p_y > 0) || (value > 0 && p_y < 0)) {
+		if ((value < 0 && p_y > 0) || (value > 0 && p_y < 0))
+		{
 			value += p_y;
 		}
 		value += 0.0;
 		return value;
 	}
-	static _ALWAYS_INLINE_ int posmod(int p_x, int p_y) {
+	static _ALWAYS_INLINE_ int posmod(int p_x, int p_y)
+	{
 		int value = p_x % p_y;
-		if ((value < 0 && p_y > 0) || (value > 0 && p_y < 0)) {
+		if ((value < 0 && p_y > 0) || (value > 0 && p_y < 0))
+		{
 			value += p_y;
 		}
 		return value;
@@ -215,12 +200,14 @@ public:
 	static _ALWAYS_INLINE_ double lerp(double p_from, double p_to, double p_weight) { return p_from + (p_to - p_from) * p_weight; }
 	static _ALWAYS_INLINE_ float lerp(float p_from, float p_to, float p_weight) { return p_from + (p_to - p_from) * p_weight; }
 
-	static _ALWAYS_INLINE_ double lerp_angle(double p_from, double p_to, double p_weight) {
+	static _ALWAYS_INLINE_ double lerp_angle(double p_from, double p_to, double p_weight)
+	{
 		double difference = fmod(p_to - p_from, Math_TAU);
 		double distance = fmod(2.0 * difference, Math_TAU) - difference;
 		return p_from + distance * p_weight;
 	}
-	static _ALWAYS_INLINE_ float lerp_angle(float p_from, float p_to, float p_weight) {
+	static _ALWAYS_INLINE_ float lerp_angle(float p_from, float p_to, float p_weight)
+	{
 		float difference = fmod(p_to - p_from, (float)Math_TAU);
 		float distance = fmod(2.0f * difference, (float)Math_TAU) - difference;
 		return p_from + distance * p_weight;
@@ -232,13 +219,17 @@ public:
 	static _ALWAYS_INLINE_ double range_lerp(double p_value, double p_istart, double p_istop, double p_ostart, double p_ostop) { return Math::lerp(p_ostart, p_ostop, Math::inverse_lerp(p_istart, p_istop, p_value)); }
 	static _ALWAYS_INLINE_ float range_lerp(float p_value, float p_istart, float p_istop, float p_ostart, float p_ostop) { return Math::lerp(p_ostart, p_ostop, Math::inverse_lerp(p_istart, p_istop, p_value)); }
 
-	static _ALWAYS_INLINE_ double smoothstep(double p_from, double p_to, double p_weight) {
-		if (is_equal_approx(p_from, p_to)) return p_from;
+	static _ALWAYS_INLINE_ double smoothstep(double p_from, double p_to, double p_weight)
+	{
+		if (is_equal_approx(p_from, p_to))
+			return p_from;
 		double x = CLAMP((p_weight - p_from) / (p_to - p_from), 0.0, 1.0);
 		return x * x * (3.0 - 2.0 * x);
 	}
-	static _ALWAYS_INLINE_ float smoothstep(float p_from, float p_to, float p_weight) {
-		if (is_equal_approx(p_from, p_to)) return p_from;
+	static _ALWAYS_INLINE_ float smoothstep(float p_from, float p_to, float p_weight)
+	{
+		if (is_equal_approx(p_from, p_to))
+			return p_from;
 		float x = CLAMP((p_weight - p_from) / (p_to - p_from), 0.0f, 1.0f);
 		return x * x * (3.0f - 2.0f * x);
 	}
@@ -254,15 +245,18 @@ public:
 	static _ALWAYS_INLINE_ double round(double p_val) { return (p_val >= 0) ? Math::floor(p_val + 0.5) : -Math::floor(-p_val + 0.5); }
 	static _ALWAYS_INLINE_ float round(float p_val) { return (p_val >= 0) ? Math::floor(p_val + 0.5) : -Math::floor(-p_val + 0.5); }
 
-	static _ALWAYS_INLINE_ int64_t wrapi(int64_t value, int64_t min, int64_t max) {
+	static _ALWAYS_INLINE_ int64_t wrapi(int64_t value, int64_t min, int64_t max)
+	{
 		int64_t range = max - min;
 		return range == 0 ? min : min + ((((value - min) % range) + range) % range);
 	}
-	static _ALWAYS_INLINE_ double wrapf(double value, double min, double max) {
+	static _ALWAYS_INLINE_ double wrapf(double value, double min, double max)
+	{
 		double range = max - min;
 		return is_zero_approx(range) ? min : value - (range * Math::floor((value - min) / range));
 	}
-	static _ALWAYS_INLINE_ float wrapf(float value, float min, float max) {
+	static _ALWAYS_INLINE_ float wrapf(float value, float min, float max)
+	{
 		float range = max - min;
 		return is_zero_approx(range) ? min : value - (range * Math::floor((value - min) / range));
 	}
@@ -287,11 +281,13 @@ public:
 	static float random(float from, float to);
 	static real_t random(int from, int to) { return (real_t)random((real_t)from, (real_t)to); }
 
-	static _ALWAYS_INLINE_ bool is_equal_approx_ratio(real_t a, real_t b, real_t epsilon = CMP_EPSILON, real_t min_epsilon = CMP_EPSILON) {
+	static _ALWAYS_INLINE_ bool is_equal_approx_ratio(real_t a, real_t b, real_t epsilon = CMP_EPSILON, real_t min_epsilon = CMP_EPSILON)
+	{
 		// this is an approximate way to check that numbers are close, as a ratio of their average size
 		// helps compare approximate numbers that may be very big or very small
 		real_t diff = abs(a - b);
-		if (diff == 0.0 || diff < min_epsilon) {
+		if (diff == 0.0 || diff < min_epsilon)
+		{
 			return true;
 		}
 		real_t avg_size = (abs(a) + abs(b)) / 2.0;
@@ -299,35 +295,43 @@ public:
 		return diff < epsilon;
 	}
 
-	static _ALWAYS_INLINE_ bool is_equal_approx(real_t a, real_t b) {
+	static _ALWAYS_INLINE_ bool is_equal_approx(real_t a, real_t b)
+	{
 		// Check for exact equality first, required to handle "infinity" values.
-		if (a == b) {
+		if (a == b)
+		{
 			return true;
 		}
 		// Then check for approximate equality.
 		real_t tolerance = CMP_EPSILON * abs(a);
-		if (tolerance < CMP_EPSILON) {
+		if (tolerance < CMP_EPSILON)
+		{
 			tolerance = CMP_EPSILON;
 		}
 		return abs(a - b) < tolerance;
 	}
 
-	static _ALWAYS_INLINE_ bool is_equal_approx(real_t a, real_t b, real_t tolerance) {
+	static _ALWAYS_INLINE_ bool is_equal_approx(real_t a, real_t b, real_t tolerance)
+	{
 		// Check for exact equality first, required to handle "infinity" values.
-		if (a == b) {
+		if (a == b)
+		{
 			return true;
 		}
 		// Then check for approximate equality.
 		return abs(a - b) < tolerance;
 	}
 
-	static _ALWAYS_INLINE_ bool is_zero_approx(real_t s) {
+	static _ALWAYS_INLINE_ bool is_zero_approx(real_t s)
+	{
 		return abs(s) < CMP_EPSILON;
 	}
 
-	static _ALWAYS_INLINE_ float absf(float g) {
+	static _ALWAYS_INLINE_ float absf(float g)
+	{
 
-		union {
+		union
+		{
 			float f;
 			uint32_t i;
 		} u;
@@ -337,9 +341,11 @@ public:
 		return u.f;
 	}
 
-	static _ALWAYS_INLINE_ double absd(double g) {
+	static _ALWAYS_INLINE_ double absd(double g)
+	{
 
-		union {
+		union
+		{
 			double d;
 			uint64_t i;
 		} u;
@@ -349,7 +355,8 @@ public:
 	}
 
 	//this function should be as fast as possible and rounding mode should not matter
-	static _ALWAYS_INLINE_ int fast_ftoi(float a) {
+	static _ALWAYS_INLINE_ int fast_ftoi(float a)
+	{
 
 		static int b;
 
@@ -373,40 +380,46 @@ public:
 		return b;
 	}
 
-	static _ALWAYS_INLINE_ uint32_t halfbits_to_floatbits(uint16_t h) {
+	static _ALWAYS_INLINE_ uint32_t halfbits_to_floatbits(uint16_t h)
+	{
 		uint16_t h_exp, h_sig;
 		uint32_t f_sgn, f_exp, f_sig;
 
 		h_exp = (h & 0x7c00u);
 		f_sgn = ((uint32_t)h & 0x8000u) << 16;
-		switch (h_exp) {
-			case 0x0000u: /* 0 or subnormal */
-				h_sig = (h & 0x03ffu);
-				/* Signed zero */
-				if (h_sig == 0) {
-					return f_sgn;
-				}
-				/* Subnormal */
+		switch (h_exp)
+		{
+		case 0x0000u: /* 0 or subnormal */
+			h_sig = (h & 0x03ffu);
+			/* Signed zero */
+			if (h_sig == 0)
+			{
+				return f_sgn;
+			}
+			/* Subnormal */
+			h_sig <<= 1;
+			while ((h_sig & 0x0400u) == 0)
+			{
 				h_sig <<= 1;
-				while ((h_sig & 0x0400u) == 0) {
-					h_sig <<= 1;
-					h_exp++;
-				}
-				f_exp = ((uint32_t)(127 - 15 - h_exp)) << 23;
-				f_sig = ((uint32_t)(h_sig & 0x03ffu)) << 13;
-				return f_sgn + f_exp + f_sig;
-			case 0x7c00u: /* inf or NaN */
-				/* All-ones exponent and a copy of the significand */
-				return f_sgn + 0x7f800000u + (((uint32_t)(h & 0x03ffu)) << 13);
-			default: /* normalized */
-				/* Just need to adjust the exponent and shift */
-				return f_sgn + (((uint32_t)(h & 0x7fffu) + 0x1c000u) << 13);
+				h_exp++;
+			}
+			f_exp = ((uint32_t)(127 - 15 - h_exp)) << 23;
+			f_sig = ((uint32_t)(h_sig & 0x03ffu)) << 13;
+			return f_sgn + f_exp + f_sig;
+		case 0x7c00u: /* inf or NaN */
+			/* All-ones exponent and a copy of the significand */
+			return f_sgn + 0x7f800000u + (((uint32_t)(h & 0x03ffu)) << 13);
+		default: /* normalized */
+			/* Just need to adjust the exponent and shift */
+			return f_sgn + (((uint32_t)(h & 0x7fffu) + 0x1c000u) << 13);
 		}
 	}
 
-	static _ALWAYS_INLINE_ float halfptr_to_float(const uint16_t *h) {
+	static _ALWAYS_INLINE_ float halfptr_to_float(const uint16_t *h)
+	{
 
-		union {
+		union
+		{
 			uint32_t u32;
 			float f32;
 		} u;
@@ -415,13 +428,16 @@ public:
 		return u.f32;
 	}
 
-	static _ALWAYS_INLINE_ float half_to_float(const uint16_t h) {
+	static _ALWAYS_INLINE_ float half_to_float(const uint16_t h)
+	{
 		return halfptr_to_float(&h);
 	}
 
-	static _ALWAYS_INLINE_ uint16_t make_half_float(float f) {
+	static _ALWAYS_INLINE_ uint16_t make_half_float(float f)
+	{
 
-		union {
+		union
+		{
 			float fv;
 			uint32_t ui;
 		} ci;
@@ -437,12 +453,16 @@ public:
 		mantissa = x & ((1 << 23) - 1);
 		// get exponent bits
 		exp = x & (0xFF << 23);
-		if (exp >= 0x47800000) {
+		if (exp >= 0x47800000)
+		{
 			// check if the original single precision float number is a NaN
-			if (mantissa && (exp == (0xFF << 23))) {
+			if (mantissa && (exp == (0xFF << 23)))
+			{
 				// we have a single precision NaN
 				mantissa = (1 << 23) - 1;
-			} else {
+			}
+			else
+			{
 				// 16-bit half-float representation stores number as Inf
 				mantissa = 0;
 			}
@@ -450,7 +470,8 @@ public:
 				 (uint16_t)(mantissa >> 13);
 		}
 		// check if exponent is <= -15
-		else if (exp <= 0x38000000) {
+		else if (exp <= 0x38000000)
+		{
 
 			/*// store a denorm half-float value or zero
 		exp = (0x38000000 - exp) >> 23;
@@ -459,7 +480,9 @@ public:
 		hf = (((uint16_t)sign) << 15) | (uint16_t)(mantissa);
 		*/
 			hf = 0; //denormals do not work for 3D, convert to zero
-		} else {
+		}
+		else
+		{
 			hf = (((uint16_t)sign) << 15) |
 				 (uint16_t)((exp - 0x38000000) >> 13) |
 				 (uint16_t)(mantissa >> 13);
@@ -468,12 +491,15 @@ public:
 		return hf;
 	}
 
-	static _ALWAYS_INLINE_ float snap_scalar(float p_offset, float p_step, float p_target) {
+	static _ALWAYS_INLINE_ float snap_scalar(float p_offset, float p_step, float p_target)
+	{
 		return p_step != 0 ? Math::stepify(p_target - p_offset, p_step) + p_offset : p_target;
 	}
 
-	static _ALWAYS_INLINE_ float snap_scalar_separation(float p_offset, float p_step, float p_target, float p_separation) {
-		if (p_step != 0) {
+	static _ALWAYS_INLINE_ float snap_scalar_separation(float p_offset, float p_step, float p_target, float p_separation)
+	{
+		if (p_step != 0)
+		{
 			float a = Math::stepify(p_target - p_offset, p_step + p_separation) + p_offset;
 			float b = a;
 			if (p_target >= 0)
@@ -486,4 +512,4 @@ public:
 	}
 };
 
-#endif // MATH_FUNCS_H
+#endif

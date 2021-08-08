@@ -1,33 +1,3 @@
-/*************************************************************************/
-/*  core_bind.h                                                          */
-/*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
-/*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
-/*                                                                       */
-/* Permission is hereby granted, free of charge, to any person obtaining */
-/* a copy of this software and associated documentation files (the       */
-/* "Software"), to deal in the Software without restriction, including   */
-/* without limitation the rights to use, copy, modify, merge, publish,   */
-/* distribute, sublicense, and/or sell copies of the Software, and to    */
-/* permit persons to whom the Software is furnished to do so, subject to */
-/* the following conditions:                                             */
-/*                                                                       */
-/* The above copyright notice and this permission notice shall be        */
-/* included in all copies or substantial portions of the Software.       */
-/*                                                                       */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
-/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
-/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
-/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
-/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
-/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
-/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
-/*************************************************************************/
-
 #ifndef CORE_BIND_H
 #define CORE_BIND_H
 
@@ -41,7 +11,8 @@
 #include "core/os/semaphore.h"
 #include "core/os/thread.h"
 
-class _ResourceLoader : public Object {
+class _ResourceLoader : public Object
+{
 	GDCLASS(_ResourceLoader, Object);
 
 protected:
@@ -64,7 +35,8 @@ public:
 	_ResourceLoader();
 };
 
-class _ResourceSaver : public Object {
+class _ResourceSaver : public Object
+{
 	GDCLASS(_ResourceSaver, Object);
 
 protected:
@@ -72,7 +44,8 @@ protected:
 	static _ResourceSaver *singleton;
 
 public:
-	enum SaverFlags {
+	enum SaverFlags
+	{
 
 		FLAG_RELATIVE_PATHS = 1,
 		FLAG_BUNDLE_RESOURCES = 2,
@@ -95,7 +68,8 @@ VARIANT_ENUM_CAST(_ResourceSaver::SaverFlags);
 
 class MainLoop;
 
-class _OS : public Object {
+class _OS : public Object
+{
 	GDCLASS(_OS, Object);
 
 protected:
@@ -103,20 +77,23 @@ protected:
 	static _OS *singleton;
 
 public:
-	enum VideoDriver {
+	enum VideoDriver
+	{
 		VIDEO_DRIVER_GLES3,
 		VIDEO_DRIVER_GLES2,
 	};
 
-	enum PowerState {
-		POWERSTATE_UNKNOWN, // Cannot determine power status.
+	enum PowerState
+	{
+		POWERSTATE_UNKNOWN,	   // Cannot determine power status.
 		POWERSTATE_ON_BATTERY, // Not plugged in, running on the battery.
 		POWERSTATE_NO_BATTERY, // Plugged in, no battery available.
-		POWERSTATE_CHARGING, // Plugged in, charging battery.
-		POWERSTATE_CHARGED // Plugged in, battery charged.
+		POWERSTATE_CHARGING,   // Plugged in, charging battery.
+		POWERSTATE_CHARGED	   // Plugged in, battery charged.
 	};
 
-	enum Weekday {
+	enum Weekday
+	{
 		DAY_SUNDAY,
 		DAY_MONDAY,
 		DAY_TUESDAY,
@@ -126,7 +103,8 @@ public:
 		DAY_SATURDAY
 	};
 
-	enum Month {
+	enum Month
+	{
 		// Start at 1 to follow Windows SYSTEMTIME structure
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/ms724950(v=vs.85).aspx
 		MONTH_JANUARY = 1,
@@ -312,7 +290,8 @@ public:
 
 	int get_processor_count() const;
 
-	enum SystemDir {
+	enum SystemDir
+	{
 		SYSTEM_DIR_DESKTOP,
 		SYSTEM_DIR_DCIM,
 		SYSTEM_DIR_DOCUMENTS,
@@ -323,7 +302,8 @@ public:
 		SYSTEM_DIR_RINGTONES,
 	};
 
-	enum ScreenOrientation {
+	enum ScreenOrientation
+	{
 
 		SCREEN_ORIENTATION_LANDSCAPE,
 		SCREEN_ORIENTATION_PORTRAIT,
@@ -383,7 +363,8 @@ VARIANT_ENUM_CAST(_OS::Month);
 VARIANT_ENUM_CAST(_OS::SystemDir);
 VARIANT_ENUM_CAST(_OS::ScreenOrientation);
 
-class _Geometry : public Object {
+class _Geometry : public Object
+{
 
 	GDCLASS(_Geometry, Object);
 
@@ -423,29 +404,32 @@ public:
 	Vector<Point2> convex_hull_2d(const Vector<Point2> &p_points);
 	Vector<Vector3> clip_polygon(const Vector<Vector3> &p_points, const Plane &p_plane);
 
-	enum PolyBooleanOperation {
+	enum PolyBooleanOperation
+	{
 		OPERATION_UNION,
 		OPERATION_DIFFERENCE,
 		OPERATION_INTERSECTION,
 		OPERATION_XOR
 	};
 	// 2D polygon boolean operations.
-	Array merge_polygons_2d(const Vector<Vector2> &p_polygon_a, const Vector<Vector2> &p_polygon_b); // Union (add).
-	Array clip_polygons_2d(const Vector<Vector2> &p_polygon_a, const Vector<Vector2> &p_polygon_b); // Difference (subtract).
+	Array merge_polygons_2d(const Vector<Vector2> &p_polygon_a, const Vector<Vector2> &p_polygon_b);	 // Union (add).
+	Array clip_polygons_2d(const Vector<Vector2> &p_polygon_a, const Vector<Vector2> &p_polygon_b);		 // Difference (subtract).
 	Array intersect_polygons_2d(const Vector<Vector2> &p_polygon_a, const Vector<Vector2> &p_polygon_b); // Common area (multiply).
-	Array exclude_polygons_2d(const Vector<Vector2> &p_polygon_a, const Vector<Vector2> &p_polygon_b); // All but common area (xor).
+	Array exclude_polygons_2d(const Vector<Vector2> &p_polygon_a, const Vector<Vector2> &p_polygon_b);	 // All but common area (xor).
 
 	// 2D polyline vs polygon operations.
-	Array clip_polyline_with_polygon_2d(const Vector<Vector2> &p_polyline, const Vector<Vector2> &p_polygon); // Cut.
+	Array clip_polyline_with_polygon_2d(const Vector<Vector2> &p_polyline, const Vector<Vector2> &p_polygon);	   // Cut.
 	Array intersect_polyline_with_polygon_2d(const Vector<Vector2> &p_polyline, const Vector<Vector2> &p_polygon); // Chop.
 
 	// 2D offset polygons/polylines.
-	enum PolyJoinType {
+	enum PolyJoinType
+	{
 		JOIN_SQUARE,
 		JOIN_ROUND,
 		JOIN_MITER
 	};
-	enum PolyEndType {
+	enum PolyEndType
+	{
 		END_POLYGON,
 		END_JOINED,
 		END_BUTT,
@@ -464,7 +448,8 @@ VARIANT_ENUM_CAST(_Geometry::PolyBooleanOperation);
 VARIANT_ENUM_CAST(_Geometry::PolyJoinType);
 VARIANT_ENUM_CAST(_Geometry::PolyEndType);
 
-class _File : public Reference {
+class _File : public Reference
+{
 
 	GDCLASS(_File, Reference);
 	FileAccess *f;
@@ -474,7 +459,8 @@ protected:
 	static void _bind_methods();
 
 public:
-	enum ModeFlags {
+	enum ModeFlags
+	{
 
 		READ = 1,
 		WRITE = 2,
@@ -482,7 +468,8 @@ public:
 		WRITE_READ = 7,
 	};
 
-	enum CompressionMode {
+	enum CompressionMode
+	{
 		COMPRESSION_FASTLZ = Compression::MODE_FASTLZ,
 		COMPRESSION_DEFLATE = Compression::MODE_DEFLATE,
 		COMPRESSION_ZSTD = Compression::MODE_ZSTD,
@@ -494,20 +481,20 @@ public:
 	Error open_compressed(const String &p_path, ModeFlags p_mode_flags, CompressionMode p_compress_mode = COMPRESSION_FASTLZ);
 
 	Error open(const String &p_path, ModeFlags p_mode_flags); // open a file.
-	void close(); // Close a file.
-	bool is_open() const; // True when file is open.
+	void close();											  // Close a file.
+	bool is_open() const;									  // True when file is open.
 
-	String get_path() const; // Returns the path for the current open file.
+	String get_path() const;		  // Returns the path for the current open file.
 	String get_path_absolute() const; // Returns the absolute path for the current open file.
 
-	void seek(int64_t p_position); // Seek to a given position.
+	void seek(int64_t p_position);		   // Seek to a given position.
 	void seek_end(int64_t p_position = 0); // Seek from the end of file.
-	int64_t get_position() const; // Get position in the file.
-	int64_t get_len() const; // Get size of the file.
+	int64_t get_position() const;		   // Get position in the file.
+	int64_t get_len() const;			   // Get size of the file.
 
 	bool eof_reached() const; // Reading passed EOF.
 
-	uint8_t get_8() const; // Get a byte.
+	uint8_t get_8() const;	 // Get a byte.
 	uint16_t get_16() const; // Get 16 bits uint.
 	uint32_t get_32() const; // Get 32 bits uint.
 	uint64_t get_64() const; // Get 64 bits uint.
@@ -535,7 +522,7 @@ public:
 
 	Error get_error() const; // Get last error.
 
-	void store_8(uint8_t p_dest); // Store a byte.
+	void store_8(uint8_t p_dest);	// Store a byte.
 	void store_16(uint16_t p_dest); // Store 16 bits uint.
 	void store_32(uint32_t p_dest); // Store 32 bits uint.
 	void store_64(uint64_t p_dest); // Store 64 bits uint.
@@ -566,7 +553,8 @@ public:
 VARIANT_ENUM_CAST(_File::ModeFlags);
 VARIANT_ENUM_CAST(_File::CompressionMode);
 
-class _Directory : public Reference {
+class _Directory : public Reference
+{
 
 	GDCLASS(_Directory, Reference);
 	DirAccess *d;
@@ -588,7 +576,7 @@ public:
 	int get_current_drive();
 
 	Error change_dir(String p_dir); // Can be relative or absolute, return false on success.
-	String get_current_dir(); // Return current dir location.
+	String get_current_dir();		// Return current dir location.
 
 	Error make_dir(String p_dir);
 	Error make_dir_recursive(String p_dir);
@@ -610,7 +598,8 @@ private:
 	bool _list_skip_hidden;
 };
 
-class _Marshalls : public Object {
+class _Marshalls : public Object
+{
 
 	GDCLASS(_Marshalls, Object);
 
@@ -635,7 +624,8 @@ public:
 	~_Marshalls() { singleton = NULL; }
 };
 
-class _Mutex : public Reference {
+class _Mutex : public Reference
+{
 
 	GDCLASS(_Mutex, Reference);
 	Mutex *mutex;
@@ -651,7 +641,8 @@ public:
 	~_Mutex();
 };
 
-class _Semaphore : public Reference {
+class _Semaphore : public Reference
+{
 
 	GDCLASS(_Semaphore, Reference);
 	Semaphore *semaphore;
@@ -666,7 +657,8 @@ public:
 	~_Semaphore();
 };
 
-class _Thread : public Reference {
+class _Thread : public Reference
+{
 
 	GDCLASS(_Thread, Reference);
 
@@ -681,7 +673,8 @@ protected:
 	static void _start_func(void *ud);
 
 public:
-	enum Priority {
+	enum Priority
+	{
 
 		PRIORITY_LOW,
 		PRIORITY_NORMAL,
@@ -700,7 +693,8 @@ public:
 
 VARIANT_ENUM_CAST(_Thread::Priority);
 
-class _ClassDB : public Object {
+class _ClassDB : public Object
+{
 
 	GDCLASS(_ClassDB, Object);
 
@@ -739,7 +733,8 @@ public:
 	~_ClassDB();
 };
 
-class _Engine : public Object {
+class _Engine : public Object
+{
 	GDCLASS(_Engine, Object);
 
 protected:
@@ -789,7 +784,8 @@ public:
 
 class _JSON;
 
-class JSONParseResult : public Reference {
+class JSONParseResult : public Reference
+{
 	GDCLASS(JSONParseResult, Reference);
 
 	friend class _JSON;
@@ -816,11 +812,11 @@ public:
 	void set_result(const Variant &p_result);
 	Variant get_result() const;
 
-	JSONParseResult() :
-			error_line(-1) {}
+	JSONParseResult() : error_line(-1) {}
 };
 
-class _JSON : public Object {
+class _JSON : public Object
+{
 	GDCLASS(_JSON, Object);
 
 protected:

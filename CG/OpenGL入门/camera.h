@@ -3,9 +3,6 @@
 
 class Camera
 {
-protected:
-	void RotateView(float angle, float x, float y, float z);
-
 public:
 	Camera();
 	Vector3f mPos, mViewCenter, mUp;
@@ -16,4 +13,7 @@ public:
 	void Update(float deltaTime);
 	void SwitchTo3D();
 	void SwitchTo2D();
+
+protected:
+	void RotateView(float angle, float x, float y, float z);
 };

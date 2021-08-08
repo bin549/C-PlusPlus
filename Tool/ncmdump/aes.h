@@ -3,7 +3,8 @@
 #include <string.h>
 #include <stdio.h>
 
-class AES {
+class AES
+{
 
 public:
     AES();
@@ -16,7 +17,7 @@ private:
     //
     int mNb;
 
-    //word length of the secret key used in one turn 
+    //word length of the secret key used in one turn
     int mNk;
 
     //number of turns
@@ -30,7 +31,7 @@ private:
 
     static unsigned char sBox[];
     static unsigned char invSBox[];
-    //constant 
+    //constant
     static unsigned char rcon[];
     void setKey(const unsigned char *key);
 
@@ -52,6 +53,5 @@ private:
     void subWord(unsigned char w[]);
 
     //get the secret key
-    void getKeyAt(unsigned char key[][4],int i);
-
+    void getKeyAt(unsigned char key[][4], int i);
 };

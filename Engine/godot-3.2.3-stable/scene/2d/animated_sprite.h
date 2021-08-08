@@ -98,7 +98,6 @@ public:
 
 class AnimatedSprite : public Node2D
 {
-
 	GDCLASS(AnimatedSprite, Node2D);
 
 	Ref<SpriteFrames> frames;

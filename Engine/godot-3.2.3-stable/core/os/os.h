@@ -61,7 +61,6 @@ public:
 
 	enum RenderThreadMode
 	{
-
 		RENDER_THREAD_UNSAFE,
 		RENDER_THREAD_SAFE,
 		RENDER_SEPARATE_THREAD
@@ -102,16 +101,12 @@ protected:
 
 	// functions used by main to initialize/deinitialize the OS
 	void add_logger(Logger *p_logger);
-
 	virtual void initialize_core() = 0;
 	virtual Error initialize(const VideoMode &p_desired, int p_video_driver, int p_audio_driver) = 0;
-
 	virtual void set_main_loop(MainLoop *p_main_loop) = 0;
 	virtual void delete_main_loop() = 0;
-
 	virtual void finalize() = 0;
 	virtual void finalize_core() = 0;
-
 	virtual void set_cmdline(const char *p_execpath, const List<String> &p_args);
 
 	void _ensure_user_data_dir();
@@ -300,7 +295,6 @@ public:
 
 	struct Date
 	{
-
 		int year;
 		Month month;
 		int day;
@@ -310,7 +304,6 @@ public:
 
 	struct Time
 	{
-
 		int hour;
 		int min;
 		int sec;

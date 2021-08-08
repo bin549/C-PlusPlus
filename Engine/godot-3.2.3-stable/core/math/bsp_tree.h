@@ -1,33 +1,3 @@
-/*************************************************************************/
-/*  bsp_tree.h                                                           */
-/*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
-/*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
-/*                                                                       */
-/* Permission is hereby granted, free of charge, to any person obtaining */
-/* a copy of this software and associated documentation files (the       */
-/* "Software"), to deal in the Software without restriction, including   */
-/* without limitation the rights to use, copy, modify, merge, publish,   */
-/* distribute, sublicense, and/or sell copies of the Software, and to    */
-/* permit persons to whom the Software is furnished to do so, subject to */
-/* the following conditions:                                             */
-/*                                                                       */
-/* The above copyright notice and this permission notice shall be        */
-/* included in all copies or substantial portions of the Software.       */
-/*                                                                       */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
-/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
-/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
-/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
-/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
-/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
-/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
-/*************************************************************************/
-
 #ifndef BSP_TREE_H
 #define BSP_TREE_H
 
@@ -39,9 +9,11 @@
 #include "core/variant.h"
 #include "core/vector.h"
 
-class BSP_Tree {
+class BSP_Tree
+{
 public:
-	enum {
+	enum
+	{
 
 		UNDER_LEAF = 0xFFFF,
 		OVER_LEAF = 0xFFFE,
@@ -49,7 +21,8 @@ public:
 		MAX_PLANES = (1 << 16)
 	};
 
-	struct Node {
+	struct Node
+	{
 
 		uint16_t plane;
 		uint16_t under;
@@ -94,7 +67,8 @@ public:
 };
 
 template <class T>
-bool BSP_Tree::_test_convex(const Node *p_nodes, const Plane *p_planes, int p_current, const T &p_convex) const {
+bool BSP_Tree::_test_convex(const Node *p_nodes, const Plane *p_planes, int p_current, const T &p_convex) const
+{
 
 	if (p_current == UNDER_LEAF)
 		return true;
@@ -121,7 +95,8 @@ bool BSP_Tree::_test_convex(const Node *p_nodes, const Plane *p_planes, int p_cu
 }
 
 template <class T>
-bool BSP_Tree::convex_is_inside(const T &p_convex) const {
+bool BSP_Tree::convex_is_inside(const T &p_convex) const
+{
 
 	int node_count = nodes.size();
 	if (node_count == 0)
@@ -135,20 +110,25 @@ bool BSP_Tree::convex_is_inside(const T &p_convex) const {
 #ifdef PTRCALL_ENABLED
 
 template <>
-struct PtrToArg<BSP_Tree> {
-	_FORCE_INLINE_ static BSP_Tree convert(const void *p_ptr) {
+struct PtrToArg<BSP_Tree>
+{
+	_FORCE_INLINE_ static BSP_Tree convert(const void *p_ptr)
+	{
 		BSP_Tree s(Variant(*reinterpret_cast<const Dictionary *>(p_ptr)));
 		return s;
 	}
-	_FORCE_INLINE_ static void encode(BSP_Tree p_val, void *p_ptr) {
+	_FORCE_INLINE_ static void encode(BSP_Tree p_val, void *p_ptr)
+	{
 		Dictionary *d = reinterpret_cast<Dictionary *>(p_ptr);
 		*d = Variant(p_val);
 	}
 };
 
 template <>
-struct PtrToArg<const BSP_Tree &> {
-	_FORCE_INLINE_ static BSP_Tree convert(const void *p_ptr) {
+struct PtrToArg<const BSP_Tree &>
+{
+	_FORCE_INLINE_ static BSP_Tree convert(const void *p_ptr)
+	{
 		BSP_Tree s(Variant(*reinterpret_cast<const Dictionary *>(p_ptr)));
 		return s;
 	}
