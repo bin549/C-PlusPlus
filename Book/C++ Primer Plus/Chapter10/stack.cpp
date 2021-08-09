@@ -5,17 +5,17 @@ Stack::Stack()
     top = 0;
 }
 
-bool Stack::isempty()const
+bool Stack::isempty() const
 {
     return top == 0;
 }
 
-bool Stack::isfull()const
+bool Stack::isfull() const
 {
     return top == MAX;
 }
 
-bool Stack::push(const Item & item)
+bool Stack::push(const Item &item)
 {
     if (top < MAX)
     {
@@ -26,7 +26,7 @@ bool Stack::push(const Item & item)
         return false;
 }
 
-bool Stack::pop(Item & item)
+bool Stack::pop(Item &item)
 {
     if (top > 0)
     {

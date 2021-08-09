@@ -1,33 +1,3 @@
-/*************************************************************************/
-/*  image.h                                                              */
-/*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
-/*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
-/*                                                                       */
-/* Permission is hereby granted, free of charge, to any person obtaining */
-/* a copy of this software and associated documentation files (the       */
-/* "Software"), to deal in the Software without restriction, including   */
-/* without limitation the rights to use, copy, modify, merge, publish,   */
-/* distribute, sublicense, and/or sell copies of the Software, and to    */
-/* permit persons to whom the Software is furnished to do so, subject to */
-/* the following conditions:                                             */
-/*                                                                       */
-/* The above copyright notice and this permission notice shall be        */
-/* included in all copies or substantial portions of the Software.       */
-/*                                                                       */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
-/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
-/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
-/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
-/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
-/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
-/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
-/*************************************************************************/
-
 #ifndef IMAGE_H
 #define IMAGE_H
 
@@ -36,7 +6,7 @@
 #include "core/pool_vector.h"
 #include "core/resource.h"
 
-/**
+/** 
  *	@author Juan Linietsky <reduzio@gmail.com>
  *
  * Image storage class. This is used to store an image in user memory, as well as
@@ -52,7 +22,8 @@ typedef Ref<Image> (*ImageMemLoadFunc)(const uint8_t *p_png, int p_size);
 
 typedef Error (*SaveEXRFunc)(const String &p_path, const Ref<Image> &p_img, bool p_grayscale);
 
-class Image : public Resource {
+class Image : public Resource
+{
 	GDCLASS(Image, Resource);
 
 public:
@@ -60,14 +31,16 @@ public:
 	static SaveEXRFunc save_exr_func;
 	static SavePNGBufferFunc save_png_buffer_func;
 
-	enum {
+	enum
+	{
 		MAX_WIDTH = 16384, // force a limit somehow
 		MAX_HEIGHT = 16384 // force a limit somehow
 	};
 
-	enum Format {
+	enum Format
+	{
 
-		FORMAT_L8, //luminance
+		FORMAT_L8,	//luminance
 		FORMAT_LA8, //luminance-alpha
 		FORMAT_R8,
 		FORMAT_RG8,
@@ -89,15 +62,15 @@ public:
 		FORMAT_DXT5, //bc3
 		FORMAT_RGTC_R,
 		FORMAT_RGTC_RG,
-		FORMAT_BPTC_RGBA, //btpc bc7
-		FORMAT_BPTC_RGBF, //float bc6h
+		FORMAT_BPTC_RGBA,  //btpc bc7
+		FORMAT_BPTC_RGBF,  //float bc6h
 		FORMAT_BPTC_RGBFU, //unsigned float bc6hu
-		FORMAT_PVRTC2, //pvrtc
+		FORMAT_PVRTC2,	   //pvrtc
 		FORMAT_PVRTC2A,
 		FORMAT_PVRTC4,
 		FORMAT_PVRTC4A,
-		FORMAT_ETC, //etc1
-		FORMAT_ETC2_R11, //etc2
+		FORMAT_ETC,		  //etc1
+		FORMAT_ETC2_R11,  //etc2
 		FORMAT_ETC2_R11S, //signed, NOT srgb.
 		FORMAT_ETC2_RG11,
 		FORMAT_ETC2_RG11S,
@@ -108,7 +81,8 @@ public:
 	};
 
 	static const char *format_names[FORMAT_MAX];
-	enum Interpolation {
+	enum Interpolation
+	{
 
 		INTERPOLATE_NEAREST,
 		INTERPOLATE_BILINEAR,
@@ -119,7 +93,8 @@ public:
 		/* INTERPOLATE GAUSS */
 	};
 
-	enum CompressSource {
+	enum CompressSource
+	{
 		COMPRESS_SOURCE_GENERIC,
 		COMPRESS_SOURCE_SRGB,
 		COMPRESS_SOURCE_NORMAL,
@@ -157,11 +132,13 @@ protected:
 	static void _bind_methods();
 
 private:
-	void _create_empty(int p_width, int p_height, bool p_use_mipmaps, Format p_format) {
+	void _create_empty(int p_width, int p_height, bool p_use_mipmaps, Format p_format)
+	{
 		create(p_width, p_height, p_use_mipmaps, p_format);
 	}
 
-	void _create_from_data(int p_width, int p_height, bool p_use_mipmaps, Format p_format, const PoolVector<uint8_t> &p_data) {
+	void _create_from_data(int p_width, int p_height, bool p_use_mipmaps, Format p_format, const PoolVector<uint8_t> &p_data)
+	{
 		create(p_width, p_height, p_use_mipmaps, p_format, p_data);
 	}
 
@@ -170,7 +147,8 @@ private:
 	int width, height;
 	bool mipmaps;
 
-	void _copy_internals_from(const Image &p_image) {
+	void _copy_internals_from(const Image &p_image)
+	{
 		format = p_image.format;
 		width = p_image.width;
 		height = p_image.height;
@@ -201,7 +179,7 @@ private:
 	static void renormalize_rgbe9995(uint32_t *p_rgb);
 
 public:
-	int get_width() const; ///< Get image width
+	int get_width() const;	///< Get image width
 	int get_height() const; ///< Get image height
 	Vector2 get_size() const;
 	bool has_mipmaps() const;
@@ -217,8 +195,8 @@ public:
 	 */
 	Format get_format() const;
 
-	int get_mipmap_offset(int p_mipmap) const; //get where the mipmap begins in data
-	void get_mipmap_offset_and_size(int p_mipmap, int &r_ofs, int &r_size) const; //get where the mipmap begins in data
+	int get_mipmap_offset(int p_mipmap) const;																 //get where the mipmap begins in data
+	void get_mipmap_offset_and_size(int p_mipmap, int &r_ofs, int &r_size) const;							 //get where the mipmap begins in data
 	void get_mipmap_offset_size_and_dimensions(int p_mipmap, int &r_ofs, int &r_size, int &w, int &h) const; //get where the mipmap begins in data
 
 	/**
@@ -278,7 +256,8 @@ public:
 	 */
 	Image(int p_width, int p_height, bool p_mipmaps, Format p_format, const PoolVector<uint8_t> &p_data);
 
-	enum AlphaMode {
+	enum AlphaMode
+	{
 		ALPHA_NONE,
 		ALPHA_BIT,
 		ALPHA_BLEND
@@ -296,7 +275,8 @@ public:
 	static int get_image_required_mipmaps(int p_width, int p_height, Format p_format);
 	static int get_image_mipmap_offset(int p_width, int p_height, Format p_format, int p_mipmap);
 
-	enum CompressMode {
+	enum CompressMode
+	{
 		COMPRESS_S3TC,
 		COMPRESS_PVRTC2,
 		COMPRESS_PVRTC4,
@@ -343,7 +323,8 @@ public:
 	void unlock();
 
 	//this is used for compression
-	enum DetectChannels {
+	enum DetectChannels
+	{
 		DETECTED_L,
 		DETECTED_LA,
 		DETECTED_R,
@@ -360,7 +341,8 @@ public:
 	void set_pixelv(const Point2 &p_dst, const Color &p_color);
 	void set_pixel(int p_x, int p_y, const Color &p_color);
 
-	void copy_internals_from(const Ref<Image> &p_image) {
+	void copy_internals_from(const Ref<Image> &p_image)
+	{
 		ERR_FAIL_COND_MSG(p_image.is_null(), "It's not a reference to a valid Image object.");
 		format = p_image->format;
 		width = p_image->width;

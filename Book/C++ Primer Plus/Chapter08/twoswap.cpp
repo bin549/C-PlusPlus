@@ -12,7 +12,8 @@ struct job
 };
 
 // explicit specialization
-template <> void Swap<job>(job &j1, job &j2);
+template <>
+void Swap<job>(job &j1, job &j2);
 void show(job &j);
 
 int main()
@@ -23,8 +24,8 @@ int main()
     Swap(i, j);
     cout << "Now i, j = " << i << ", " << j << ".\n";
 
-    job sue ={ "Susan Yaffee", 73000.60, 7 };
-    job sidney ={ "Sidney Taffee", 78060.72, 9 };
+    job sue = {"Susan Yaffee", 73000.60, 7};
+    job sidney = {"Sidney Taffee", 78060.72, 9};
     cout << "Before job swapping: \n";
     show(sue);
     show(sidney);
@@ -37,7 +38,7 @@ int main()
 }
 
 template <class Any>
-void Swap(Any &a, Any &b)   // general version
+void Swap(Any &a, Any &b) // general version
 {
     Any temp;
     temp = a;
@@ -45,9 +46,8 @@ void Swap(Any &a, Any &b)   // general version
     b = temp;
 }
 
-// swaps just the salary and floor fields of a job structures
-
-template <> void Swap<job>(job &j1, job &j2)  // specialization
+template <>
+void Swap<job>(job &j1, job &j2) // specialization
 {
     double t1;
     int t2;
@@ -63,5 +63,5 @@ void show(job &j)
 {
     using namespace std;
     cout << j.name << ": $" << j.salary
-        << " on floor " << j.floor << endl;
+         << " on floor " << j.floor << endl;
 }

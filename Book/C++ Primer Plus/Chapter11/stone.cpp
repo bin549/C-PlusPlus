@@ -3,7 +3,7 @@
 #include <iostream>
 using std::cout;
 #include "stonewt.h"
-void display(const Stonewt & st, int n);
+void display(const Stonewt &st, int n);
 int main()
 {
     Stonewt pavarotti = 260;
@@ -29,7 +29,7 @@ int main()
     return 0;
 }
 
-void display(const Stonewt & st, int n)
+void display(const Stonewt &st, int n)
 {
     for (int i = 0; i < n; i++)
     {

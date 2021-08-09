@@ -1,7 +1,7 @@
 // sqrt.cpp -- using the sqrt() function
 
-#include<iostream>
-#include<cmath>
+#include <iostream>
+#include <cmath>
 
 int main()
 {
@@ -13,8 +13,8 @@ int main()
     double size;
     size = sqrt(area);
     cout << "That's the equivalent of a "
-        << size
-        << " feet to the size." << endl;
+         << size
+         << " feet to the size." << endl;
     cout << "How fascinating!" << endl;
     return 0;
 }

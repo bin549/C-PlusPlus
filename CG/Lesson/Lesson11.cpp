@@ -55,23 +55,19 @@ void mykeyboard(unsigned char key, int x, int y)
 	switch (key)
 	{
 	case 'W':
-	case 'w': // 向前直走
-			  //your code Here
+	case 'w':
 		break;
 	case 'S':
-	case 's': //向后退
-			  //your code Here
+	case 's':
 		break;
 	case 'A':
-	case 'a': //左看
-			  //your code Here
+	case 'a':
 		break;
 	case 'D':
-	case 'd': //右看
-			  //your code Here
+	case 'd':
 		break;
 	}
-	glutPostRedisplay(); //参数修改后调用重画函数，屏幕图形将发生改变
+	glutPostRedisplay();
 }
 
 void Display(void)

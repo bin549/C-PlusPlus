@@ -1,10 +1,10 @@
 // vect.cpp -- methods for Vector class
 #include <cmath>
 #include "vector.h"
-using std::sin;
-using std::cos;
 using std::atan2;
+using std::cos;
 using std::cout;
+using std::sin;
 
 namespace VECTOR
 {
@@ -110,12 +110,12 @@ namespace VECTOR
 
     // operator overloading
     // add two Vectors
-    Vector Vector::operator+(const Vector & b) const
+    Vector Vector::operator+(const Vector &b) const
     {
         return Vector(x + b.x, y + b.y);
     }
 
-    Vector Vector::operator-(const Vector & b) const
+    Vector Vector::operator-(const Vector &b) const
     {
         return Vector(x - b.x, y - b.y);
     }
@@ -130,14 +130,14 @@ namespace VECTOR
         return Vector(n * x, n * y);
     }
 
-    std::ostream & operator<<(std::ostream & os, const Vector &v)
+    std::ostream &operator<<(std::ostream &os, const Vector &v)
     {
         if (v.mode == 'r')
-            os << " (x, y) = (" << v.x << ","<< v.y << ") ";
+            os << " (x, y) = (" << v.x << "," << v.y << ") ";
         else if (v.mode == 'p')
         {
             os << " (m, a) = (" << v.mag << ","
-                << v.ang * Rad_to_deg << ")";
+               << v.ang * Rad_to_deg << ")";
         }
         else
             os << "Vector object mode is invalid";
@@ -145,4 +145,3 @@ namespace VECTOR
     }
 
 }
-

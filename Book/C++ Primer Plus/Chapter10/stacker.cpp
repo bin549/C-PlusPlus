@@ -9,10 +9,10 @@ int main()
     char ch;
     unsigned long po;
     cout << "Please enter A to add a purchase order, \n"
-        << "P to precess a PO, or Q to quit,\n";
+         << "P to precess a PO, or Q to quit,\n";
     while (cin >> ch && toupper(ch) != 'Q')
     {
-        while (cin.get()!='\n')
+        while (cin.get() != '\n')
             continue;
         if (!isalpha(ch))
         {
@@ -42,7 +42,7 @@ int main()
             break;
         }
         cout << "Please enter A to add a puchase order: \n"
-            << "P to process a PO, or Q to quit. \n";
+             << "P to process a PO, or Q to quit. \n";
     }
     cout << "Bye\n";
     return 0;

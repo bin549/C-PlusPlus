@@ -33,12 +33,13 @@ int main()
             cout << step << endl;
         }
         cout << "After " << steps << " steps, the subject "
-            "has the following location: \n";
+                                     "has the following location: \n";
         cout << result << endl;
         result.polar_mode();
-        cout << " or\n" << result << endl;
+        cout << " or\n"
+             << result << endl;
         cout << "Average out outward distance per step = "
-            << result.magval()/steps << endl;
+             << result.magval() / steps << endl;
         steps = 0;
         result.set(0.0, 0.0);
         cout << "Enter targer distance (q to quit): ";

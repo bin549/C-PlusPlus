@@ -1,6 +1,6 @@
 // compstr.cpp -- comparing strings
-#include<iostream>
-#include<cstring>
+#include <iostream>
+#include <cstring>
 int main()
 {
     using namespace std;

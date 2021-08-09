@@ -1,13 +1,12 @@
 // more_and.cpp -- using logical AND operator
 #include <iostream>
 
-const char * qualify[4] =
-{
-    "10. 000-meter race.\n",
-    "mud tug-of-war.\n",
-    "masters canoe jousting.\n",
-    "pie-throwing festival.\n"
-};
+const char *qualify[4] =
+    {
+        "10. 000-meter race.\n",
+        "mud tug-of-war.\n",
+        "masters canoe jousting.\n",
+        "pie-throwing festival.\n"};
 
 int main()
 {

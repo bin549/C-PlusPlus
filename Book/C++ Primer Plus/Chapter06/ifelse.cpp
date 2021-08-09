@@ -17,5 +17,3 @@ int main()
     cout << "\nPlease excuse the slight confusion.\n";
     return 0;
 }
-
-

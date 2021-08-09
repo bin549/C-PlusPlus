@@ -16,13 +16,13 @@ int main()
     cin >> name;
 
     cout << name << ", please enter up to " << ArSize
-        << " short sayings <empty line to quit>;\n";
+         << " short sayings <empty line to quit>;\n";
     String sayings[ArSize];
     char temp[MaxLen];
     int i;
     for (i = 0; i < ArSize; i++)
     {
-        cout << i+1 << "; ";
+        cout << i + 1 << "; ";
         cin.get(temp, MaxLen);
         while (cin && cin.get() != '\n')
             continue;
@@ -39,8 +39,8 @@ int main()
         for (i = 0; i < total; i++)
             cout << sayings[i] << "\n";
         //  use pointer to keep track of shortest, first strings
-        String * shortest = &sayings[0];
-        String * first = &sayings[0];
+        String *shortest = &sayings[0];
+        String *first = &sayings[0];
         for (i = 1; i < total; i++)
         {
             if (sayings[i].length() < shortest->length())
@@ -48,13 +48,16 @@ int main()
             if (sayings[i].length() < first->length())
                 first = &sayings[i];
         }
-        cout << "Shortest saying: \n" << *shortest <<endl;
-        cout << "First alphabetically: \n" << *first << endl;
+        cout << "Shortest saying: \n"
+             << *shortest << endl;
+        cout << "First alphabetically: \n"
+             << *first << endl;
 
         srand(time(0));
         int choice = rand() % total;
-        String * favorite = new String(sayings[choice]);
-        cout << "My favorite sayings: \n" << *favorite << endl;
+        String *favorite = new String(sayings[choice]);
+        cout << "My favorite sayings: \n"
+             << *favorite << endl;
         delete favorite;
     }
     else

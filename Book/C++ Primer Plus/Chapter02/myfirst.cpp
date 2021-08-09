@@ -1,6 +1,6 @@
 // myfirst.cpp--displays a message
 
-#include<iostream>
+#include <iostream>
 int main()
 {
     using namespace std;

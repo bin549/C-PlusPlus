@@ -6,7 +6,6 @@
 
 struct Color
 {
-
 	union
 	{
 

@@ -18,4 +18,3 @@ int main()
     cout << "Crunch, crouch. Now I have " << carrots << " carrots. " << endl;
     return 0;
 }
-

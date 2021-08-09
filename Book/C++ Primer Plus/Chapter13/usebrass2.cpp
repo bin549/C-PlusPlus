@@ -9,7 +9,7 @@ int main()
     using std::cin;
     using std::cout;
     using std::endl;
-    Brass * p_clients[CLIMITS];
+    Brass *p_clients[CLIMITS];
 
     int i;
     for (i = 0; i < CLIMITS; i++)
@@ -25,7 +25,7 @@ int main()
         cout << "Enter opening balance: $";
         cin >> tempbal;
         cout << "Enter 1 for Brass Account or "
-            << "2 for BrassPlus Account: ";
+             << "2 for BrassPlus Account: ";
         while (cin >> kind && (kind != '1' && kind != '2'))
             cout << "Enter either 1 or 2";
         if (kind == '1')
@@ -36,7 +36,7 @@ int main()
             cout << "Enter the overdraft limit: $";
             cin >> tmax;
             cout << "Enter the interest rate "
-                << "as a decimal fraction: ";
+                 << "as a decimal fraction: ";
             cin >> trate;
             p_clients[i] = new BrassPlus(temp, tempnum, tempbal, tmax, trate);
         }

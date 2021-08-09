@@ -3,15 +3,15 @@
 #include <iostream>
 
 unsigned long left(unsigned long num, unsigned ct);
-char * left(const char * str, int n = 1);
+char *left(const char *str, int n = 1);
 
 int main()
 {
     using namespace std;
-    char * trip = "Hawail!! ";   // test value
-    unsigned long n = 12345678;  // test value
+    char *trip = "Hawail!! ";   // test value
+    unsigned long n = 12345678; // test value
     int i;
-    char * temp;
+    char *temp;
 
     for (i = 1; i < 10; i++)
     {
@@ -45,11 +45,11 @@ unsigned long left(unsigned long num, unsigned ct)
 
 // This function returns a pointer to a nuw string.
 // consisting of the first n characters in the str string.
-char * left(const char * str, int n)
+char *left(const char *str, int n)
 {
     if (n < 0)
         n = 0;
-    char * p = new char[n+1];
+    char *p = new char[n + 1];
     int i;
     for (i = 0; i < n && str[i]; i++)
         p[i] = str[i];
@@ -57,4 +57,3 @@ char * left(const char * str, int n)
         p[i++] = '\0';
     return p;
 }
-

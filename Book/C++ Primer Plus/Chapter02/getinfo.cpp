@@ -1,5 +1,5 @@
 // getinfo.cpp -- input and output
-#include<iostream>
+#include <iostream>
 
 int main()
 {

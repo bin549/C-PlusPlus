@@ -3,11 +3,11 @@
 #include <cstring>
 #include "brass.h"
 using std::cout;
-using std::ios_base;
 using std::endl;
+using std::ios_base;
 
 // Brass methods
-Brass::Brass(const char * s, long an, double bal)
+Brass::Brass(const char *s, long an, double bal)
 {
     std::strncpy(fullName, s, MAX - 1);
     fullName[MAX - 1] = '\0';
@@ -19,7 +19,7 @@ void Brass::Deposit(double amt)
 {
     if (amt < 0)
         cout << "Negative deposit not allowed: "
-        << "deposit is cancelled.\n";
+             << "deposit is cancelled.\n";
     else
         balance += amt;
 }
@@ -28,13 +28,13 @@ void Brass::Withdraw(double amt)
 {
     if (amt < 0)
         cout << "Withdrawal amount must be positive: "
-        << "withdrawal canceled.\n";
+             << "withdrawal canceled.\n";
     else if (amt <= balance)
         balance -= amt;
     else
         cout << "Withdrawal amount of $" << amt
-        << " exceeds your balance.\n"
-        << "Withdrawal canceled.\n";
+             << " exceeds your balance.\n"
+             << "Withdrawal canceled.\n";
 }
 
 double Brass::Balance() const
@@ -56,14 +56,14 @@ void Brass::ViewAcct() const
 }
 
 BrassPlus::BrassPlus(const char *s, long an, double bal,
-    double ml, double r) : Brass(s, an, bal)
+                     double ml, double r) : Brass(s, an, bal)
 {
     maxLoan = ml;
     owesBank = 0.0;
     rate = r;
 }
 
-BrassPlus::BrassPlus(const Brass & ba, double ml, double r)
+BrassPlus::BrassPlus(const Brass &ba, double ml, double r)
     : Brass(ba)
 {
     maxLoan = ml;
@@ -94,11 +94,12 @@ void BrassPlus::Withdraw(double amt)
 
     double bal = Balance();
     if (amt <= bal)
-        Brass:Withdraw(amt);
-    else if (amt <= bal + maxLoan -owesBank)
+    Brass:
+        Withdraw(amt);
+    else if (amt <= bal + maxLoan - owesBank)
     {
         double advance = amt - bal;
-        owesBank +=advance * (1.0 + rate);
+        owesBank += advance * (1.0 + rate);
         cout << "Bank advance: $" << advance << endl;
         Deposit(advance);
         Brass::Withdraw(amt);
