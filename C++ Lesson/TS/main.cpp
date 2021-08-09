@@ -65,5 +65,4 @@ int main()
 	pd->f2();
 	pd->f3();
 	pd->g();
-
 }

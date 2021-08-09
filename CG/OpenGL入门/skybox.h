@@ -9,6 +9,6 @@ class SkyBox
 public:
 	DisplayList mSkyBox;
 	Texture *front, *back, *right, *left, *top, *bottom;
-	void Init(const char* path);
+	void Init(const char *path);
 	void Draw(float x, float y, float z);
 };

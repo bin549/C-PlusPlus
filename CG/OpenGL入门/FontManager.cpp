@@ -12,7 +12,7 @@ void FontManager::Init(HDC dc)
 	SelectObject(dc, hFont);
 }
 
-void FontManager::Draw(wchar_t* str)
+void FontManager::Draw(wchar_t *str)
 {
 	int len = lstrlen(str);
 	for (int i = 0; i < len; ++i)

@@ -1,5 +1,5 @@
 #include <iostream>
-#include <math.h> 
+#include <math.h>
 
 using namespace std;
 
@@ -30,12 +30,13 @@ public:
 	Rectangle(double a, double b) : a_(a), b_(b) {}
 	double Area()
 	{
-		return  a_ * b_;
+		return a_ * b_;
 	}
 	double Perimeter()
 	{
-		return  (a_ + b_) * 2;
+		return (a_ + b_) * 2;
 	}
+
 private:
 	double a_;
 	double b_;
@@ -54,6 +55,7 @@ public:
 	{
 		return 2 * PI * b_ + 4 * (a_ - b_);
 	}
+
 private:
 	double a_;
 	double b_;
@@ -72,6 +74,7 @@ public:
 	{
 		return 2 * PI * r_;
 	}
+
 private:
 	double r_;
 };
@@ -90,6 +93,7 @@ public:
 	{
 		return (4 / (double)3) * PI * pow(r_, 3);
 	}
+
 private:
 	double r_;
 };
@@ -107,6 +111,7 @@ public:
 	{
 		return PI * pow(r_, 2) * h_;
 	}
+
 private:
 	double r_;
 	double h_;
@@ -119,12 +124,13 @@ public:
 	Cone(double r, double h) : r_(r), h_(h) {}
 	double Area()
 	{
-		return  PI * r_ * (r_ + (sqrt(r_* h_)));
+		return PI * r_ * (r_ + (sqrt(r_ * h_)));
 	}
 	double Volumn()
 	{
 		return (1 / (double)3) * PI * pow(r_, 2) * h_;
 	}
+
 private:
 	double r_;
 	double h_;
@@ -133,7 +139,7 @@ private:
 class SumofShape
 {
 public:
-	static double SumofArea(Shape* shape[], int n)
+	static double SumofArea(Shape *shape[], int n)
 	{
 		double sum = 0;
 		for (int i = 0; i < n; i++)
@@ -143,32 +149,32 @@ public:
 		return sum;
 	}
 
-	static double SumofPremeter(Shape* shape[], int n)
+	static double SumofPremeter(Shape *shape[], int n)
 	{
 		double sum = 0;
-		Shape2D* shape2d;
+		Shape2D *shape2d;
 		for (int i = 0; i < n; i++)
 		{
-			if (shape2d = dynamic_cast<Shape2D*>(shape[i]))
+			if (shape2d = dynamic_cast<Shape2D *>(shape[i]))
 			{
 				sum += shape2d->Perimeter();
 			}
-
 		}
 		return sum;
 	}
 
-	static double SumofVolumn(Shape* shape[], int n)
+	static double SumofVolumn(Shape *shape[], int n)
 	{
 		double sum = 0;
-		Shape3D* shape3d;
+		Shape3D *shape3d;
 		for (int i = 0; i < n; i++)
 		{
-			if (shape3d = dynamic_cast<Shape3D*>(shape[i]))
+			if (shape3d = dynamic_cast<Shape3D *>(shape[i]))
 				sum += shape3d->Volumn();
 		}
 		return sum;
 	}
+
 private:
 	SumofShape() {}
 };
@@ -181,7 +187,7 @@ int main()
 	Sphere sphere(3);
 	Cylinder cylinder(3, 5);
 	Cone cone(3, 4);
-	Shape* shape_array[] = { &rectangle, &ellipse, &circle, &sphere, &cylinder, &cone };
+	Shape *shape_array[] = {&rectangle, &ellipse, &circle, &sphere, &cylinder, &cone};
 	double sum_of_area = SumofShape::SumofArea(shape_array, 6);
 	double sum_of_premeter = SumofShape::SumofPremeter(shape_array, 6);
 	double sum_of_volumn = SumofShape::SumofVolumn(shape_array, 6);

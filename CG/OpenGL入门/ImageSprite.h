@@ -9,7 +9,7 @@ class ImageSprite : public RenderableObject
 {
 public:
 	ImageSprite();
-	Texture* mTexture;
+	Texture *mTexture;
 	Vector3f mMesh[4];
 	GLenum mDstFactor;
 	unsigned char mAlpha;
@@ -17,7 +17,7 @@ public:
 	int mFadeSpeed;
 	bool mbFadeIn, mbFadeOut;
 	Vector3f mPos;
-	void SetTexture(Texture* texture);
+	void SetTexture(Texture *texture);
 	void SetRect(float x, float y, float width, float height);
 
 	void FadeIn(float duration);

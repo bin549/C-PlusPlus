@@ -4,7 +4,7 @@
 
 #pragma comment(lib, "libfbxsdk-md.lib")
 
-void ImportPositions(FbxGeometryBase* geometry, std::vector<Vector3f> &positions)
+void ImportPositions(FbxGeometryBase *geometry, std::vector<Vector3f> &positions)
 {
 	int controlPointCount = geometry->GetControlPointsCount();
 	positions.resize(controlPointCount);
@@ -99,13 +99,13 @@ void FBXModel::ImportMesh(FbxMesh *mesh)
 	}
 }
 
-void GetMaterialPath(char* path)
+void GetMaterialPath(char *path)
 {
 	memset(path + strlen(path) - 4, 0, 4);
 	strcat(path, ".fbm/");
 }
 
-void FBXModel::ImportMaterial(FbxNode* node)
+void FBXModel::ImportMaterial(FbxNode *node)
 {
 	char szFBXTextureDir[256] = {0};
 	strcpy(szFBXTextureDir, mFBXPath);
@@ -180,7 +180,7 @@ void FBXModel::ImportMaterial(FbxNode* node)
 	}
 }
 
-void FBXModel::ImportNode(FbxNode* node)
+void FBXModel::ImportNode(FbxNode *node)
 {
 	//decode per node
 	printf("decode %s\n", node->GetName());
@@ -207,7 +207,7 @@ void FBXModel::ImportNode(FbxNode* node)
 	}
 }
 
-void FBXModel::Init(const char* filePath)
+void FBXModel::Init(const char *filePath)
 {
 	memset(mFBXPath, 0, 256);
 	strcpy(mFBXPath, filePath);

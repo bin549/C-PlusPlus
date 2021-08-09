@@ -8,11 +8,11 @@
 using namespace VECTOR;
 using namespace std;
 
-int main() 
+int main()
 {
 	cout << "+++++++++++Test+++++++++++" << endl;
 	cout << "*-Vector 1-*" << endl;
-	Vector2 v1 = Vector2(3, 4); 
+	Vector2 v1 = Vector2(3, 4);
 	cout << v1 << endl;
 	v1.Scale(10);
 	cout << v1 << endl;
@@ -26,7 +26,7 @@ int main()
 
 	cout << "*-Vector 3-*" << endl;
 	cout << v3 << endl;
-	cout << v3.GetLength() <<endl;
+	cout << v3.GetLength() << endl;
 	v3.Normalize();
 	cout << v3 << endl;
 	cout << v3.GetLength() << endl;
@@ -38,15 +38,15 @@ int main()
 	cout << Vector2::SignedAngle(v1, v2) << endl;
 
 	cout << "*-Vector Overloaded Operators Method-*" << endl;
-	cout << v1+v2 << endl;
-	cout << v1-v2 << endl;
+	cout << v1 + v2 << endl;
+	cout << v1 - v2 << endl;
 	cout << -v2 << endl;
 	cout << v1[0] << endl;
 	cout << v1[1] << endl;
 	v1[2];
-	cout << v1*2 << endl;
-	cout << 2*v1 << endl;
-	cout << v1/2 << endl;
-	cout << (v1==v2) << endl;
-	cout << (v1!=v2) << endl;
+	cout << v1 * 2 << endl;
+	cout << 2 * v1 << endl;
+	cout << v1 / 2 << endl;
+	cout << (v1 == v2) << endl;
+	cout << (v1 != v2) << endl;
 }

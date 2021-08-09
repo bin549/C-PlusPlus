@@ -1,25 +1,3 @@
-/***************************************************************************
- *   Copyright (C) 2009 by Andrey Afletdinov <fheroes2@gmail.com>          *
- *                                                                         *
- *   Part of the Free Heroes2 Engine:                                      *
- *   http://sourceforge.net/projects/fheroes2                              *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- ***************************************************************************/
-
 #pragma once
 
 #include "ByteVectorReader.h"
@@ -129,17 +107,17 @@ public:
 
     Monster(int = UNKNOWN);
 
-    explicit Monster(const Spell&);
+    explicit Monster(const Spell &);
 
     Monster(int race, uint32_t dw);
 
     virtual ~Monster() = default;
 
-    bool operator<(const Monster&) const;
+    bool operator<(const Monster &) const;
 
-    bool operator==(const Monster&) const;
+    bool operator==(const Monster &) const;
 
-    bool operator!=(const Monster&) const;
+    bool operator!=(const Monster &) const;
 
     int operator()() const;
 
@@ -169,7 +147,7 @@ public:
 
     uint32_t GetShots() const;
 
-    static uint32_t GetHitPoints(const Monster& m);
+    static uint32_t GetHitPoints(const Monster &m);
 
     uint32_t GetHitPoints() const;
 
@@ -235,13 +213,14 @@ public:
 
     static uint32_t Rand4MonthOf();
 
-    static uint32_t GetCountFromHitPoints(const Monster&, uint32_t);
+    static uint32_t GetCountFromHitPoints(const Monster &, uint32_t);
 
-    static void UpdateStats(const string&);
+    static void UpdateStats(const string &);
 
     static float GetUpgradeRatio();
 
     int id = 0;
+
 protected:
     static Monster FromDwelling(int race, uint32_t dw);
 };
@@ -249,11 +228,11 @@ protected:
 struct MonsterStaticData
 {
     // wrapper for stream
-    static MonsterStaticData& Get();
+    static MonsterStaticData &Get();
 };
 
-ByteVectorWriter& operator<<(ByteVectorWriter&, const Monster&);
-ByteVectorReader& operator>>(ByteVectorReader&, Monster&);
+ByteVectorWriter &operator<<(ByteVectorWriter &, const Monster &);
+ByteVectorReader &operator>>(ByteVectorReader &, Monster &);
 
-ByteVectorWriter& operator<<(ByteVectorWriter&, const MonsterStaticData&);
-ByteVectorReader& operator>>(ByteVectorReader&, MonsterStaticData&);
+ByteVectorWriter &operator<<(ByteVectorWriter &, const MonsterStaticData &);
+ByteVectorReader &operator>>(ByteVectorReader &, MonsterStaticData &);

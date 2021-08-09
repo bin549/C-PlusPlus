@@ -2,12 +2,12 @@
 
 Button::Button() : mOffsetY(0.0f), mClickHandler(nullptr)
 {
-} 
+}
 
-Button* Button::OnTouchBegin(int x, int y)
+Button *Button::OnTouchBegin(int x, int y)
 {
-	if (x > mMinX && x < mMaxX && 
-		y > mMinY && y < mMaxY)  
+	if (x > mMinX && x < mMaxX &&
+		y > mMinY && y < mMaxY)
 	{
 		mOffsetY = -4.0f;
 		return this;
@@ -18,9 +18,9 @@ Button* Button::OnTouchBegin(int x, int y)
 		ret = Next<Button>()->OnTouchBegin(x, y);
 	}
 	return ret;
-} 
+}
 
-Button* Button::OnTouchEnd(int x, int y)
+Button *Button::OnTouchEnd(int x, int y)
 {
 	if (x > mMinX && x < mMaxX &&
 		y > mMinY && y < mMaxY)

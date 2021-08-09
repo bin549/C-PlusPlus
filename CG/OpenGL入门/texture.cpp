@@ -4,7 +4,7 @@
 
 #pragma comment(lib, "soil.lib")
 
-unsigned char * DecodeBMP(unsigned char *bmpFileData, int &width, int &height)
+unsigned char *DecodeBMP(unsigned char *bmpFileData, int &width, int &height)
 {
 	if (0x4D42 == *((unsigned short *)bmpFileData))
 	{

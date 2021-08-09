@@ -16,7 +16,7 @@ int find_pairs(int array[], int n, int sum)
 	{
 		for (int j = i + 1; j < n; j++)
 		{
-			if (array[i]+array[j] == sum)
+			if (array[i] + array[j] == sum)
 			{
 				pairs++;
 			}
@@ -27,7 +27,7 @@ int find_pairs(int array[], int n, int sum)
 
 int main()
 {
-	int array[] ={ 1, 5, 7, 5, 8, 9, 11, 12 };
+	int array[] = {1, 5, 7, 5, 8, 9, 11, 12};
 	int n = sizeof array / sizeof array[0];
 	int sum = 12;
 	cout << "Original array: ";

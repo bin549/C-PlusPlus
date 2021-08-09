@@ -16,6 +16,7 @@ protected:
 	string name_;
 	Gender gender_;
 	Birthday birth_;
+
 public:
 	Person() : name_(""), gender_(Male), birth_(1999, 1, 1) {}
 	Person(string name, Gender gender, Birthday birth) : name_(name), gender_(gender), birth_(birth) {}

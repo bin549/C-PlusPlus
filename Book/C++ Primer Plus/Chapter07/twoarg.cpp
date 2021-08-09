@@ -15,7 +15,7 @@ int main()
         cin >> times;
         n_chars(ch, times);
         cout << "\nEnter anther character or press"
-            " q-key to quit: ";
+                " q-key to quit: ";
         cin >> ch;
     }
     cout << "The value of times is " << times << ".\n";

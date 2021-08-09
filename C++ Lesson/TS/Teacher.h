@@ -14,6 +14,7 @@ class Teacher : virtual public Person
 {
 private:
 	string title_;
+
 public:
 	Teacher() : Person(), title_("") {}
 	Teacher(string name, Gender gender, Birthday birth, string title) : Person(name, gender, birth), title_(title) {}

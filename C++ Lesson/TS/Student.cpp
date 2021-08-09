@@ -1,7 +1,7 @@
 #include <iostream>
 #include "./Student.h"
 
-std::ostream& operator<<(std::ostream& os, const Student::Gender& gender)
+std::ostream &operator<<(std::ostream &os, const Student::Gender &gender)
 {
     if (gender == Student::Male)
         os << "Male";
@@ -16,21 +16,21 @@ Student::Student()
     gender_ = Male;
 }
 
-Student::Student(const char* name, Gender gender)
+Student::Student(const char *name, Gender gender)
 {
     name_ = new char[strlen(name) + 1];
     strcpy(name_, name);
     gender_ = gender;
 }
 
-Student::Student(const Student& student)
+Student::Student(const Student &student)
 {
     name_ = new char[strlen(student.name_) + 1];
     strcpy(name_, student.name_);
     gender_ = student.gender_;
 }
 
-Student& Student::operator= (const Student& student)
+Student &Student::operator=(const Student &student)
 {
     name_ = new char(strlen(student.name_) + 1);
     strcpy(name_, student.name_);
@@ -43,7 +43,8 @@ Student::~Student()
     delete[] name_;
 }
 
-void Student::Show()const
+void Student::Show() const
 {
-    std::cout << "Name: " << name_ << std::endl << "Gender:" << gender_ << std::endl;
+    std::cout << "Name: " << name_ << std::endl
+              << "Gender:" << gender_ << std::endl;
 }

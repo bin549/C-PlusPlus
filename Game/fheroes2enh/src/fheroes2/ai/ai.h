@@ -1,25 +1,3 @@
-/***************************************************************************
- *   Copyright (C) 2010 by Andrey Afletdinov <fheroes2@gmail.com>          *
- *                                                                         *
- *   Part of the Free Heroes2 Engine:                                      *
- *   http://sourceforge.net/projects/fheroes2                              *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- ***************************************************************************/
-
 #pragma once
 
 class Castle;
@@ -52,57 +30,57 @@ namespace AI
 
     void Init();
 
-    void KingdomTurn(Kingdom&);
+    void KingdomTurn(Kingdom &);
 
-    void BattleTurn(Battle::Arena&, const Battle::Unit&, Battle::Actions&);
+    void BattleTurn(Battle::Arena &, const Battle::Unit &, Battle::Actions &);
 
-    bool BattleMagicTurn(Battle::Arena&, const Battle::Unit&, Battle::Actions&, const Battle::Unit*);
+    bool BattleMagicTurn(Battle::Arena &, const Battle::Unit &, Battle::Actions &, const Battle::Unit *);
 
-    void HeroesAdd(const Heroes&);
+    void HeroesAdd(const Heroes &);
 
-    void HeroesRemove(const Heroes&);
+    void HeroesRemove(const Heroes &);
 
-    void HeroesTurn(Heroes&);
+    void HeroesTurn(Heroes &);
 
-    void HeroesMove(Heroes&);
+    void HeroesMove(Heroes &);
 
-    bool HeroesGetTask(Heroes&);
+    bool HeroesGetTask(Heroes &);
 
-    void HeroesPreBattle(HeroBase&);
+    void HeroesPreBattle(HeroBase &);
 
-    void HeroesAfterBattle(HeroBase&);
+    void HeroesAfterBattle(HeroBase &);
 
-    void HeroesPostLoad(Heroes&);
+    void HeroesPostLoad(Heroes &);
 
-    bool HeroesValidObject(const Heroes&, s32);
+    bool HeroesValidObject(const Heroes &, s32);
 
-    bool HeroesCanMove(const Heroes&);
+    bool HeroesCanMove(const Heroes &);
 
-    void HeroesAction(Heroes&, s32);
+    void HeroesAction(Heroes &, s32);
 
-    void HeroesActionComplete(Heroes&, s32);
+    void HeroesActionComplete(Heroes &, s32);
 
-    void HeroesActionNewPosition(Heroes&);
+    void HeroesActionNewPosition(Heroes &);
 
-    void HeroesLevelUp(Heroes&);
+    void HeroesLevelUp(Heroes &);
 
-    void HeroesClearTask(const Heroes&);
+    void HeroesClearTask(const Heroes &);
 
     bool HeroesSkipFog();
 
-    std::string HeroesString(const Heroes&);
+    std::string HeroesString(const Heroes &);
 
-    void CastleAdd(const Castle&);
+    void CastleAdd(const Castle &);
 
-    void CastleRemove(const Castle&);
+    void CastleRemove(const Castle &);
 
-    void CastleTurn(Castle&);
+    void CastleTurn(Castle &);
 
-    void CastlePreBattle(Castle&);
+    void CastlePreBattle(Castle &);
 
-    void CastleAfterBattle(Castle&, bool attacker_wins);
+    void CastleAfterBattle(Castle &, bool attacker_wins);
 
-    const char* Type();
+    const char *Type();
 
-    const char* License();
+    const char *License();
 }

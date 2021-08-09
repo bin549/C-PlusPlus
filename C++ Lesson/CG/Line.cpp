@@ -14,13 +14,13 @@ Line::Line(int x1, int x2, int y1, int y2)
 	length_ = end_point_.Distance(start_point_);
 }
 
-Line::Line(Point& p1, Point& p2)
+Line::Line(Point &p1, Point &p2)
 {
 	start_point_ = Point(p1);
 	end_point_ = Point(p2);
 	length_ = end_point_.Distance(start_point_);
 }
-double Line::Length() const 
+double Line::Length() const
 {
 	return length_;
 }

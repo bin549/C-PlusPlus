@@ -1,32 +1,3 @@
-/********************************************************************************
- *   Copyright (C) 2010 by Andrey Afletdinov <fheroes2@gmail.com>               *
- *   All rights reserved.                                                       *
- *                                                                              *
- *   Part of the Free Heroes2 Engine:                                           *
- *   http://sourceforge.net/projects/fheroes2                                   *
- *                                                                              *
- *   Redistribution and use in source and binary forms, with or without         *
- *   modification, are permitted provided that the following conditions         *
- *   are met:                                                                   *
- *   - Redistributions may not be sold, nor may they be used in a               *
- *     commercial product or activity.                                          *
- *   - Redistributions of source code and/or in binary form must reproduce      *
- *     the above copyright notice, this list of conditions and the              *
- *     following disclaimer in the documentation and/or other materials         *
- *     provided with the distribution.                                          *
- *                                                                              *
- * THIS SOFTWARE IS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,   *
- * BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS    *
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT     *
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,        *
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, *
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;  *
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,     *
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE         *
- * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,            *
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                           *
- *******************************************************************************/
-
 #include <functional>
 #include <algorithm>
 
@@ -43,20 +14,20 @@
 
 #define HERO_MAX_SHEDULED_TASK 7
 
-AIHeroes& AIHeroes::Get()
+AIHeroes &AIHeroes::Get()
 {
     static AIHeroes ai_heroes;
     return ai_heroes;
 }
 
-AIHero& AIHeroes::Get(const Heroes& ht)
+AIHero &AIHeroes::Get(const Heroes &ht)
 {
     return Get()._items.at(ht.GetID());
 }
 
 void AIHeroes::Reset()
 {
-    AIHeroes& ai = Get();
+    AIHeroes &ai = Get();
     for_each(ai._items.begin(), ai._items.end(), std::function<void(AIHero)>(&AIHero::Reset));
 }
 
@@ -72,38 +43,34 @@ bool AI::HeroesSkipFog()
     return false;
 }
 
-void AI::HeroesActionComplete(Heroes&, s32)
+void AI::HeroesActionComplete(Heroes &, s32)
 {
 }
 
-string AI::HeroesString(const Heroes& hero)
+string AI::HeroesString(const Heroes &hero)
 {
     ostringstream os;
 
-    AIHero& ai_hero = AIHeroes::Get(hero);
-    Queue& task = ai_hero.sheduled_visit;
+    AIHero &ai_hero = AIHeroes::Get(hero);
+    Queue &task = ai_hero.sheduled_visit;
 
-    os << "flags           : " <<
-        (hero.Modes(HEROES_SCOUTER) ? "SCOUTER," : "") <<
-        (hero.Modes(HEROES_HUNTER) ? "HUNTER," : "") <<
-        (hero.Modes(HEROES_WAITING) ? "WAITING," : "") <<
-        (hero.Modes(HEROES_STUPID) ? "STUPID" : "") << endl;
+    os << "flags           : " << (hero.Modes(HEROES_SCOUTER) ? "SCOUTER," : "") << (hero.Modes(HEROES_HUNTER) ? "HUNTER," : "") << (hero.Modes(HEROES_WAITING) ? "WAITING," : "") << (hero.Modes(HEROES_STUPID) ? "STUPID" : "") << endl;
 
-    os << "ai primary target: " << ai_hero.primary_target << endl <<
-        "ai sheduled visit: ";
-    for (auto& it : task)
+    os << "ai primary target: " << ai_hero.primary_target << endl
+       << "ai sheduled visit: ";
+    for (auto &it : task)
         os << it << "(" << MP2::StringObject(world.GetTiles(it).GetObject()) << "), ";
     os << endl;
 
     return os.str();
 }
 
-void AI::HeroesPostLoad(Heroes& hero)
+void AI::HeroesPostLoad(Heroes &hero)
 {
     hero.SetModes(HEROES_HUNTER);
 }
 
-void AI::HeroesLevelUp(Heroes& hero)
+void AI::HeroesLevelUp(Heroes &hero)
 {
     if (4 < hero.GetLevel() && !hero.Modes(HEROES_HUNTER))
         hero.SetModes(HEROES_HUNTER);
@@ -112,44 +79,44 @@ void AI::HeroesLevelUp(Heroes& hero)
         hero.ResetModes(HEROES_SCOUTER);
 }
 
-void AI::HeroesPreBattle(HeroBase& hero)
+void AI::HeroesPreBattle(HeroBase &hero)
 {
-    Castle* castle = world.GetCastle(hero.GetCenter());
+    Castle *castle = world.GetCastle(hero.GetCenter());
     if (castle && hero.GetType() != HeroBase::CAPTAIN)
         hero.GetArmy().m_troops.JoinTroops(castle->GetArmy().m_troops);
 }
 
-void AI::HeroesAfterBattle(HeroBase& hero)
+void AI::HeroesAfterBattle(HeroBase &hero)
 {
 }
 
-void AI::HeroesClearTask(const Heroes& hero)
+void AI::HeroesClearTask(const Heroes &hero)
 {
     AIHeroes::Get(hero).ClearTasks();
 }
 
-bool AIHeroesValidObject2(const Heroes* hero, s32 index)
+bool AIHeroesValidObject2(const Heroes *hero, s32 index)
 {
-    const Heroes& hero2 = *hero;
+    const Heroes &hero2 = *hero;
     return AI::HeroesValidObject(hero2, index);
 }
 
 // get priority object for AI independent of distance (1 day)
-bool AIHeroesPriorityObject(const Heroes& hero, s32 index)
+bool AIHeroesPriorityObject(const Heroes &hero, s32 index)
 {
-    Maps::Tiles& tile = world.GetTiles(index);
+    Maps::Tiles &tile = world.GetTiles(index);
 
     if (MP2::OBJ_CASTLE == tile.GetObject())
     {
-        const Castle* castle = world.GetCastle(Maps::GetPoint(index));
+        const Castle *castle = world.GetCastle(Maps::GetPoint(index));
         if (castle)
         {
             if (hero.GetColor() == castle->GetColor())
             {
                 // maybe need join army
                 return hero.Modes(AI::HEROES_HUNTER) &&
-                    castle->GetArmy().m_troops.IsValid() &&
-                    !hero.isVisited(world.GetTiles(castle->GetIndex()));
+                       castle->GetArmy().m_troops.IsValid() &&
+                       !hero.isVisited(world.GetTiles(castle->GetIndex()));
             }
             if (!hero.isFriends(castle->GetColor()))
                 return AI::HeroesValidObject(hero, index);
@@ -158,10 +125,10 @@ bool AIHeroesPriorityObject(const Heroes& hero, s32 index)
     else if (MP2::OBJ_HEROES == tile.GetObject())
     {
         // kill enemy hero
-        const Heroes* hero2 = tile.GetHeroes();
+        const Heroes *hero2 = tile.GetHeroes();
         return hero2 &&
-            !hero.isFriends(hero2->GetColor()) &&
-            AI::HeroesValidObject(hero, index);
+               !hero.isFriends(hero2->GetColor()) &&
+               AI::HeroesValidObject(hero, index);
     }
 
     switch (tile.GetObject())
@@ -185,7 +152,7 @@ bool AIHeroesPriorityObject(const Heroes& hero, s32 index)
     return false;
 }
 
-s32 FindUncharteredTerritory(Heroes& hero, uint32_t scoute)
+s32 FindUncharteredTerritory(Heroes &hero, uint32_t scoute)
 {
     Maps::Indexes v;
     Maps::GetAroundIndexes(hero.GetIndex(), scoute, true, v);
@@ -193,8 +160,8 @@ s32 FindUncharteredTerritory(Heroes& hero, uint32_t scoute)
 
     v.resize(distance(v.begin(),
                       remove_if(v.begin(), v.end(),
-                                [](s32 it) { return Maps::TileIsUnderProtection(it); })));
-
+                                [](s32 it)
+                                { return Maps::TileIsUnderProtection(it); })));
 
     for (auto it = v.rbegin(); it != v.rend() && res.size() < 4; ++it)
     {
@@ -210,7 +177,7 @@ s32 FindUncharteredTerritory(Heroes& hero, uint32_t scoute)
     return result;
 }
 
-s32 GetRandomHeroesPosition(Heroes& hero, uint32_t scoute)
+s32 GetRandomHeroesPosition(Heroes &hero, uint32_t scoute)
 {
     Maps::Indexes v;
     Maps::GetAroundIndexes(hero.GetIndex(), scoute, true, v);
@@ -218,8 +185,8 @@ s32 GetRandomHeroesPosition(Heroes& hero, uint32_t scoute)
 
     v.resize(distance(v.begin(),
                       remove_if(v.begin(), v.end(),
-                                [](s32 it) { return Maps::TileIsUnderProtection(it); })));
-
+                                [](s32 it)
+                                { return Maps::TileIsUnderProtection(it); })));
 
     for (auto it = v.rbegin(); it != v.rend() && res.size() < 4; ++it)
     {
@@ -233,10 +200,10 @@ s32 GetRandomHeroesPosition(Heroes& hero, uint32_t scoute)
     return result;
 }
 
-void AIHeroesAddedRescueTask(Heroes& hero)
+void AIHeroesAddedRescueTask(Heroes &hero)
 {
-    AIHero& ai_hero = AIHeroes::Get(hero);
-    Queue& task = ai_hero.sheduled_visit;
+    AIHero &ai_hero = AIHeroes::Get(hero);
+    Queue &task = ai_hero.sheduled_visit;
 
     uint32_t scoute = hero.GetScoute();
 
@@ -260,7 +227,7 @@ void AIHeroesAddedRescueTask(Heroes& hero)
 
     // find unchartered territory
     s32 index = FindUncharteredTerritory(hero, scoute);
-    const Maps::Tiles& tile = world.GetTiles(hero.GetIndex());
+    const Maps::Tiles &tile = world.GetTiles(hero.GetIndex());
 
     if (index < 0)
     {
@@ -277,24 +244,25 @@ void AIHeroesAddedRescueTask(Heroes& hero)
         }
     }
 
-    if (0 <= index) task.push_back(index);
+    if (0 <= index)
+        task.push_back(index);
 }
 
-void AIHeroesAddedTask(Heroes& hero)
+void AIHeroesAddedTask(Heroes &hero)
 {
-    AIHero& ai_hero = AIHeroes::Get(hero);
-    AIKingdom& ai_kingdom = AIKingdoms::Get(hero.GetColor());
+    AIHero &ai_hero = AIHeroes::Get(hero);
+    AIKingdom &ai_kingdom = AIKingdoms::Get(hero.GetColor());
 
-    Queue& task = ai_hero.sheduled_visit;
-    IndexObjectMap& ai_objects = ai_kingdom.scans;
+    Queue &task = ai_hero.sheduled_visit;
+    IndexObjectMap &ai_objects = ai_kingdom.scans;
 
     // load minimal distance tasks
     vector<IndexDistance> objs;
     objs.reserve(ai_objects.size());
 
-    for (auto& ai_object : ai_objects)
+    for (auto &ai_object : ai_objects)
     {
-        const Maps::Tiles& tile = world.GetTiles(ai_object.first);
+        const Maps::Tiles &tile = world.GetTiles(ai_object.first);
 
         if (hero.isShipMaster())
         {
@@ -309,20 +277,22 @@ void AIHeroesAddedTask(Heroes& hero)
         }
         else
         {
-            if (tile.isWater() && MP2::OBJ_BOAT != tile.GetObject()) continue;
+            if (tile.isWater() && MP2::OBJ_BOAT != tile.GetObject())
+                continue;
         }
 
         objs.emplace_back(ai_object.first,
                           Maps::GetApproximateDistance(hero.GetIndex(), ai_object.first));
     }
 
-
     sort(objs.begin(), objs.end(), IndexDistance::Shortest);
 
     for (vector<IndexDistance>::const_iterator
-         it = objs.begin(); it != objs.end(); ++it)
+             it = objs.begin();
+         it != objs.end(); ++it)
     {
-        if (task.size() >= HERO_MAX_SHEDULED_TASK) break;
+        if (task.size() >= HERO_MAX_SHEDULED_TASK)
+            break;
         const bool validobj = AI::HeroesValidObject(hero, (*it).first);
 
         if (validobj &&
@@ -340,11 +310,11 @@ void AIHeroesAddedTask(Heroes& hero)
         AIHeroesAddedRescueTask(hero);
 }
 
-void AI::HeroesActionNewPosition(Heroes& hero)
+void AI::HeroesActionNewPosition(Heroes &hero)
 {
-    AIHero& ai_hero = AIHeroes::Get(hero);
+    AIHero &ai_hero = AIHeroes::Get(hero);
     //AIKingdom & ai_kingdom = AIKingdoms::Get(hero.GetColor());
-    Queue& task = ai_hero.sheduled_visit;
+    Queue &task = ai_hero.sheduled_visit;
 
     const u8 objs[] = {MP2::OBJ_ARTIFACT, MP2::OBJ_RESOURCE, MP2::OBJ_CAMPFIRE, MP2::OBJ_TREASURECHEST, 0};
     Maps::Indexes pickups = Maps::ScanAroundObjects(hero.GetIndex(), objs);
@@ -353,22 +323,22 @@ void AI::HeroesActionNewPosition(Heroes& hero)
         pickups.end() == find(pickups.begin(), pickups.end(), hero.GetPath().GetDestinationIndex()))
         hero.GetPath().Reset();
 
-    for (auto& pickup : pickups)
+    for (auto &pickup : pickups)
         if (pickup != hero.GetPath().GetDestinationIndex())
             task.push_front(pickup);
 }
 
-bool AI::HeroesGetTask(Heroes& hero)
+bool AI::HeroesGetTask(Heroes &hero)
 {
     vector<s32> results;
     results.reserve(5);
 
-    const Settings& conf = Settings::Get();
-    AIHero& ai_hero = AIHeroes::Get(hero);
-    AIKingdom& ai_kingdom = AIKingdoms::Get(hero.GetColor());
+    const Settings &conf = Settings::Get();
+    AIHero &ai_hero = AIHeroes::Get(hero);
+    AIKingdom &ai_kingdom = AIKingdoms::Get(hero.GetColor());
 
-    Queue& task = ai_hero.sheduled_visit;
-    IndexObjectMap& ai_objects = ai_kingdom.scans;
+    Queue &task = ai_hero.sheduled_visit;
+    IndexObjectMap &ai_objects = ai_kingdom.scans;
 
     const u8 objs1[] = {MP2::OBJ_ARTIFACT, MP2::OBJ_RESOURCE, MP2::OBJ_CAMPFIRE, MP2::OBJ_TREASURECHEST, 0};
     const u8 objs2[] = {MP2::OBJ_SAWMILL, MP2::OBJ_MINES, MP2::OBJ_ALCHEMYLAB, 0};
@@ -377,7 +347,7 @@ bool AI::HeroesGetTask(Heroes& hero)
     // rescan path
     hero.RescanPath();
 
-    Castle* castle = hero.inCastle();
+    Castle *castle = hero.inCastle();
     // if hero in castle
     if (castle)
     {
@@ -402,12 +372,12 @@ bool AI::HeroesGetTask(Heroes& hero)
         // scan enemy hero
         if (hero.GetSquarePatrol())
         {
-            const Maps::Indexes& indicesAround = Maps::ScanAroundObject(
+            const Maps::Indexes &indicesAround = Maps::ScanAroundObject(
                 Maps::GetIndexFromAbsPoint(hero.GetCenterPatrol()),
                 hero.GetSquarePatrol(), MP2::OBJ_HEROES);
             for (int result : indicesAround)
             {
-                const Heroes* enemy = world.GetTiles(result).GetHeroes();
+                const Heroes *enemy = world.GetTiles(result).GetHeroes();
                 if (!enemy || enemy->isFriends(hero.GetColor()))
                     continue;
                 if (!hero.GetPath().Calculate(enemy->GetIndex()))
@@ -419,7 +389,7 @@ bool AI::HeroesGetTask(Heroes& hero)
         // can pickup objects
         if (conf.ExtHeroPatrolAllowPickup())
         {
-            const Maps::Indexes& indicesAround = Maps::ScanAroundObjects(hero.GetIndex(),
+            const Maps::Indexes &indicesAround = Maps::ScanAroundObjects(hero.GetIndex(),
                                                                          hero.GetSquarePatrol(), objs1);
             for (auto result : indicesAround)
             {
@@ -470,7 +440,7 @@ bool AI::HeroesGetTask(Heroes& hero)
         }
         else
         {
-            const Castle* castle = nullptr;
+            const Castle *castle = nullptr;
 
             if (nullptr != (castle = world.GetCastle(Maps::GetPoint(ai_hero.primary_target))) &&
                 nullptr != castle->GetHeroes().Guest() && castle->isFriends(hero.GetColor()))
@@ -486,11 +456,12 @@ bool AI::HeroesGetTask(Heroes& hero)
             }
         }
 
-        if (hero.GetPath().isValid()) return true;
+        if (hero.GetPath().isValid())
+            return true;
     }
 
     // scan heroes and castle
-    const Maps::Indexes& enemies = Maps::ScanAroundObjects(hero.GetIndex(), hero.GetScoute(), objs3);
+    const Maps::Indexes &enemies = Maps::ScanAroundObjects(hero.GetIndex(), hero.GetScoute(), objs3);
 
     for (int enemie : enemies)
     {
@@ -516,14 +487,15 @@ bool AI::HeroesGetTask(Heroes& hero)
     // scan 2x2 pickup objects
     Maps::Indexes pickups = Maps::ScanAroundObjects(hero.GetIndex(), 2, objs1);
     // scan 3x3 capture objects
-    const Maps::Indexes& captures = Maps::ScanAroundObjects(hero.GetIndex(), 3, objs2);
-    if (!captures.empty()) pickups.insert(pickups.end(), captures.begin(), captures.end());
+    const Maps::Indexes &captures = Maps::ScanAroundObjects(hero.GetIndex(), 3, objs2);
+    if (!captures.empty())
+        pickups.insert(pickups.end(), captures.begin(), captures.end());
 
     if (!pickups.empty())
     {
         hero.GetPath().Reset();
 
-        for (int& pickup : pickups)
+        for (int &pickup : pickups)
         {
             if (!HeroesValidObject(hero, pickup))
                 continue;
@@ -545,10 +517,8 @@ bool AI::HeroesGetTask(Heroes& hero)
     else
     {
         // remove invalid task
-        task.remove_if([&](s32& it)
-        {
-            return !AIHeroesValidObject2(&hero, it);
-        });
+        task.remove_if([&](s32 &it)
+                       { return !AIHeroesValidObject2(&hero, it); });
     }
 
     // random shuffle
@@ -564,8 +534,9 @@ bool AI::HeroesGetTask(Heroes& hero)
     // find passable index
     while (!task.empty())
     {
-        const s32& index = task.front();
-        if (hero.GetPath().Calculate(index)) break;
+        const s32 &index = task.front();
+        if (hero.GetPath().Calculate(index))
+            break;
 
         task.pop_front();
     }
@@ -573,7 +544,7 @@ bool AI::HeroesGetTask(Heroes& hero)
     // success
     if (!task.empty())
     {
-        const s32& index = task.front();
+        const s32 &index = task.front();
 
         ai_objects.erase(index);
         task.pop_front();
@@ -595,17 +566,18 @@ bool AI::HeroesGetTask(Heroes& hero)
     return false;
 }
 
-void AIHeroesTurn(Heroes* hero)
+void AIHeroesTurn(Heroes *hero)
 {
-    if (hero) AI::HeroesTurn(*hero);
+    if (hero)
+        AI::HeroesTurn(*hero);
 }
 
-void AI::HeroesTurn(Heroes& hero)
+void AI::HeroesTurn(Heroes &hero)
 {
-    Interface::StatusWindow& status = Interface::Basic::Get().GetStatusWindow();
+    Interface::StatusWindow &status = Interface::Basic::Get().GetStatusWindow();
 
     while (hero.MayStillMove() &&
-        !hero.Modes(HEROES_WAITING | HEROES_STUPID))
+           !hero.Modes(HEROES_WAITING | HEROES_STUPID))
     {
         // turn indicator
         status.RedrawTurnProgress(3);
@@ -624,35 +596,36 @@ void AI::HeroesTurn(Heroes& hero)
     }
 }
 
-bool AIHeroesScheduledVisit(const Kingdom& kingdom, s32 index)
+bool AIHeroesScheduledVisit(const Kingdom &kingdom, s32 index)
 {
     for (auto it : kingdom.GetHeroes()._items)
     {
-        AIHero& ai_hero = AIHeroes::Get(*it);
-        Queue& task = ai_hero.sheduled_visit;
-        if (task.isPresent(index)) return true;
+        AIHero &ai_hero = AIHeroes::Get(*it);
+        Queue &task = ai_hero.sheduled_visit;
+        if (task.isPresent(index))
+            return true;
     }
     return false;
 }
 
-bool IsPriorityAndNotVisitAndNotPresent(const pair<s32, int>& indexObj, const Heroes* hero)
+bool IsPriorityAndNotVisitAndNotPresent(const pair<s32, int> &indexObj, const Heroes *hero)
 {
-    AIHero& ai_hero = AIHeroes::Get(*hero);
-    Queue& task = ai_hero.sheduled_visit;
+    AIHero &ai_hero = AIHeroes::Get(*hero);
+    Queue &task = ai_hero.sheduled_visit;
 
     return AIHeroesPriorityObject(*hero, indexObj.first) &&
-        !AIHeroesScheduledVisit(hero->GetKingdom(), indexObj.first) &&
-        !task.isPresent(indexObj.first);
+           !AIHeroesScheduledVisit(hero->GetKingdom(), indexObj.first) &&
+           !task.isPresent(indexObj.first);
 }
 
-void AIHeroesEnd(Heroes* hero)
+void AIHeroesEnd(Heroes *hero)
 {
     if (!hero)
         return;
-    AIHero& ai_hero = AIHeroes::Get(*hero);
-    AIKingdom& ai_kingdom = AIKingdoms::Get(hero->GetColor());
-    Queue& task = ai_hero.sheduled_visit;
-    IndexObjectMap& ai_objects = ai_kingdom.scans;
+    AIHero &ai_hero = AIHeroes::Get(*hero);
+    AIKingdom &ai_kingdom = AIKingdoms::Get(hero->GetColor());
+    Queue &task = ai_hero.sheduled_visit;
+    IndexObjectMap &ai_objects = ai_kingdom.scans;
 
     if (hero->Modes(AI::HEROES_WAITING | AI::HEROES_STUPID))
     {
@@ -665,20 +638,21 @@ void AIHeroesEnd(Heroes* hero)
     while (true)
     {
         for (it = ai_objects.begin(); it != ai_objects.end(); ++it)
-            if (IsPriorityAndNotVisitAndNotPresent(*it, hero)) break;
+            if (IsPriorityAndNotVisitAndNotPresent(*it, hero))
+                break;
 
-        if (ai_objects.end() == it) break;
+        if (ai_objects.end() == it)
+            break;
         task.push_front((*it).first);
         ai_objects.erase((*it).first);
     }
 }
 
-
-void AIHeroesSetHunterWithTarget(Heroes* hero, s32 dst)
+void AIHeroesSetHunterWithTarget(Heroes *hero, s32 dst)
 {
     if (!hero)
         return;
-    AIHero& ai_hero = AIHeroes::Get(*hero);
+    AIHero &ai_hero = AIHeroes::Get(*hero);
 
     hero->SetModes(AI::HEROES_HUNTER);
 
@@ -688,18 +662,19 @@ void AIHeroesSetHunterWithTarget(Heroes* hero, s32 dst)
     }
 }
 
-void AIHeroesCaptureNearestTown(Heroes* hero)
+void AIHeroesCaptureNearestTown(Heroes *hero)
 {
-    if (!hero) return;
-    AIHero& ai_hero = AIHeroes::Get(*hero);
+    if (!hero)
+        return;
+    AIHero &ai_hero = AIHeroes::Get(*hero);
 
     if (0 <= ai_hero.primary_target)
         return;
-    const Maps::Indexes& castles = Maps::GetObjectPositions(hero->GetIndex(), MP2::OBJ_CASTLE, true);
+    const Maps::Indexes &castles = Maps::GetObjectPositions(hero->GetIndex(), MP2::OBJ_CASTLE, true);
 
     for (int it : castles)
     {
-        const Castle* castle = world.GetCastle(Maps::GetPoint(it));
+        const Castle *castle = world.GetCastle(Maps::GetPoint(it));
 
         if (castle &&
             Army::TroopsStrongerEnemyTroops(hero->GetArmy().m_troops, castle->GetArmy().m_troops))

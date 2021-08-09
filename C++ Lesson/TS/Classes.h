@@ -34,16 +34,16 @@ public:
 		{
 			students_[i].Display();
 		}
-
 	}
+
 private:
-	student* students_;
+	student *students_;
 	void GenerteStudentsList(int n)
 	{
 		students_ = new student[n];
 		for (int i = 1; i <= n; i++)
-		{	
-			student stu(i, rand()%101);
+		{
+			student stu(i, rand() % 101);
 			students_[i - 1] = stu;
 		}
 	}
@@ -67,6 +67,7 @@ private:
 			}
 		}
 		avg_score_ = sum_score / total_numbers_;
-		cout << "班级分数统计：" << "\n\t平均分:" << avg_score_ << "\n\t最高分:" << max_score_ << "\n\t最低分:" << min_score_ << endl;
+		cout << "班级分数统计："
+			 << "\n\t平均分:" << avg_score_ << "\n\t最高分:" << max_score_ << "\n\t最低分:" << min_score_ << endl;
 	}
 };

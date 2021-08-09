@@ -18,17 +18,17 @@
 Camera camera;
 SkyBox skybox;
 
-Texture* texture;
+Texture *texture;
 ObjModel model;
 Ground ground;
-Button* headButton;
-ImageSprite* headSprite;
-Particle* rootParticle;
+Button *headButton;
+ImageSprite *headSprite;
+Particle *rootParticle;
 FBXModel fbxmodel;
 SequenceSprite3D sequenceSprite;
 
 #pragma comment(lib, "opengl32.lib")
-#pragma comment(lib, "glu32.lib") 
+#pragma comment(lib, "glu32.lib")
 #pragma comment(lib, "winmm.lib")
 
 POINT originalPos;
@@ -39,7 +39,7 @@ void RenderOneFrame(float deltaTime)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	camera.SwitchTo3D();
 	glLoadIdentity();
-	
+
 	camera.Update(deltaTime);
 	glEnable(GL_TEXTURE_2D);
 	skybox.Draw(camera.mPos.x, camera.mPos.y, camera.mPos.z);
@@ -62,12 +62,12 @@ void RenderOneFrame(float deltaTime)
 	sequenceSprite.Draw();
 
 	fbxmodel.Draw();
-	
+
 	camera.SwitchTo2D();
 	glLoadIdentity();
 	headButton->Draw();
 	rootParticle->Update(deltaTime);
-	rootParticle->Draw(); 
+	rootParticle->Draw();
 }
 
 LRESULT CALLBACK GLWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -105,7 +105,7 @@ LRESULT CALLBACK GLWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		ShowCursor(true);
 		break;
 	case WM_MOUSEMOVE:
-		if (bRotateView)  
+		if (bRotateView)
 		{
 			POINT currentPos;
 			currentPos.x = LOWORD(lParam);
@@ -259,14 +259,16 @@ INT WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	headButton = new Button;
 	headButton->SetDefaultSprite(sprite);
 	headButton->SetRect(-580.0f, 300.0f, 100.0f, 100.0f);
-	headButton->SetOnClick([]() -> void { printf("i've been clicked\n"); });
+	headButton->SetOnClick([]() -> void
+						   { printf("i've been clicked\n"); });
 
 	sprite = new ImageSprite;
 	sprite->SetTexture(Texture::LoadTexture("res/fight.png"));
 	Button *btn = new Button;
 	btn->SetDefaultSprite(sprite);
 	btn->SetRect(580.0f, 300.0f, 40.0f, 40.0f);
-	btn->SetOnClick([]() -> void { printf("fight!!\n"); });
+	btn->SetOnClick([]() -> void
+					{ printf("fight!!\n"); });
 	headButton->Push(btn);
 
 	Texture *particleTexture = new Texture;

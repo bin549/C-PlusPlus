@@ -6,5 +6,5 @@ class FontManager
 {
 public:
 	static void Init(HDC dc);
-	static void Draw(wchar_t* str);
+	static void Draw(wchar_t *str);
 };

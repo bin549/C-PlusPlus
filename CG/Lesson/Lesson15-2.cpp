@@ -12,7 +12,6 @@
 
 bool BuildTexture(char *filename, GLuint &texid) // 载入一个.TGA 文件到内存
 {
-
 	GLubyte TGAheader[12] = {0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // 没有压缩的TGA Header
 	GLubyte TGAcompare[12];										  // 用来比较 TGA Header
 	GLubyte header[6];											  // Header里，头六个有用字节

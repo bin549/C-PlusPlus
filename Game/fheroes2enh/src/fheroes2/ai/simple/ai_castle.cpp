@@ -1,39 +1,10 @@
-/********************************************************************************
- *   Copyright (C) 2010 by Andrey Afletdinov <fheroes2@gmail.com>               *
- *   All rights reserved.                                                       *
- *                                                                              *
- *   Part of the Free Heroes2 Engine:                                           *
- *   http://sourceforge.net/projects/fheroes2                                   *
- *                                                                              *
- *   Redistribution and use in source and binary forms, with or without         *
- *   modification, are permitted provided that the following conditions         *
- *   are met:                                                                   *
- *   - Redistributions may not be sold, nor may they be used in a               *
- *     commercial product or activity.                                          *
- *   - Redistributions of source code and/or in binary form must reproduce      *
- *     the above copyright notice, this list of conditions and the              *
- *     following disclaimer in the documentation and/or other materials         *
- *     provided with the distribution.                                          *
- *                                                                              *
- * THIS SOFTWARE IS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,   *
- * BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS    *
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT     *
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,        *
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, *
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;  *
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,     *
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE         *
- * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,            *
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                           *
- *******************************************************************************/
-
 #include "world.h"
 #include "race.h"
 #include "game.h"
 #include "ai_simple.h"
 #include "ai.h"
 
-void AICastleDefense(Castle& c)
+void AICastleDefense(Castle &c)
 {
     if (c.isCastle())
     {
@@ -58,9 +29,9 @@ void AICastleDefense(Castle& c)
     c.RecruitAllMonster();
 }
 
-void AICastleDevelopment(Castle& c)
+void AICastleDevelopment(Castle &c)
 {
-    const Kingdom& kingdom = c.GetKingdom();
+    const Kingdom &kingdom = c.GetKingdom();
 
     if (c.isCastle())
     {
@@ -82,7 +53,6 @@ void AICastleDevelopment(Castle& c)
             if (!c.isBuild(BUILD_WELL))
                 c.BuyBuilding(BUILD_WELL);
 
-
             if (!c.isBuild(DWELLING_MONSTER1))
                 c.BuyBuilding(DWELLING_MONSTER1);
 
@@ -94,7 +64,6 @@ void AICastleDevelopment(Castle& c)
 
             if (!c.isBuild(DWELLING_MONSTER4))
                 c.BuyBuilding(DWELLING_MONSTER4);
-
 
             if (!c.isBuild(BUILD_THIEVESGUILD) && Race::NECR & c.GetRace())
                 c.BuyBuilding(BUILD_THIEVESGUILD);
@@ -154,36 +123,40 @@ void AICastleDevelopment(Castle& c)
     else
     {
         // build castle only monday or tuesday or for capital
-        if (c.isCapital() || 3 > world.GetDay()) c.BuyBuilding(BUILD_CASTLE);
+        if (c.isCapital() || 3 > world.GetDay())
+            c.BuyBuilding(BUILD_CASTLE);
     }
 
     // last day and buy monster
-    if (world.LastDay()) c.RecruitAllMonster();
+    if (world.LastDay())
+        c.RecruitAllMonster();
 }
 
-void AICastleTurn(Castle* castle)
+void AICastleTurn(Castle *castle)
 {
-    if (castle) AI::CastleTurn(*castle);
+    if (castle)
+        AI::CastleTurn(*castle);
 }
 
-void AI::CastleTurn(Castle& castle)
+void AI::CastleTurn(Castle &castle)
 {
     // skip neutral town
     if (castle.GetColor() != Color::NONE)
     {
         s32 range = GetViewDistance(castle.isCastle() ? Game::VIEW_CASTLE : Game::VIEW_TOWN);
-        const Heroes* enemy = nullptr;
+        const Heroes *enemy = nullptr;
 
         // find enemy hero
         for (s32 y = -range; y <= range; ++y)
             for (s32 x = -range; x <= range; ++x)
             {
-                if (!y && !x) continue;
-                const Point& center = castle.GetCenter();
+                if (!y && !x)
+                    continue;
+                const Point &center = castle.GetCenter();
 
                 if (Maps::isValidAbsPoint(center.x + x, center.y + y))
                 {
-                    const Maps::Tiles& tile = world.GetTiles(Maps::GetIndexFromAbsPoint(center.x + x, center.y + y));
+                    const Maps::Tiles &tile = world.GetTiles(Maps::GetIndexFromAbsPoint(center.x + x, center.y + y));
 
                     if (MP2::OBJ_HEROES == tile.GetObject())
                         enemy = tile.GetHeroes();
@@ -191,14 +164,15 @@ void AI::CastleTurn(Castle& castle)
                     if (enemy && castle.GetColor() == enemy->GetColor())
                         enemy = nullptr;
 
-                    if (enemy) break;
+                    if (enemy)
+                        break;
                 }
             }
 
         enemy ? AICastleDefense(castle) : AICastleDevelopment(castle);
 
-        Kingdom& kingdom = castle.GetKingdom();
-        Heroes* hero = castle.GetHeroes().Guest();
+        Kingdom &kingdom = castle.GetKingdom();
+        Heroes *hero = castle.GetHeroes().Guest();
         bool can_recruit = castle.isCastle() && !hero && kingdom.GetHeroes()._items.size() < Kingdom::GetMaxHeroes();
 
         // part II
@@ -208,7 +182,7 @@ void AI::CastleTurn(Castle& castle)
         {
             if (can_recruit)
             {
-                Recruits& rec = kingdom.GetRecruits();
+                Recruits &rec = kingdom.GetRecruits();
 
                 if (rec.GetHero1())
                     hero = castle.RecruitHero(rec.GetHero1());
@@ -221,14 +195,14 @@ void AI::CastleTurn(Castle& castle)
         }
 
         // part III
-        AIKingdom& ai = AIKingdoms::Get(castle.GetColor());
+        AIKingdom &ai = AIKingdoms::Get(castle.GetColor());
         if (ai.capital != &castle &&
             castle.GetArmy().m_troops.IsValid() && !hero &&
             2 < castle.GetArmy().m_troops.GetCount() &&
             150 < castle.GetArmy().m_troops.GetHitPoints() &&
             can_recruit)
         {
-            Recruits& rec = kingdom.GetRecruits();
+            Recruits &rec = kingdom.GetRecruits();
 
             if (rec.GetHero1())
                 hero = castle.RecruitHero(rec.GetHero1());
@@ -241,13 +215,13 @@ void AI::CastleTurn(Castle& castle)
     }
 }
 
-void AI::CastlePreBattle(Castle& castle)
+void AI::CastlePreBattle(Castle &castle)
 {
-    Heroes* hero = castle.GetHeroes().GuardFirst();
+    Heroes *hero = castle.GetHeroes().GuardFirst();
     if (hero && castle.GetArmy().m_troops.IsValid())
         hero->GetArmy().JoinStrongestFromArmy(castle.GetArmy());
 }
 
-void AI::CastleAfterBattle(Castle&, bool attacker_wins)
+void AI::CastleAfterBattle(Castle &, bool attacker_wins)
 {
 }

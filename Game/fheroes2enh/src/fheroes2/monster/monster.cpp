@@ -1,25 +1,3 @@
-/***************************************************************************
- *   Copyright (C) 2009 by Andrey Afletdinov <fheroes2@gmail.com>          *
- *                                                                         *
- *   Part of the Free Heroes2 Engine:                                      *
- *   http://sourceforge.net/projects/fheroes2                              *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- ***************************************************************************/
-
 #include "castle.h"
 #include "difficulty.h"
 #include "speed.h"
@@ -139,32 +117,29 @@ namespace
     };
 }
 
-ByteVectorWriter& operator<<(ByteVectorWriter& msg, const monstats_t& obj)
+ByteVectorWriter &operator<<(ByteVectorWriter &msg, const monstats_t &obj)
 {
-    return msg << obj.attack << obj.defense <<
-        obj.damageMin << obj.damageMax <<
-        obj.hp << obj.speed << obj.grown <<
-        obj.shots << obj.cost;
+    return msg << obj.attack << obj.defense << obj.damageMin << obj.damageMax << obj.hp << obj.speed << obj.grown << obj.shots << obj.cost;
 }
 
-ByteVectorReader& operator>>(ByteVectorReader& msg, monstats_t& obj)
+ByteVectorReader &operator>>(ByteVectorReader &msg, monstats_t &obj)
 {
     return msg >> obj.attack >> obj.defense >>
-        obj.damageMin >> obj.damageMax >>
-        obj.hp >> obj.speed >> obj.grown >>
-        obj.shots >> obj.cost;
+           obj.damageMin >> obj.damageMax >>
+           obj.hp >> obj.speed >> obj.grown >>
+           obj.shots >> obj.cost;
 }
 
-ByteVectorWriter& operator<<(ByteVectorWriter& msg, const MonsterStaticData& obj)
+ByteVectorWriter &operator<<(ByteVectorWriter &msg, const MonsterStaticData &obj)
 {
     const uint32_t monsters_size = ARRAY_COUNT(monsters);
     msg << monsters_size;
-    for (const auto& monster : monsters)
+    for (const auto &monster : monsters)
         msg << monster;
     return msg;
 }
 
-ByteVectorReader& operator>>(ByteVectorReader& msg, MonsterStaticData& obj)
+ByteVectorReader &operator>>(ByteVectorReader &msg, MonsterStaticData &obj)
 {
     uint32_t monsters_size;
     msg >> monsters_size;
@@ -179,7 +154,7 @@ float Monster::GetUpgradeRatio()
     return GameStatic::GetMonsterUpgradeRatio();
 }
 
-void Monster::UpdateStats(const string& spec)
+void Monster::UpdateStats(const string &spec)
 {
 }
 
@@ -199,7 +174,7 @@ Monster::Monster(int m) : id(UNKNOWN)
         id = Rand(LEVEL0).GetID();
 }
 
-Monster::Monster(const Spell& sp) : id(UNKNOWN)
+Monster::Monster(const Spell &sp) : id(UNKNOWN)
 {
     switch (sp())
     {
@@ -241,17 +216,17 @@ bool Monster::IsValid() const
     return id != UNKNOWN;
 }
 
-bool Monster::operator<(const Monster& m) const
+bool Monster::operator<(const Monster &m) const
 {
     return id < m.id;
 }
 
-bool Monster::operator==(const Monster& m) const
+bool Monster::operator==(const Monster &m) const
 {
     return id == m.id;
 }
 
-bool Monster::operator!=(const Monster& m) const
+bool Monster::operator!=(const Monster &m) const
 {
     return id != m.id;
 }
@@ -298,13 +273,20 @@ int Monster::GetLuck()
 
 int Monster::GetRace() const
 {
-    if (UNKNOWN == id) return Race::NONE;
-    if (GOBLIN > id) return Race::KNGT;
-    if (SPRITE > id) return Race::BARB;
-    if (CENTAUR > id) return Race::SORC;
-    if (HALFLING > id) return Race::WRLK;
-    if (SKELETON > id) return Race::WZRD;
-    if (ROGUE > id) return Race::NECR;
+    if (UNKNOWN == id)
+        return Race::NONE;
+    if (GOBLIN > id)
+        return Race::KNGT;
+    if (SPRITE > id)
+        return Race::BARB;
+    if (CENTAUR > id)
+        return Race::SORC;
+    if (HALFLING > id)
+        return Race::WRLK;
+    if (SKELETON > id)
+        return Race::WZRD;
+    if (ROGUE > id)
+        return Race::NECR;
 
     return Race::NONE;
 }
@@ -325,7 +307,7 @@ uint32_t Monster::GetShots() const
 }
 
 /*static*/
-uint32_t Monster::GetHitPoints(const Monster& m)
+uint32_t Monster::GetHitPoints(const Monster &m)
 {
     return monsters[m.id].hp;
 }
@@ -377,7 +359,8 @@ uint32_t Monster::GetRNDSize(bool skip_factor) const
 
         res = res * factor / 100;
         // force minimal
-        if (res == 0) res = 1;
+        if (res == 0)
+            res = 1;
     }
 
     return IsValid() ? GetCountFromHitPoints(id, res) : 0;
@@ -975,7 +958,8 @@ Monster Monster::Rand(level_t level)
     for (uint32_t ii = PEASANT; ii <= WATER_ELEMENT; ++ii)
     {
         Monster mons(ii);
-        if (mons.GetLevel() == level) monsters.push_back(mons);
+        if (mons.GetLevel() == level)
+            monsters.push_back(mons);
     }
 
     return !monsters.empty() ? *Rand::Get(monsters) : UNKNOWN;
@@ -1541,7 +1525,7 @@ payment_t Monster::GetUpgradeCost() const
     return pay;
 }
 
-uint32_t Monster::GetCountFromHitPoints(const Monster& mons, uint32_t hp)
+uint32_t Monster::GetCountFromHitPoints(const Monster &mons, uint32_t hp)
 {
     if (!hp)
         return 0;
@@ -1550,18 +1534,18 @@ uint32_t Monster::GetCountFromHitPoints(const Monster& mons, uint32_t hp)
     return count * hp1 < hp ? count + 1 : count;
 }
 
-MonsterStaticData& MonsterStaticData::Get()
+MonsterStaticData &MonsterStaticData::Get()
 {
     static MonsterStaticData mgds;
     return mgds;
 }
 
-ByteVectorWriter& operator<<(ByteVectorWriter& msg, const Monster&)
+ByteVectorWriter &operator<<(ByteVectorWriter &msg, const Monster &)
 {
     return msg;
 }
 
-ByteVectorReader& operator>>(ByteVectorReader& msg, Monster&)
+ByteVectorReader &operator>>(ByteVectorReader &msg, Monster &)
 {
     return msg;
 }

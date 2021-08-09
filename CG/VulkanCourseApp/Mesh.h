@@ -2,9 +2,7 @@
 
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
-
 #include <vector>
-
 #include "Utilities.h"
 
 struct Model
@@ -20,20 +18,14 @@ public:
 		 VkQueue transferQueue, VkCommandPool transferCommandPool,
 		 std::vector<Vertex> *vertices, std::vector<uint32_t> *indices,
 		 int newTexId);
-
 	void setModel(glm::mat4 newModel);
 	Model getModel();
-
 	int getTexId();
-
 	int getVertexCount();
 	VkBuffer getVertexBuffer();
-
 	int getIndexCount();
 	VkBuffer getIndexBuffer();
-
 	void destroyBuffers();
-
 	~Mesh();
 
 private:

@@ -4,15 +4,15 @@ class List
 {
 public:
 	List() : mNext(nullptr) {}
-	List* mNext;
+	List *mNext;
 	template <typename T>
-	T* Next()
+	T *Next()
 	{
-		return (T*)mNext;
+		return (T *)mNext;
 	}
-	void Push(List* next)
+	void Push(List *next)
 	{
-		List* lastNode = this;
+		List *lastNode = this;
 		while (lastNode->mNext != nullptr)
 		{
 			lastNode = lastNode->Next<List>();

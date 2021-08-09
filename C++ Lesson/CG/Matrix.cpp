@@ -3,7 +3,7 @@
 template <class T>
 void Matrix<T>::Initialize()
 {
-	mat_ = new T*[rows_];
+	mat_ = new T *[rows_];
 	for (int i = 0; i < rows_; i++)
 		mat_[i] = new T[cols_];
 }
@@ -47,11 +47,10 @@ Matrix<T>::Matrix(int rows, int cols, T init_value)
 	}
 }
 
-
 template <class T>
 Matrix<T>::Matrix(initializer_list<initializer_list<T>> m)
 {
-	rows_ = m.size(); 
+	rows_ = m.size();
 
 	cols_ = (m.begin())->size();
 	Initialize();
@@ -78,7 +77,7 @@ Matrix<T>::~Matrix()
 }
 
 template <class T>
-Matrix<T>::Matrix(const Matrix & m)
+Matrix<T>::Matrix(const Matrix &m)
 {
 	rows_ = m.get_rows();
 	cols_ = m.get_cols();
@@ -93,7 +92,7 @@ Matrix<T>::Matrix(const Matrix & m)
 }
 
 template <class T>
-Matrix<T> Matrix<T>::operator=(const Matrix& m)
+Matrix<T> Matrix<T>::operator=(const Matrix &m)
 {
 	rows_ = m.get_rows();
 	cols_ = m.get_cols();
@@ -119,7 +118,7 @@ void Matrix<T>::swapRows(int a, int b)
 }
 
 template <class T>
-Matrix<T> operator+(const Matrix<T>& A, T k)
+Matrix<T> operator+(const Matrix<T> &A, T k)
 {
 	Matrix<T> m(A);
 	for (int i = 0; i < m.rows_; i++)
@@ -133,7 +132,7 @@ Matrix<T> operator+(const Matrix<T>& A, T k)
 }
 
 template <class T>
-T operator+(T k, const Matrix<T>& A)
+T operator+(T k, const Matrix<T> &A)
 {
 	for (int i = 0; i < A.rows_; i++)
 	{
@@ -146,7 +145,7 @@ T operator+(T k, const Matrix<T>& A)
 }
 
 template <class T>
-Matrix<T> operator*(const Matrix<T>& A, T k)
+Matrix<T> operator*(const Matrix<T> &A, T k)
 {
 	Matrix<T> m(A);
 	for (int i = 0; i < m.rows_; i++)
@@ -160,7 +159,7 @@ Matrix<T> operator*(const Matrix<T>& A, T k)
 }
 
 template <class T>
-T operator*(T k, const Matrix<T>& A)
+T operator*(T k, const Matrix<T> &A)
 {
 	for (int i = 0; i < A.rows_; i++)
 	{
@@ -173,7 +172,7 @@ T operator*(T k, const Matrix<T>& A)
 }
 
 template <class T>
-Matrix<T> operator-(const Matrix<T>& A, T k)
+Matrix<T> operator-(const Matrix<T> &A, T k)
 {
 	Matrix<T> m(A);
 	for (int i = 0; i < m.rows_; i++)
@@ -187,7 +186,7 @@ Matrix<T> operator-(const Matrix<T>& A, T k)
 }
 
 template <class T>
-Matrix<T> operator+(const Matrix<T>& A, const Matrix<T>& B)
+Matrix<T> operator+(const Matrix<T> &A, const Matrix<T> &B)
 {
 	if (A.get_rows() != B.get_rows() || A.get_cols() != B.get_cols())
 		throw 0;
@@ -203,7 +202,7 @@ Matrix<T> operator+(const Matrix<T>& A, const Matrix<T>& B)
 }
 
 template <class T>
-Matrix<T> operator-(const Matrix<T>& A, const Matrix<T>& B)
+Matrix<T> operator-(const Matrix<T> &A, const Matrix<T> &B)
 {
 	if (A.get_rows() != B.get_rows() || A.get_cols() != B.get_cols())
 		throw 0;
@@ -219,7 +218,7 @@ Matrix<T> operator-(const Matrix<T>& A, const Matrix<T>& B)
 }
 
 template <class T>
-Matrix<T> operator*(const Matrix<T>& A, const Matrix<T>& B)
+Matrix<T> operator*(const Matrix<T> &A, const Matrix<T> &B)
 {
 	if (A.get_cols() != B.get_rows())
 		throw 0;
@@ -239,7 +238,7 @@ Matrix<T> operator*(const Matrix<T>& A, const Matrix<T>& B)
 }
 
 template <class T>
-Matrix<T> operator%(const Matrix<T>& A, const Matrix<T>& B)
+Matrix<T> operator%(const Matrix<T> &A, const Matrix<T> &B)
 {
 	if (A.get_rows() != B.get_rows() || A.get_cols() != B.get_cols())
 		throw 0;
@@ -255,7 +254,7 @@ Matrix<T> operator%(const Matrix<T>& A, const Matrix<T>& B)
 }
 
 template <class T>
-Matrix<T> operator/(const Matrix<T>& A, const Matrix<T>& B)
+Matrix<T> operator/(const Matrix<T> &A, const Matrix<T> &B)
 {
 	if (A.get_rows() != B.get_rows() || A.get_cols() != B.get_cols())
 		throw 0;
@@ -271,7 +270,7 @@ Matrix<T> operator/(const Matrix<T>& A, const Matrix<T>& B)
 }
 
 template <class T>
-Matrix<T> operator^(const Matrix<T>& A, T t)
+Matrix<T> operator^(const Matrix<T> &A, T t)
 {
 	if (A.get_rows() != A.get_cols())
 		throw 0;
@@ -293,7 +292,6 @@ Matrix<T> operator^(const Matrix<T>& A, T t)
 	}
 	return B;
 }
-
 
 template <class T>
 void Matrix<T>::printMatrix()
@@ -357,7 +355,7 @@ double gaussrand()
 	double X;
 	if (phase == 0)
 	{
-		do 
+		do
 		{
 			double U1 = (double)rand() / RAND_MAX;
 			double U2 = (double)rand() / RAND_MAX;
@@ -392,11 +390,10 @@ void Matrix<T>::Load(string filename)
 {
 }
 
-
 template <class T>
 void Matrix<T>::Write(string filename)
 {
-	FILE * fp;
+	FILE *fp;
 	filename.append("/matrix.txt");
 	fopen_s(&fp, filename.c_str(), "w");
 	for (int i = 0; i < rows_; i++)
@@ -410,9 +407,8 @@ void Matrix<T>::Write(string filename)
 	fclose(fp);
 }
 
-
 template <typename T>
-Matrix<T> AugmentMatrix(Matrix<T>& A,  Matrix<T>& B)
+Matrix<T> AugmentMatrix(Matrix<T> &A, Matrix<T> &B)
 {
 	if (A.get_rows() != B.get_rows())
 	{
@@ -436,7 +432,7 @@ Matrix<T> AugmentMatrix(Matrix<T>& A,  Matrix<T>& B)
 }
 
 template <typename T>
-Matrix<T> GaussianElimination(const Matrix<T>& B)
+Matrix<T> GaussianElimination(const Matrix<T> &B)
 {
 	Matrix<T> A = B;
 	for (int i = 0; i < A.get_rows() - 1; i++)
@@ -465,9 +461,9 @@ Matrix<T> GaussianElimination(const Matrix<T>& B)
 			if (!A.get_mat(j, pos))
 				continue;
 			T tmp = A.get_mat(j, pos);
- 			for (int k = pos; k < A.get_cols(); k++)
+			for (int k = pos; k < A.get_cols(); k++)
 			{
-				A.set_mat(j, k, A.get_mat(j, k) - A.get_mat(i, k)*tmp);
+				A.set_mat(j, k, A.get_mat(j, k) - A.get_mat(i, k) * tmp);
 			}
 		}
 	}
@@ -495,7 +491,7 @@ Matrix<T> GaussianElimination(const Matrix<T>& B)
 
 		for (int j = 0; j < i; j++)
 		{
-			if (!A.get_mat(j,pos))
+			if (!A.get_mat(j, pos))
 				continue;
 			T tmp = A.get_mat(j, pos);
 			for (int k = pos; k < A.get_cols(); k++)
@@ -507,10 +503,8 @@ Matrix<T> GaussianElimination(const Matrix<T>& B)
 	return A;
 }
 
-
-
 template <typename T>
-Matrix<T> Inverse(Matrix<T>& A)
+Matrix<T> Inverse(Matrix<T> &A)
 {
 	if (A.get_rows() != A.get_cols())
 	{
@@ -522,5 +516,4 @@ Matrix<T> Inverse(Matrix<T>& A)
 	A_Copy = A;
 	Matrix<T> E = Matrix<int>::eye(A.get_cols());
 	// 思路，将原矩阵和单位矩阵进行初等行变换知道原矩阵转换为单位矩阵，此时的原单位矩阵则为逆矩阵
-	
 }

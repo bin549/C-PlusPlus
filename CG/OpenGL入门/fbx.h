@@ -10,7 +10,7 @@ struct Mat
 {
 	int mType; //0 lambert 1 phong other : lambert
 	char mDiffuseColorTexture[256];
-	Texture* mTexture;
+	Texture *mTexture;
 };
 
 class FBXModel
@@ -22,10 +22,10 @@ protected:
 
 public:
 	char mFBXPath[256];
-	std::vector<Mat*> mMaterials; //unique mat
+	std::vector<Mat *> mMaterials; //unique mat
 	std::vector<std::vector<int>> mIndices;
 	std::unordered_map<int, int> mMaterialIndexes;
-	VertexData* mVertices;
-	void Init(const char* filePath);
+	VertexData *mVertices;
+	void Init(const char *filePath);
 	void Draw();
 };

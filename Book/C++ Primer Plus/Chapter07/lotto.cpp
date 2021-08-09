@@ -1,4 +1,4 @@
-// lotto.cpp -- probability of winning 
+// lotto.cpp -- probability of winning
 #include <iostream>
 // Note: some implementations require double instead of long double
 long double probability(unsigned numbers, unsigned picks);
@@ -7,7 +7,7 @@ int main()
     using namespace std;
     double total, choices;
     cout << "Enter the total number of choices on the game card and\n"
-        "the number of picks allowed:\n";
+            "the number of picks allowed:\n";
     while ((cin >> total >> choices) && choices <= total)
     {
         cout << "You have one change in ";

@@ -1,25 +1,3 @@
-/***************************************************************************
- *   Copyright (C) 2009 by Andrey Afletdinov <fheroes2@gmail.com>          *
- *                                                                         *
- *   Part of the Free Heroes2 Engine:                                      *
- *   http://sourceforge.net/projects/fheroes2                              *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- ***************************************************************************/
-
 #include "agg.h"
 #include "game.h"
 #include "cursor.h"
@@ -82,7 +60,7 @@ void Button::SetSize(uint32_t ow, uint32_t oh)
     h = oh;
 }
 
-void Button::SetPos(const Point& pos)
+void Button::SetPos(const Point &pos)
 {
     SetPos(pos.x, pos.y);
 }
@@ -95,7 +73,7 @@ void Button::SetSprite(int icn, uint32_t index1, uint32_t index2)
     SetSize(sf1.w(), sf1.h());
 }
 
-void Button::SetSprite(const Surface& s1, const Surface& s2)
+void Button::SetSprite(const Surface &s1, const Surface &s2)
 {
     sf1 = s1;
     sf2 = s2;
@@ -146,7 +124,7 @@ void Button::ReleaseDraw()
 void Button::Draw() const
 {
     bool localcursor = false;
-    Cursor& cursor = Cursor::Get();
+    Cursor &cursor = Cursor::Get();
 
     if (*this & cursor.GetArea() && cursor.isVisible())
     {
@@ -159,7 +137,8 @@ void Button::Draw() const
     else
         sf1.Blit(x, y, Display::Get());
 
-    if (localcursor) cursor.Show();
+    if (localcursor)
+        cursor.Show();
 }
 
 ButtonGroups::ButtonGroups(const Rect pos, uint32_t btns) : button1(nullptr), button2(nullptr), result1(Dialog::ZERO),
@@ -215,36 +194,47 @@ ButtonGroups::ButtonGroups(const Rect pos, uint32_t btns) : button1(nullptr), bu
 
 void ButtonGroups::Draw() const
 {
-    if (button1) (*button1).Draw();
-    if (button2) (*button2).Draw();
+    if (button1)
+        (*button1).Draw();
+    if (button2)
+        (*button2).Draw();
 }
 
 int ButtonGroups::QueueEventProcessing() const
 {
-    LocalEvent& le = LocalEvent::Get();
+    LocalEvent &le = LocalEvent::Get();
 
-    if (button1 && button1->isEnable()) le.MousePressLeft(*button1) ? button1->PressDraw() : button1->ReleaseDraw();
-    if (button2 && button2->isEnable()) le.MousePressLeft(*button2) ? button2->PressDraw() : button2->ReleaseDraw();
+    if (button1 && button1->isEnable())
+        le.MousePressLeft(*button1) ? button1->PressDraw() : button1->ReleaseDraw();
+    if (button2 && button2->isEnable())
+        le.MousePressLeft(*button2) ? button2->PressDraw() : button2->ReleaseDraw();
 
-    if (button1 && button1->isEnable() && le.MouseClickLeft(*button1)) return result1;
-    if (button2 && button2->isEnable() && le.MouseClickLeft(*button2)) return result2;
+    if (button1 && button1->isEnable() && le.MouseClickLeft(*button1))
+        return result1;
+    if (button2 && button2->isEnable() && le.MouseClickLeft(*button2))
+        return result2;
 
     if (button1 && button2)
     {
         if (buttons == (Dialog::YES | Dialog::NO) ||
             buttons == (Dialog::OK | Dialog::CANCEL))
         {
-            if (HotKeyPressEvent(Game::EVENT_DEFAULT_READY)) return result1;
-            if (HotKeyPressEvent(Game::EVENT_DEFAULT_EXIT)) return result2;
+            if (HotKeyPressEvent(Game::EVENT_DEFAULT_READY))
+                return result1;
+            if (HotKeyPressEvent(Game::EVENT_DEFAULT_EXIT))
+                return result2;
         }
 
-        if (HotKeyPressEvent(Game::EVENT_DEFAULT_LEFT)) return result1;
-        if (HotKeyPressEvent(Game::EVENT_DEFAULT_RIGHT)) return result2;
+        if (HotKeyPressEvent(Game::EVENT_DEFAULT_LEFT))
+            return result1;
+        if (HotKeyPressEvent(Game::EVENT_DEFAULT_RIGHT))
+            return result2;
     }
     else
-        // one button
+    // one button
     {
-        if (HotKeyCloseWindow) return buttons;
+        if (HotKeyCloseWindow)
+            return buttons;
     }
 
     return Dialog::ZERO;

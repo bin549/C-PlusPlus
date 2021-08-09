@@ -102,9 +102,8 @@ PacmanMovement GhostAI::Update(uint32_t dt, const Pacman &pacman, const PacmanLe
 			assert(false && "Why can't we go anywhere?");
 		}
 
-		std::sort(possibleDirections.begin(), possibleDirections.end(), [](const PacmanMovement &direction1, const PacmanMovement &direction2) {
-			return direction1 < direction2;
-		});
+		std::sort(possibleDirections.begin(), possibleDirections.end(), [](const PacmanMovement &direction1, const PacmanMovement &direction2)
+				  { return direction1 < direction2; });
 
 		if (mnoptrGhost->IsVulnerable() && (mState == GHOST_AI_STATE_SCATTER || mState == GHOST_AI_STATE_CHASE))
 		{
@@ -182,7 +181,7 @@ Vec2D GhostAI::GetChaseTarget(uint32_t dt, const Pacman &pacman, const PacmanLev
 		target = (pacmanOffsetPoint - ghosts[BLINKY].GetBoundingBox().GetCenterPoint()) * 2 + ghosts[BLINKY].GetBoundingBox().GetCenterPoint();
 	}
 	break;
-	
+
 	case CLYDE:
 	{
 		auto distanceToPacman = mnoptrGhost->GetBoundingBox().GetCenterPoint().Distance(pacman.GetBoundingBox().GetCenterPoint());
@@ -197,7 +196,7 @@ Vec2D GhostAI::GetChaseTarget(uint32_t dt, const Pacman &pacman, const PacmanLev
 		}
 	}
 	break;
-	
+
 	case NUM_GHOSTS:
 		assert(false && "SHOULD NOT BE PASSING NUM_GHOSTS AS THE GHOST NAME!");
 	}
