@@ -35,13 +35,15 @@
 #include "scene/resources/texture.h"
 #include "servers/visual_server.h"
 
-class Light : public VisualInstance {
+class Light : public VisualInstance
+{
 
 	GDCLASS(Light, VisualInstance);
 	OBJ_CATEGORY("3D Light Nodes");
 
 public:
-	enum Param {
+	enum Param
+	{
 		PARAM_ENERGY = VS::LIGHT_PARAM_ENERGY,
 		PARAM_INDIRECT_ENERGY = VS::LIGHT_PARAM_INDIRECT_ENERGY,
 		PARAM_SPECULAR = VS::LIGHT_PARAM_SPECULAR,
@@ -60,7 +62,8 @@ public:
 		PARAM_MAX = VS::LIGHT_PARAM_MAX
 	};
 
-	enum BakeMode {
+	enum BakeMode
+	{
 		BAKE_DISABLED,
 		BAKE_INDIRECT,
 		BAKE_ALL
@@ -132,18 +135,21 @@ public:
 VARIANT_ENUM_CAST(Light::Param);
 VARIANT_ENUM_CAST(Light::BakeMode);
 
-class DirectionalLight : public Light {
+class DirectionalLight : public Light
+{
 
 	GDCLASS(DirectionalLight, Light);
 
 public:
-	enum ShadowMode {
+	enum ShadowMode
+	{
 		SHADOW_ORTHOGONAL,
 		SHADOW_PARALLEL_2_SPLITS,
 		SHADOW_PARALLEL_4_SPLITS
 	};
 
-	enum ShadowDepthRange {
+	enum ShadowDepthRange
+	{
 		SHADOW_DEPTH_RANGE_STABLE = VS::LIGHT_DIRECTIONAL_SHADOW_DEPTH_RANGE_STABLE,
 		SHADOW_DEPTH_RANGE_OPTIMIZED = VS::LIGHT_DIRECTIONAL_SHADOW_DEPTH_RANGE_OPTIMIZED,
 	};
@@ -172,19 +178,22 @@ public:
 VARIANT_ENUM_CAST(DirectionalLight::ShadowMode)
 VARIANT_ENUM_CAST(DirectionalLight::ShadowDepthRange)
 
-class OmniLight : public Light {
+class OmniLight : public Light
+{
 
 	GDCLASS(OmniLight, Light);
 
 public:
 	// omni light
-	enum ShadowMode {
+	enum ShadowMode
+	{
 		SHADOW_DUAL_PARABOLOID,
 		SHADOW_CUBE,
 	};
 
 	// omni light
-	enum ShadowDetail {
+	enum ShadowDetail
+	{
 		SHADOW_DETAIL_VERTICAL,
 		SHADOW_DETAIL_HORIZONTAL
 	};
@@ -209,7 +218,8 @@ public:
 VARIANT_ENUM_CAST(OmniLight::ShadowMode)
 VARIANT_ENUM_CAST(OmniLight::ShadowDetail)
 
-class SpotLight : public Light {
+class SpotLight : public Light
+{
 
 	GDCLASS(SpotLight, Light);
 
@@ -219,8 +229,7 @@ protected:
 public:
 	virtual String get_configuration_warning() const;
 
-	SpotLight() :
-			Light(VisualServer::LIGHT_SPOT) {}
+	SpotLight() : Light(VisualServer::LIGHT_SPOT) {}
 };
 
 #endif

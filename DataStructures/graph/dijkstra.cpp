@@ -58,8 +58,7 @@ void tests()
 {
     std::cout << "Initiatinig Predefined Tests..." << std::endl;
     std::cout << "Initiating Test 1..." << std::endl;
-    std::vector<std::vector<std::pair<int, int>>> adj1(
-        4, std::vector<std::pair<int, int>>());
+    std::vector<std::vector<std::pair<int, int>>> adj1(4, std::vector<std::pair<int, int>>());
     graph::addEdge(&adj1, 1, 2, 1);
     graph::addEdge(&adj1, 4, 1, 2);
     graph::addEdge(&adj1, 2, 3, 2);
@@ -74,8 +73,7 @@ void tests()
     assert(graph::dijkstra(&adj1, s - 1, t - 1) == 5);
     std::cout << "Test 2 Passed..." << std::endl;
 
-    std::vector<std::vector<std::pair<int, int>>> adj2(
-        5, std::vector<std::pair<int, int>>());
+    std::vector<std::vector<std::pair<int, int>>> adj2(5, std::vector<std::pair<int, int>>());
     graph::addEdge(&adj2, 1, 2, 4);
     graph::addEdge(&adj2, 1, 3, 2);
     graph::addEdge(&adj2, 2, 3, 2);
@@ -104,8 +102,7 @@ int main()
     std::cout << "Enter the number of edges : ";
     std::cin >> edges;
 
-    std::vector<std::vector<std::pair<int, int>>> adj(
-        vertices, std::vector<std::pair<int, int>>());
+    std::vector<std::vector<std::pair<int, int>>> adj(vertices, std::vector<std::pair<int, int>>());
 
     int u = int(), v = int(), w = int();
     while (edges--)

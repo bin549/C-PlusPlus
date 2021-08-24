@@ -5,16 +5,14 @@ namespace sorting
 {
     int partition(int arr[], int low, int high)
     {
-        int pivot = arr[high]; // taking the last element as pivot
-        int i = (low - 1);     // Index of smaller element
+        int pivot = arr[high];
+        int i = (low - 1);
 
         for (int j = low; j < high; j++)
         {
-            // If current element is smaller than or
-            // equal to pivot
             if (arr[j] <= pivot)
             {
-                i++; // increment index of smaller element
+                i++;
                 int temp = arr[i];
                 arr[i] = arr[j];
                 arr[j] = temp;
@@ -26,12 +24,6 @@ namespace sorting
         return (i + 1);
     }
 
-    /**
- *      The main function that implements QuickSort
- *      arr[] --> Array to be sorted,
- *      low --> Starting index,
- *      high --> Ending index
- */
     void quickSort(int arr[], int low, int high)
     {
         if (low < high)
@@ -41,12 +33,10 @@ namespace sorting
             quickSort(arr, p + 1, high);
         }
     }
-
-} // namespace sorting
+}
 
 using sorting::quickSort;
 
-// prints the array after sorting
 void show(int arr[], int size)
 {
     for (int i = 0; i < size; i++)
@@ -54,18 +44,13 @@ void show(int arr[], int size)
     std::cout << "\n";
 }
 
-/** Driver program to test above functions */
 int main()
 {
     int size;
     std::cout << "\nEnter the number of elements : ";
-
     std::cin >> size;
-
     int *arr = new int[size];
-
     std::cout << "\nEnter the unsorted elements : ";
-
     for (int i = 0; i < size; ++i)
     {
         std::cout << "\n";

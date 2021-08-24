@@ -1,33 +1,3 @@
-/*************************************************************************/
-/*  navigation_mesh.h                                                    */
-/*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
-/*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
-/*                                                                       */
-/* Permission is hereby granted, free of charge, to any person obtaining */
-/* a copy of this software and associated documentation files (the       */
-/* "Software"), to deal in the Software without restriction, including   */
-/* without limitation the rights to use, copy, modify, merge, publish,   */
-/* distribute, sublicense, and/or sell copies of the Software, and to    */
-/* permit persons to whom the Software is furnished to do so, subject to */
-/* the following conditions:                                             */
-/*                                                                       */
-/* The above copyright notice and this permission notice shall be        */
-/* included in all copies or substantial portions of the Software.       */
-/*                                                                       */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
-/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
-/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
-/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
-/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
-/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
-/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
-/*************************************************************************/
-
 #ifndef NAVIGATION_MESH_H
 #define NAVIGATION_MESH_H
 
@@ -36,22 +6,21 @@
 
 class Mesh;
 
-class NavigationMesh : public Resource {
-
+class NavigationMesh : public Resource
+{
 	GDCLASS(NavigationMesh, Resource);
-
 	PoolVector<Vector3> vertices;
-	struct Polygon {
+	struct Polygon
+	{
 		Vector<int> indices;
 	};
 	Vector<Polygon> polygons;
 	Ref<ArrayMesh> debug_mesh;
 
-	struct _EdgeKey {
-
+	struct _EdgeKey
+	{
 		Vector3 from;
 		Vector3 to;
-
 		bool operator<(const _EdgeKey &p_with) const { return from == p_with.from ? to < p_with.to : from < p_with.from; }
 	};
 
@@ -63,21 +32,24 @@ protected:
 	Array _get_polygons() const;
 
 public:
-	enum SamplePartitionType {
+	enum SamplePartitionType
+	{
 		SAMPLE_PARTITION_WATERSHED = 0,
 		SAMPLE_PARTITION_MONOTONE,
 		SAMPLE_PARTITION_LAYERS,
 		SAMPLE_PARTITION_MAX
 	};
 
-	enum ParsedGeometryType {
+	enum ParsedGeometryType
+	{
 		PARSED_GEOMETRY_MESH_INSTANCES = 0,
 		PARSED_GEOMETRY_STATIC_COLLIDERS,
 		PARSED_GEOMETRY_BOTH,
 		PARSED_GEOMETRY_MAX
 	};
 
-	enum SourceGeometryMode {
+	enum SourceGeometryMode
+	{
 		SOURCE_GEOMETRY_NAVMESH_CHILDREN = 0,
 		SOURCE_GEOMETRY_GROUPS_WITH_CHILDREN,
 		SOURCE_GEOMETRY_GROUPS_EXPLICIT,
@@ -195,7 +167,8 @@ public:
 
 class Navigation;
 
-class NavigationMeshInstance : public Spatial {
+class NavigationMeshInstance : public Spatial
+{
 
 	GDCLASS(NavigationMeshInstance, Spatial);
 

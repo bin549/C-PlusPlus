@@ -20,7 +20,7 @@ node hashtab[HASHMAX]; ///< array of nodes
 
 // int counter = 1;
 
-/**
+/** 
  * Mode of hash detection :
  * Division method
  * \param [in] key to hash

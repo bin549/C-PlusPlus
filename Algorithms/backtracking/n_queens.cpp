@@ -104,7 +104,7 @@ namespace backtracking
         }
       }
     }
-  } 
+  }
 }
 
 int main()
