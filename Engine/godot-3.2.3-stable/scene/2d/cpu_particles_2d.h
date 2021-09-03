@@ -1,33 +1,3 @@
-/*************************************************************************/
-/*  cpu_particles_2d.h                                                   */
-/*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
-/*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
-/*                                                                       */
-/* Permission is hereby granted, free of charge, to any person obtaining */
-/* a copy of this software and associated documentation files (the       */
-/* "Software"), to deal in the Software without restriction, including   */
-/* without limitation the rights to use, copy, modify, merge, publish,   */
-/* distribute, sublicense, and/or sell copies of the Software, and to    */
-/* permit persons to whom the Software is furnished to do so, subject to */
-/* the following conditions:                                             */
-/*                                                                       */
-/* The above copyright notice and this permission notice shall be        */
-/* included in all copies or substantial portions of the Software.       */
-/*                                                                       */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
-/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
-/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
-/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
-/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
-/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
-/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
-/*************************************************************************/
-
 #ifndef CPU_PARTICLES_2D_H
 #define CPU_PARTICLES_2D_H
 
@@ -35,17 +5,20 @@
 #include "scene/2d/node_2d.h"
 #include "scene/resources/texture.h"
 
-class CPUParticles2D : public Node2D {
+class CPUParticles2D : public Node2D
+{
 private:
 	GDCLASS(CPUParticles2D, Node2D);
 
 public:
-	enum DrawOrder {
+	enum DrawOrder
+	{
 		DRAW_ORDER_INDEX,
 		DRAW_ORDER_LIFETIME,
 	};
 
-	enum Parameter {
+	enum Parameter
+	{
 
 		PARAM_INITIAL_LINEAR_VELOCITY,
 		PARAM_ANGULAR_VELOCITY,
@@ -62,14 +35,16 @@ public:
 		PARAM_MAX
 	};
 
-	enum Flags {
+	enum Flags
+	{
 		FLAG_ALIGN_Y_TO_VELOCITY,
-		FLAG_ROTATE_Y, // Unused, but exposed for consistency with 3D.
+		FLAG_ROTATE_Y,	// Unused, but exposed for consistency with 3D.
 		FLAG_DISABLE_Z, // Unused, but exposed for consistency with 3D.
 		FLAG_MAX
 	};
 
-	enum EmissionShape {
+	enum EmissionShape
+	{
 		EMISSION_SHAPE_POINT,
 		EMISSION_SHAPE_SPHERE,
 		EMISSION_SHAPE_RECTANGLE,
@@ -83,7 +58,8 @@ private:
 
 	// warning - beware of adding non-trivial types
 	// to this structure as it is zeroed to initialize in set_amount()
-	struct Particle {
+	struct Particle
+	{
 		Transform2D transform;
 		Color color;
 		float custom[4];
@@ -97,7 +73,6 @@ private:
 		float time;
 		float lifetime;
 		Color base_color;
-
 		uint32_t seed;
 	};
 
@@ -114,24 +89,25 @@ private:
 	PoolVector<float> particle_data;
 	PoolVector<int> particle_order;
 
-	struct SortLifetime {
+	struct SortLifetime
+	{
 		const Particle *particles;
 
-		bool operator()(int p_a, int p_b) const {
+		bool operator()(int p_a, int p_b) const
+		{
 			return particles[p_a].time > particles[p_b].time;
 		}
 	};
 
-	struct SortAxis {
+	struct SortAxis
+	{
 		const Particle *particles;
 		Vector2 axis;
-		bool operator()(int p_a, int p_b) const {
-
+		bool operator()(int p_a, int p_b) const
+		{
 			return axis.dot(particles[p_a].transform[2]) < axis.dot(particles[p_b].transform[2]);
 		}
 	};
-
-	//
 
 	bool one_shot;
 
@@ -151,8 +127,6 @@ private:
 
 	Ref<Texture> texture;
 	Ref<Texture> normalmap;
-
-	////////
 
 	Vector2 direction;
 	float spread;
@@ -238,8 +212,6 @@ public:
 	void set_normalmap(const Ref<Texture> &p_normalmap);
 	Ref<Texture> get_normalmap() const;
 
-	///////////////////
-
 	void set_direction(Vector2 p_direction);
 	Vector2 get_direction() const;
 
@@ -298,4 +270,4 @@ VARIANT_ENUM_CAST(CPUParticles2D::Parameter)
 VARIANT_ENUM_CAST(CPUParticles2D::Flags)
 VARIANT_ENUM_CAST(CPUParticles2D::EmissionShape)
 
-#endif // CPU_PARTICLES_2D_H
+#endif

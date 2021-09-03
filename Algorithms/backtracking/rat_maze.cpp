@@ -24,15 +24,17 @@
  * @namespace backtracking
  * @brief Backtracking algorithms
  */
-namespace backtracking {
-/**
+namespace backtracking
+{
+    /**
  * @namespace rat_maze
  * @brief Functions for [Rat in a
  * Maze](https://www.codesdope.com/blog/article/backtracking-to-
  * solve-a-rat-in-a-maze-c-java-pytho/) algorithm
  */
-namespace rat_maze {
-/**
+    namespace rat_maze
+    {
+        /**
  * @brief Solve rat maze problem
  * @tparam size number of matrix size
  * @param currposrow current position in rows
@@ -41,47 +43,56 @@ namespace rat_maze {
  * @param soln matrix to problem solution
  * @returns 0 on end
  */
-template <size_t size>
-bool solveMaze(int currposrow, int currposcol,
-              const std::array<std::array<int, size>, size> &maze,
-              std::array<std::array<int, size>, size> soln) {
-    if ((currposrow == size - 1) && (currposcol == size - 1)) {
-        soln[currposrow][currposcol] = 1;
-        for (int i = 0; i < size; ++i) {
-            for (int j = 0; j < size; ++j) {
-                std::cout << soln[i][j] << " ";
+        template <size_t size>
+        bool solveMaze(int currposrow, int currposcol,
+                       const std::array<std::array<int, size>, size> &maze,
+                       std::array<std::array<int, size>, size> soln)
+        {
+            if ((currposrow == size - 1) && (currposcol == size - 1))
+            {
+                soln[currposrow][currposcol] = 1;
+                for (int i = 0; i < size; ++i)
+                {
+                    for (int j = 0; j < size; ++j)
+                    {
+                        std::cout << soln[i][j] << " ";
+                    }
+                    std::cout << std::endl;
+                }
+                return true;
             }
-            std::cout << std::endl;
-        }
-        return true;
-    } else {
-        soln[currposrow][currposcol] = 1;
+            else
+            {
+                soln[currposrow][currposcol] = 1;
 
-        // if there exist a solution by moving one step ahead in a column
-        if ((currposcol < size - 1) && maze[currposrow][currposcol + 1] == 1 &&
-            solveMaze(currposrow, currposcol + 1, maze, soln)) {
-            return true;
-        }
+                // if there exist a solution by moving one step ahead in a column
+                if ((currposcol < size - 1) && maze[currposrow][currposcol + 1] == 1 &&
+                    solveMaze(currposrow, currposcol + 1, maze, soln))
+                {
+                    return true;
+                }
 
-        // if there exists a solution by moving one step ahead in a row
-        if ((currposrow < size - 1) && maze[currposrow + 1][currposcol] == 1 &&
-            solveMaze(currposrow + 1, currposcol, maze, soln)) {
-            return true;
-        }
+                // if there exists a solution by moving one step ahead in a row
+                if ((currposrow < size - 1) && maze[currposrow + 1][currposcol] == 1 &&
+                    solveMaze(currposrow + 1, currposcol, maze, soln))
+                {
+                    return true;
+                }
 
-        // the backtracking part
-        soln[currposrow][currposcol] = 0;
-        return false;
-    }
-}
-}  // namespace rat_maze
-}  // namespace backtracking
+                // the backtracking part
+                soln[currposrow][currposcol] = 0;
+                return false;
+            }
+        }
+    } // namespace rat_maze
+} // namespace backtracking
 
 /**
  * @brief Test implementations
  * @returns void
  */
-static void test(){
+static void test()
+{
     const int size = 4;
     std::array<std::array<int, size>, size> maze = {
         std::array<int, size>{1, 0, 1, 0}, std::array<int, size>{1, 0, 1, 1},
@@ -90,14 +101,16 @@ static void test(){
     std::array<std::array<int, size>, size> soln{};
 
     // Backtracking: setup matrix solution to zero
-    for (int i = 0; i < size; ++i) {
-        for (int j = 0; j < size; ++j) {
+    for (int i = 0; i < size; ++i)
+    {
+        for (int j = 0; j < size; ++j)
+        {
             soln[i][j] = 0;
         }
     }
 
-    int currposrow = 0;  // Current position in rows
-    int currposcol = 0;  // Current position in columns
+    int currposrow = 0; // Current position in rows
+    int currposcol = 0; // Current position in columns
 
     assert(backtracking::rat_maze::solveMaze<size>(currposrow, currposcol, maze,
                                                    soln) == 1);
@@ -107,7 +120,8 @@ static void test(){
  * @brief Main function
  * @returns 0 on exit
  */
-int main() {
+int main()
+{
     test(); // run the tests
     return 0;
 }

@@ -40,7 +40,6 @@ public:
     }
 };
 
-// Utility function to print distances
 void print(int dist[], int V)
 {
     cout << "\nThe Distance matrix for Floyd - Warshall" << endl;

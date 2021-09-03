@@ -1,45 +1,16 @@
-/*************************************************************************/
-/*  area.h                                                               */
-/*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
-/*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
-/*                                                                       */
-/* Permission is hereby granted, free of charge, to any person obtaining */
-/* a copy of this software and associated documentation files (the       */
-/* "Software"), to deal in the Software without restriction, including   */
-/* without limitation the rights to use, copy, modify, merge, publish,   */
-/* distribute, sublicense, and/or sell copies of the Software, and to    */
-/* permit persons to whom the Software is furnished to do so, subject to */
-/* the following conditions:                                             */
-/*                                                                       */
-/* The above copyright notice and this permission notice shall be        */
-/* included in all copies or substantial portions of the Software.       */
-/*                                                                       */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
-/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
-/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
-/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
-/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
-/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
-/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
-/*************************************************************************/
-
 #ifndef AREA_H
 #define AREA_H
 
 #include "core/vset.h"
 #include "scene/3d/collision_object.h"
 
-class Area : public CollisionObject {
-
+class Area : public CollisionObject
+{
 	GDCLASS(Area, CollisionObject);
 
 public:
-	enum SpaceOverride {
+	enum SpaceOverride
+	{
 		SPACE_OVERRIDE_DISABLED,
 		SPACE_OVERRIDE_COMBINE,
 		SPACE_OVERRIDE_COMBINE_REPLACE,
@@ -67,11 +38,12 @@ private:
 	void _body_enter_tree(ObjectID p_id);
 	void _body_exit_tree(ObjectID p_id);
 
-	struct ShapePair {
-
+	struct ShapePair
+	{
 		int body_shape;
 		int area_shape;
-		bool operator<(const ShapePair &p_sp) const {
+		bool operator<(const ShapePair &p_sp) const
+		{
 			if (body_shape == p_sp.body_shape)
 				return area_shape < p_sp.area_shape;
 			else
@@ -79,13 +51,15 @@ private:
 		}
 
 		ShapePair() {}
-		ShapePair(int p_bs, int p_as) {
+		ShapePair(int p_bs, int p_as)
+		{
 			body_shape = p_bs;
 			area_shape = p_as;
 		}
 	};
 
-	struct BodyState {
+	struct BodyState
+	{
 
 		int rc;
 		bool in_tree;
@@ -99,11 +73,13 @@ private:
 	void _area_enter_tree(ObjectID p_id);
 	void _area_exit_tree(ObjectID p_id);
 
-	struct AreaShapePair {
+	struct AreaShapePair
+	{
 
 		int area_shape;
 		int self_shape;
-		bool operator<(const AreaShapePair &p_sp) const {
+		bool operator<(const AreaShapePair &p_sp) const
+		{
 			if (area_shape == p_sp.area_shape)
 				return self_shape < p_sp.self_shape;
 			else
@@ -111,13 +87,15 @@ private:
 		}
 
 		AreaShapePair() {}
-		AreaShapePair(int p_bs, int p_as) {
+		AreaShapePair(int p_bs, int p_as)
+		{
 			area_shape = p_bs;
 			self_shape = p_as;
 		}
 	};
 
-	struct AreaState {
+	struct AreaState
+	{
 
 		int rc;
 		bool in_tree;
